@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "app_creativas_backend": {
+      "candid": "src/app_creativas_backend/app_creativas_backend.did",
+      "package": "app_creativas_backend",
+      "type": "rust"
+    },
+    "app_creativas_frontend": {
+      "dependencies": [
+        "app_creativas_backend"
+      ],
+      "source": [
+        "src/app_creativas_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "app_creativas_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
