@@ -1,5 +1,6 @@
 [workspace]
 members = [
-    "src/app_creativas_backend"
+    "src/nft_venture",
+    "src/eccomerce"
 ]
 resolver = "2"

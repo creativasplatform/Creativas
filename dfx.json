@@ -1,13 +1,20 @@
 {
   "canisters": {
-    "app_creativas_backend": {
-      "candid": "src/app_creativas_backend/app_creativas_backend.did",
-      "package": "app_creativas_backend",
-      "type": "rust"
+    "eccomerce": {
+      "type": "rust",
+      "candid": "src/eccomerce/eccomerce.did",
+      "package": "eccomerce"
+    },
+    "nft_venture": {
+      "type": "rust",
+      "candid": "src/nft_venture/nft_venture.did",
+      "package": "nft_venture"
     },
     "app_creativas_frontend": {
       "dependencies": [
-        "app_creativas_backend"
+        "eccomerce",
+        "nft_venture"
+
       ],
       "source": [
         "src/app_creativas_frontend/dist"

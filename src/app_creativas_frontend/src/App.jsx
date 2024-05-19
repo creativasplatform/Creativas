@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { app_creativas_backend } from 'declarations/app_creativas_backend';
+import { eccomerce } from 'declarations/eccomerce';
 
 function App() {
   const [greeting, setGreeting] = useState('');
@@ -7,7 +7,7 @@ function App() {
   function handleSubmit(event) {
     event.preventDefault();
     const name = event.target.elements.name.value;
-    app_creativas_backend.greet(name).then((greeting) => {
+    eccomerce.greet(name).then((greeting) => {
       setGreeting(greeting);
     });
     return false;
