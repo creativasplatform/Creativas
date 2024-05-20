@@ -142,6 +142,7 @@ service : () -> {
     get_items_by_category: (text) -> (Result_get_category) query;
     add_item_card : (AddItem, text) -> (Result);
     item_in_cart : (text, nat64) -> (bool) query;
+    update_item_card : (AddItem, text, text) -> (Result);
     get_user_cart : (text) -> (Result_get_user_card) query;
     get_total_items_in_cart : (text) -> (Result_get_len_card) query;
     remove_item_from_cart : (nat64, text) -> (Result); 
