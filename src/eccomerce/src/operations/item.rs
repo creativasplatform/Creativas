@@ -1,9 +1,7 @@
-
-
 use crate::types::category::Category;
-use crate::types::item::{CreateItem, Item, ItemError};
+use crate::types::item::{CreateItem, Item, ItemError, UpdateItem};
 use crate::types::storable::VecStorable;
-use crate::{is_valid_eth_address, ID_MANAGER, ITEMS, OWNER_ITEMS, CATEGORY_ITEMS};
+use crate::{is_valid_eth_address, CATEGORY_ITEMS, ID_MANAGER, ITEMS, OWNER_ITEMS};
 
 pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> {
     if item.item.trim().is_empty()
@@ -65,7 +63,6 @@ pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> 
 
     Ok(())
 }
-
 
 pub fn get_items_logic() -> Vec<(u64, Item)> {
     ITEMS.with(|p| {
@@ -143,3 +140,52 @@ pub fn get_items_by_category_logic(category: String) -> Result<Vec<(u64, Item)>,
     Ok(items_in_category)
 }
 
+pub fn update_item_logic(id: u64, item: UpdateItem, item_owner: String) -> Result<(), ItemError> {
+    ITEMS.with(|p| {
+        let mut items = p.borrow_mut();
+        let old_item_opt = items.get(&id).clone();
+
+        match old_item_opt {
+            Some(old_item) => {
+                if old_item.owner != item_owner {
+                    return Err(ItemError::Unauthorized);
+                }
+
+                let updated_item = Item {
+                    item: old_item.item,
+                    price: item.price.unwrap_or(old_item.price),
+                    description: item.description.unwrap_or(old_item.description),
+                    image: item.image.unwrap_or(old_item.image),
+                    reviews: old_item.reviews,
+                    owner: old_item.owner,
+                    contract_address: old_item.contract_address,
+                    stock: item.stock.unwrap_or(old_item.stock),
+                    category: old_item.category,
+                };
+
+                items.insert(id, updated_item);
+                Ok(())
+            }
+            None => Err(ItemError::NotExist),
+        }
+    })
+}
+
+pub fn remove_item_logic(id: u64, item_owner: String) -> Result<(), ItemError> {
+    ITEMS.with(|p| {
+        let mut items = p.borrow_mut();
+        let old_item_opt = items.get(&id).clone();
+
+        match old_item_opt {
+            Some(old_item) => {
+                if old_item.owner != item_owner {
+                    return Err(ItemError::Unauthorized);
+                }
+
+                items.remove(&id);
+                Ok(())
+            }
+            None => Err(ItemError::NotExist),
+        }
+    })
+}
