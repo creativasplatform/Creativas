@@ -81,6 +81,12 @@ type AddItem = record {
  amount: nat64;
 };
 
+type UpdateItem  = record {
+    price: opt nat64;
+    description: opt text;
+    image: opt text;
+    stock: opt nat64;
+};
 
 type ShippingCard = record {
   card: vec Card;
@@ -140,6 +146,8 @@ service : () -> {
     get_item_owner : (nat64) -> (Result_get_owner);
     get_items_owner : (text) -> (ResultItems) query;
     get_items_by_category: (text) -> (Result_get_category) query;
+    update_item : (nat64, UpdateItem, text) -> (Result);
+    remove_item : (nat64, text) -> (Result);
     add_item_card : (AddItem, text) -> (Result);
     item_in_cart : (text, nat64) -> (bool) query;
     update_item_card : (AddItem, text, text) -> (Result);
