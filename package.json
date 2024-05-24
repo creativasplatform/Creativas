@@ -1,5 +1,5 @@
 {
-  "name": "app_creativas",
+  "name": "creativas",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -8,11 +8,21 @@
     "start": "vite"
   },
   "dependencies": {
-    "@dfinity/agent": "^0.15.7",
-    "@dfinity/candid": "^0.15.7",
-    "@dfinity/principal": "^0.15.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@portis/web3": "4.0.5",
+    "@rsksmart/rlogin": "1.2.0",
+    "@rsksmart/rlogin-dcent-provider": "1.0.0-beta.8",
+    "@rsksmart/rlogin-ledger-provider": "1.0.0-beta.8",
+    "@rsksmart/rlogin-trezor-provider": "1.0.0-beta.9",
+    "@toruslabs/torus-embed": "1.13.4",
+    "@walletconnect/web3-provider": "1.6.6",
+    "assert": "2.0.0",
+    "axios": "^1.6.5",
+    "dotenv": "^16.3.1",
+    "ethers": "^5.7.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^6.21.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react-refresh": "^1.3.6",
