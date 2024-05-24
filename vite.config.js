@@ -89,4 +89,7 @@ export default defineConfig({
     "process.env.VITE_BACKEND_URL": JSON.stringify(process.env.VITE_BACKEND_URL),
     "process.env.VITE_PRIVATE_KEY": JSON.stringify(process.env.VITE_PRIVATE_KEY),
   },
+  build: {
+    target: ['chrome89', 'edge89', 'firefox80', 'safari14']
+  },
 })
