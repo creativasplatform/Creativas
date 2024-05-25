@@ -1,28 +1,37 @@
 import RLogin from "@rsksmart/rlogin";
 /*
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import Portis from "@portis/web3";
 */
+import { WalletConnect2Provider } from '@rsksmart/rlogin-walletconnect2-provider'
 import Torus from "@toruslabs/torus-embed";
 import { trezorProviderOptions } from "@rsksmart/rlogin-trezor-provider";
 import { ledgerProviderOptions } from "@rsksmart/rlogin-ledger-provider";
 import { dcentProviderOptions } from "@rsksmart/rlogin-dcent-provider";
 const rpcUrls = {
-  30: "https://public-node.rsk.co",
-  31: "https://public-node.testnet.rsk.co"
-};
+  30: 'https://public-node.rsk.co',
+  31: 'https://public-node.testnet.rsk.co',
+}
 
-const supportedChains = Object.keys(rpcUrls).map(Number);
+const supportedChains = Object.keys(rpcUrls).map(Number)
 
+
+// Create a new rLogin instance with your custom providerOptions outside of the 
+// component.
 export const rLogin = new RLogin({
+  cacheProvider: false,
   providerOptions: {
-    /*
     walletconnect: {
-      package: WalletConnectProvider,
+      package: WalletConnect2Provider,
       options: {
-        rpc: rpcUrls
+        projectId: 'd20d52a02de4faf7056d37c0b7558dfb',
+        chains: [30, 31],
+        showQrModal: true,
+        rpcMap: rpcUrls, 
+   
       }
+
     },
+      /*
     portis: {
       package: Portis,
       options: {
@@ -50,3 +59,4 @@ export const rLogin = new RLogin({
   rpcUrls,
   supportedChains
 });
+

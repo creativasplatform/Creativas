@@ -1,19 +1,4 @@
-// utils/constants.js
-export const BITFINITY_CHAIN = {
-    id: 355113,
-    name: "Bitfinity Network",
-    network: "Bitfinity Network",
-    nativeCurrency: {
-      name: "BitFinity",
-      symbol: "BFT",
-      decimals: 18,
-    },
-    rpcUrls: {
-      public: { http: ["https://testnet.bitfinity.network"] },
-      default: { http: ["https://testnet.bitfinity.network"] },
-    },
-    //blockExplorerUrls: []
-  };
+
   
   export const contractAddress = "0xC857A67BE079E3Dd24Da216532Bd6fF07e77714a";
   export const contractAddressRES4 = "0x612aE0c1044846c472B993e17d6251A5aF27acf3";

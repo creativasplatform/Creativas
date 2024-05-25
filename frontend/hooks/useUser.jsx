@@ -1,51 +1,52 @@
 // useUser.jsx
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { providers } from 'ethers';
-import { rLogin } from '..//helpers/LoginHelpers.jsx';
+import { rLogin } from '../helpers/LoginHelpers.jsx';
 import { useUserContext } from '../context/userContext.jsx';
 
-export const login = () =>
+export const loginWallet = () =>
   rLogin.connect()
     .then(({ provider, disconnect }) => {
       const web3Provider = new providers.Web3Provider(provider);
       const signer = web3Provider.getSigner(0);
       const getAddressPromise = signer.getAddress();
-      return { disconnect, getAddressPromise };
+      return { disconnect, getAddressPromise, signer };
     })
     .catch(console.error);
 
 export const logout = async (disconnect) => {
-  await disconnect();
+  await disconnect;
 };
 
 const useUser = () => {
-  const { isLoggedIn, setIsLoggedIn, disconnect, setDisconnect, address, setAddress } = useUserContext();
+  const { isLoggedIn, setIsLoggedIn, disconnect, setDisconnect, address, setAddress, signer, setSigner } = useUserContext();
 
-  const handleLogin = useCallback(() => {
-    login()
-      .then(({ disconnect, getAddressPromise }) => {
+  const handleLoginWallet = useCallback(() => {
+    loginWallet()
+      .then(({ disconnect, getAddressPromise, signer }) => {
         setDisconnect(disconnect);
+        setSigner(signer);
         getAddressPromise.then(setAddress);
         setIsLoggedIn(true);
       });
-  }, [setDisconnect, setAddress, setIsLoggedIn]);
+  }, [setDisconnect, setAddress, setIsLoggedIn, setSigner]);
 
   const handleLogout = useCallback(() => {
     if (disconnect) {
       logout(disconnect).then(() => {
         setDisconnect(null);
         setAddress("");
+        setSigner(null);
         setIsLoggedIn(false);
       });
     }
-  }, [disconnect, setDisconnect, setAddress, setIsLoggedIn]);
-
-
+  }, [disconnect, setDisconnect, setAddress, setIsLoggedIn, setSigner]);
 
   return {
     isLoggedIn,
     address,
-    login: handleLogin,
+    signer,
+    login: handleLoginWallet,
     logout: handleLogout
   };
 };
