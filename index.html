@@ -13,9 +13,10 @@
    * @dfinity/agent requires this. Can be removed once it's fixed
    */
   import { Buffer } from "buffer"
-
+  import process from "process";
   window.global = window
   window.Buffer = Buffer
+  window.process = process;
 </script>
 <script type="module" src="/frontend/main.jsx"></script>
 

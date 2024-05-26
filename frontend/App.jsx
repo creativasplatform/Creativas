@@ -8,7 +8,6 @@ const App = () => {
   return (
     <div className="App">
         <UserProvider>
-      <p>holaa</p>
       <UserComponent />
       </UserProvider>
     </div>

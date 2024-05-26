@@ -16,14 +16,29 @@ const chainConfig = {
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig },
-});
+  config: { chainConfig },
+})
+
+
 
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET, // Usa TESTNET para entornos de prueba
   privateKeyProvider: privateKeyProvider,
+  sessionTime: 604800,
+  uiConfig: {
+    appName: "Creativas",
+    mode: "dark", // light, dark or auto
+    loginMethodsOrder: ["google", "apple", "twitter"],
+    logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+    logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+    defaultLanguage: "es", // en, de, ja, ko, zh, es, fr, pt, nl, tr
+    loginGridCol: 3,
+    primaryButton: "socialLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+  },
+  modalZIndex: "99998",
 });
+
 
 // Exporta las constantes para usarlas en otros componentes
 export { clientId, chainConfig, privateKeyProvider, web3auth };
