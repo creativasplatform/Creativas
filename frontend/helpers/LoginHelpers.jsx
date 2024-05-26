@@ -7,6 +7,11 @@ import Torus from "@toruslabs/torus-embed";
 import { trezorProviderOptions } from "@rsksmart/rlogin-trezor-provider";
 import { ledgerProviderOptions } from "@rsksmart/rlogin-ledger-provider";
 import { dcentProviderOptions } from "@rsksmart/rlogin-dcent-provider";
+// import { defaultTheme } from "@rsksmart/rlogin/dist/theme";
+// import { themes } from "@rsksmart/rlogin/dist/theme";
+
+
+
 const rpcUrls = {
   30: 'https://public-node.rsk.co',
   31: 'https://public-node.testnet.rsk.co',
@@ -24,12 +29,10 @@ export const rLogin = new RLogin({
       package: WalletConnect2Provider,
       options: {
         projectId: 'd20d52a02de4faf7056d37c0b7558dfb',
-        chains: [30, 31],
+        chains: ['31'],
         showQrModal: true,
-        rpcMap: rpcUrls, 
-   
+        rpcMap: rpcUrls,
       }
-
     },
       /*
     portis: {
@@ -43,9 +46,6 @@ export const rLogin = new RLogin({
       }
     },
     */
-    torus: {
-      package: Torus
-    },
     "custom-ledger": ledgerProviderOptions,
     "custom-dcent": dcentProviderOptions,
     "custom-trezor": {
@@ -57,6 +57,13 @@ export const rLogin = new RLogin({
     }
   },
   rpcUrls,
-  supportedChains
+  supportedChains,
+  defaultTheme: 'dark', // Establece el tema oscuro como predeterminado
+  customThemes: {
+    dark: {
+      background: "#10142b", // Cambia el color de fondo
+      color: "#faf9f5" // Cambia el color del texto
+    }
+  }
 });
 
