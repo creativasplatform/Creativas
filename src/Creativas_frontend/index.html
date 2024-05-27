@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+   <title>IC Hello Starter</title>
+  <base href="/" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="module">
+    /**
+     * @dfinity/agent requires this. Can be removed once it's fixed
+     */
+    import { Buffer } from "buffer"
+    import process from "process";
+    window.global = window
+    window.Buffer = Buffer
+    window.process = process;
+  </script>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

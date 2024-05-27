@@ -1,39 +1,61 @@
-# Creativas 
- ![Alt text](./frontend/assets/creativas.png)
+# `Creativas`
 
-La discriminación financiera afecta a millones de mujeres. Debido a la Desigualdad en el Acceso Financiero, Brecha de Oportunidades, Impacto Global y Desarrollo Limitado, un 63% de mujeres están desbancarizadas en México, según datos respaldando nuestra causa y demostrando la magnitud del desafío que enfrentamos.
+Welcome to your new `Creativas` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
 
-Creativas es una plataforma tecnológica descentralizada que facilita la inclusión financiera del género femenino, eliminando barreras burocráticas y la lentitud de los mecanismos convencionales de bancos y fondos de inversión.
+To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
 
-## Nuestra Solución
+To learn more before you start working with `Creativas`, see the following documentation available online:
 
-Nuestra solución permite a las emprendedoras:
-- Vender sus productos y/o servicios.
-- Invertir y comerciar con pequeños capitales.
-Esto amplía el acceso a quienes no pueden invertir en los bancos y fondos de inversión debido a los engorrosos requisitos que exigen.
+- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
+- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
+- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
+- [ic-cdk](https://docs.rs/ic-cdk)
+- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
+- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
 
-## Características de la Plataforma
+If you want to start working on your project right away, you might want to try the following commands:
 
-1. **Pasarela de Pagos:**
-   - Evita proveedores y tarifas.
-   - Realiza pagos globales, rápidos y seguros.
-   - Utiliza contratos inteligentes en ICP.
-   - Integración con Ethereum.
+```bash
+cd Creativas/
+dfx help
+dfx canister --help
+```
 
-2. **Financiamiento NFT Fraccional:**
-   - Genera ERC20 para comerciar con inversores.
-   - Transfiere inversión y comisión con contratos inteligentes.
+## Running the project locally
 
-3. **Portafolio de Inversión:**
-   - Ofrece mejores opciones y combinaciones de inversión.
-   - Impulsado por Inteligencia Artificial.
+If you want to test your project locally, you can use the following commands:
 
-En Creativas, no solo facilitamos transacciones; brindamos libertad, transparencia y confianza, empoderándolas y brindándoles control sobre sus finanzas. Nuestra propuesta de valor se centra en dar herramientas para el éxito, eliminando barreras financieras, democratizando la inversión y contribuyendo al crecimiento económico e innovación en América Latina en un modelo persona a persona.
+```bash
+# Starts the replica, running in the background
+dfx start --background
 
-Existe un tamaño de mercado de 42 millones de mujeres desbancarizadas en México, donde podemos lograr un impacto significativo, ayudando a innumerables mujeres a superar las barreras financieras y a alcanzar sus objetivos empresariales.
+# Deploys your canisters to the replica and generates your candid interface
+dfx deploy
+```
 
-## Nuestra Visión
+Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
 
-Nuestra visión es convertirnos en la plataforma de referencia para la inclusión financiera de las mujeres en América Latina. Creemos que, al empoderar a las mujeres y proporcionarles las herramientas necesarias para tener éxito, podemos ayudar a impulsar el crecimiento económico y la innovación en toda la región.
+If you have made changes to your backend canister, you can generate a new candid interface with
 
+```bash
+npm run generate
+```
 
+at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+
+If you are making frontend changes, you can start a development server with
+
+```bash
+npm start
+```
+
+Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+
+### Note on frontend environment variables
+
+If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+
+- set`DFX_NETWORK` to `ic` if you are using Webpack
+- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
+  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
+- Write your own `createActor` constructor
