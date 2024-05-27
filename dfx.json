@@ -1,44 +1,30 @@
 {
   "canisters": {
-    "eccomerce": {
-      "type": "rust",
-      "candid": "backend/eccomerce/eccomerce.did",
-      "package": "eccomerce",
-      "declarations": {
-        "node_compatibility": true
-      }
+    "Creativas_backend": {
+      "candid": "src/Creativas_backend/Creativas_backend.did",
+      "package": "Creativas_backend",
+      "type": "rust"
     },
-    "nft_venture": {
-      "type": "rust",
-      "candid": "backend/nft_venture/nft_venture.did",
-      "package": "nft_venture",
-      "declarations": {
-        "node_compatibility": true
-      }
-    },
-
-    "assets": {
+    "Creativas_frontend": {
       "dependencies": [
-        "eccomerce",
-        "nft_venture"
+        "Creativas_backend"
       ],
-      "frontend": {
-        "entrypoint": "dist/index.html"
-      },
       "source": [
-        "dist/"
+        "src/Creativas_frontend/dist"
       ],
-      "type": "assets"
+      "type": "assets",
+      "workspace": "Creativas_frontend"
     }
   },
   "defaults": {
     "build": {
+      "args": "",
       "packtool": ""
     }
   },
   "networks": {
     "local": {
-      "bind": "127.0.0.1:7070",
+      "bind": "127.0.0.1:8080",
       "type": "ephemeral"
     },
     "ic": {
@@ -48,6 +34,6 @@
       "type": "persistent"
     }
   },
-  "output_env_file": ".env.local",
+  "output_env_file": ".env",
   "version": 1
 }
