@@ -73,10 +73,25 @@ export default function useItems() {
         }
     };
 
+    // Function to fetch items by category from the backend
+    const getItemsByCategory = async (category) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await eccomerce.get_items_by_category(category);
+            setItems(data);
+            setLoading(false);
+        } catch (err) {
+            setError(err);
+            setLoading(false);
+        }
+    };
+
     return { 
         items, loading, error, setItems, 
         creating, createError, createItem, 
         item, loadingItem, itemError, getItem,
-        ownerItems, loadingOwnerItems, ownerItemsError, getItemsByOwner 
+        ownerItems, loadingOwnerItems, ownerItemsError, getItemsByOwner,
+        getItemsByCategory // Agrega la nueva función al retorno
     };
 }
