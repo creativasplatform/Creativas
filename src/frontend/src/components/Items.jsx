@@ -1,8 +1,10 @@
 import React from 'react';
-import useItems from '../hooks/useItems';
+import useItems from '../hooks/useItems.jsx';
 
 const Items = () => {
     const { items, loading, error } = useItems();
+    console.log(items)
+    console.log("Holla mundo")
 
     if (loading) {
         return <p>Loading...</p>;

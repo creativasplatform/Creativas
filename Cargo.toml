@@ -1,5 +1,3 @@
 [workspace]
-members = [
-    "src/Creativas_backend"
-]
 resolver = "2"
+members = ["src/backend/eccomerce", "src/backend/nft_venture"]

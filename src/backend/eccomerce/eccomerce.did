@@ -1,0 +1,159 @@
+type Rating = variant {
+    Zero;
+    One;
+    Two;
+    Three;
+    Four;
+    Five;
+};
+type Category = variant {
+    Electronics;
+    ClothingShoesAccessories;
+    HomeKitchen;
+    BeautyPersonalCare;
+    Books;
+    SportsOutdoor;
+    FoodBeverages;
+    HomeImprovement;
+    Baby;
+    PetsAccessories;
+    Food;
+};
+type Review = record {
+    rating: Rating;
+    review: text;
+    reviewer: text;
+};
+
+type CreateReview = record {
+    item_id: nat64;
+    rating: nat64;
+    review: text;
+};
+
+type CreateItem = record {
+    item: text;
+    price: nat64;
+    description: text;
+    image: text;
+    contract_address: text;
+    stock: nat64;
+    category: text;
+};
+
+
+type Item = record {
+    item: text;
+    price: nat64;
+    description: text;
+    image: text;
+    reviews: vec Review; // Agrega este campo
+    owner: text;
+    contract_address: text;
+    stock: nat64;
+    category: Category;
+};
+type ItemError = variant {
+    AlreadyExist;
+    ItemNotAllowed;
+    NotExist;
+    Unauthorized;
+    UpdateError;
+    NoItemsAssociated;
+    InvalidOwner;
+    ItemNotFound;
+    AlreadyVoted;
+    OutOfStock;
+};
+
+
+type Card = record {
+
+    item_id: nat64;
+    item: Item;
+    amount: nat64;
+};
+
+
+type AddItem = record {
+ 
+ item: nat64;
+ amount: nat64;
+};
+
+type UpdateItem  = record {
+    price: opt nat64;
+    description: opt text;
+    image: opt text;
+    stock: opt nat64;
+};
+
+type ShippingCard = record {
+  card: vec Card;
+  total_price: nat64;
+};
+
+type BoolStorable = record {
+  
+ bool: bool;
+};
+
+type UpdateAction = variant {
+    Add;
+    Remove;
+};
+
+type Result = variant {
+    Ok;
+    Err: ItemError;
+};
+
+type Result_item = variant {
+    Ok: Item;
+    Err: ItemError;
+};
+
+type ResultItems = variant {
+    Ok: vec record { nat64; Item };
+    Err: ItemError;
+};
+
+type Result_get_owner = variant {
+    Ok: text;
+    Err: ItemError;
+};
+
+type Result_get_category = variant {
+    Ok: vec record { nat64; Item };
+    Err: ItemError;
+};
+
+type Result_get_user_card = variant {
+    Ok: ShippingCard;
+    Err: ItemError;
+};
+
+
+type Result_get_len_card = variant {
+    Ok: nat64;
+    Err: ItemError;
+};
+
+service : () -> {
+    set_item : (text, CreateItem) -> (Result);
+    get_items : () -> (vec record { nat64; Item }) query;
+    get_item : (nat64) -> (Result_item) query;
+    get_item_owner : (nat64) -> (Result_get_owner);
+    get_items_owner : (text) -> (ResultItems) query;
+    get_items_by_category: (text) -> (Result_get_category) query;
+    update_item : (nat64, UpdateItem, text) -> (Result);
+    remove_item : (nat64, text) -> (Result);
+    add_item_card : (AddItem, text) -> (Result);
+    item_in_cart : (text, nat64) -> (bool) query;
+    update_item_card : (AddItem, text, text) -> (Result);
+    get_user_cart : (text) -> (Result_get_user_card) query;
+    get_total_items_in_cart : (text) -> (Result_get_len_card) query;
+    remove_item_from_cart : (nat64, text) -> (Result); 
+    clear_cart : (text) -> (Result);
+    get_total_price : (text) -> (Result_get_len_card) query;
+};

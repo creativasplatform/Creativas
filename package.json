@@ -13,7 +13,7 @@
   },
   "type": "module",
   "workspaces": [
-    "src/Creativas_frontend"
+    "src/frontend"
   ],
   "dependencies": {
     "vite-plugin-environment": "^1.1.3"
