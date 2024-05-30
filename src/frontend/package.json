@@ -1,12 +1,11 @@
 {
-  "name": "Creativas_frontend",
+  "name": "frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup": "npm i && dfx canister create Creativas_backend && dfx generate Creativas_backend && dfx deploy",
+    "setup": "npm i && dfx canister create eccomerce && dfx create nft_venture && dfx create frontend && dfx deploy",
     "start": "vite --port 3000",
-    "prebuild": "dfx generate",
     "build": "tsc && vite build",
     "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\""
   },
