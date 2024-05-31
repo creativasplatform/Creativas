@@ -1,9 +1,6 @@
 use candid::{CandidType, Deserialize, Encode, Decode};
 use ic_stable_structures::{storable::Bound, Storable};
 use std::borrow::Cow;
-use std::collections::HashMap;
-
-const MAX_VALUE_SIZE_ITEM: u32 = 5000;
 const MAX_VALUE_SIZE_CATEGORY: u32 = 5000;
 
 #[derive(CandidType, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Copy, Debug, Hash)]
