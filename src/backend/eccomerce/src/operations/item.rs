@@ -2,7 +2,26 @@ use crate::types::category::Category;
 use crate::types::item::{CreateItem, Item, ItemError, UpdateItem};
 use crate::types::storable::VecStorable;
 use crate::{is_valid_eth_address, CATEGORY_ITEMS, ID_MANAGER, ITEMS, OWNER_ITEMS, SUBCATEGORY_ITEMS};
-use crate::types::subcategory::Subcategory;
+use std::collections::HashMap;
+use core::cell::RefCell;
+use crate::SubCategory;
+
+thread_local! {
+    static CATEGORY_SUBCATEGORIES: RefCell<HashMap<Category, Vec<&'static str>>> = RefCell::new({
+        let mut m = HashMap::new();
+        m.insert(Category::Electronics, vec!["Laptops", "Cellphones", "Monitors", "Tvs"]);
+        m.insert(Category::Food, vec!["Vegetables", "Fruits", "Meat", "Snacks"]);
+        m
+    });
+}
+
+pub fn is_valid_subcategory(category: Category, subcategory: &str) -> bool {
+    CATEGORY_SUBCATEGORIES.with(|map| {
+        map.borrow().get(&category).map_or(false, |subcategories| {
+            subcategories.contains(&subcategory)
+        })
+    })
+}
 
 pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> {
     if item.item.trim().is_empty()
@@ -11,7 +30,7 @@ pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> 
         || item.image.trim().is_empty()
         || item.contract_address.trim().is_empty()
         || item.category.trim().is_empty()
-        || item.subcategory.trim().is_empty() // Validar que la subcategoría no esté vacía
+        || item.subcategory.trim().is_empty()
     {
         return Err(ItemError::Unauthorized);
     }
@@ -25,8 +44,11 @@ pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> 
     }
 
     let category = Category::from_str(&item.category).ok_or(ItemError::NotExist)?;
-    let subcategory = Subcategory::from_str(category, &item.subcategory).ok_or(ItemError::NotExist)?;
+    if !is_valid_subcategory(category, &item.subcategory) {
+        return Err(ItemError::Invalid);
+    }
 
+    let subcategory = SubCategory::new(category, &item.subcategory);
     let id = ID_MANAGER.with(|manager| manager.get_id());
 
     let value: Item = Item {
@@ -39,7 +61,7 @@ pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> 
         contract_address: item.contract_address,
         stock: item.stock,
         category,
-        subcategory, // Asignar subcategoría obligatoria
+        subcategory: item.subcategory.clone(),
     };
 
     ITEMS.with(|p| p.borrow_mut().insert(id, value.clone()));
@@ -66,22 +88,19 @@ pub fn set_item_logic(owner: String, item: CreateItem) -> Result<(), ItemError> 
         items.insert(category.clone(), updated_category_items);
     });
 
-    // Insertar el ítem en SUBCATEGORY_ITEMS
-SUBCATEGORY_ITEMS.with(|items| {
-    let mut items = items.borrow_mut();
-    if !items.contains_key(&subcategory) {
-        items.insert(subcategory.clone(), VecStorable { ids: Vec::new() });
-    }
-    let subcategory_items = items.get(&subcategory).unwrap().clone();
-    let mut updated_subcategory_items = subcategory_items;
-    updated_subcategory_items.ids.push(id);
-    items.insert(subcategory.clone(), updated_subcategory_items);
-});
-
+    SUBCATEGORY_ITEMS.with(|items| {
+        let mut items = items.borrow_mut();
+        if !items.contains_key(&subcategory) {
+            items.insert(subcategory.clone(), VecStorable { ids: Vec::new() });
+        }
+        let subcategory_items = items.get(&subcategory).unwrap().clone();
+        let mut updated_subcategory_items = subcategory_items;
+        updated_subcategory_items.ids.push(id);
+        items.insert(subcategory.clone(), updated_subcategory_items);
+    });
 
     Ok(())
 }
-
 
 
 pub fn get_items_logic() -> Vec<(u64, Item)> {
@@ -135,13 +154,15 @@ pub fn get_items_owner_logic(owner: String) -> Result<Vec<(u64, Item)>, ItemErro
 
 pub fn get_items_by_subcategory_logic(category: String, subcategory: String) -> Result<Vec<(u64, Item)>, ItemError> {
     let category = Category::from_str(&category).ok_or(ItemError::NotExist)?;
-    let subcategory_enum = Subcategory::from_str(category, &subcategory).ok_or(ItemError::NotExist)?;
+    if !is_valid_subcategory(category, &subcategory) {
+        return Err(ItemError::Invalid);
+    }
+    let subcategory = SubCategory::new(category, &subcategory);
 
-    // Obtener todos los ID de los elementos asociados a la subcategoría
     let item_ids = SUBCATEGORY_ITEMS.with(|items| {
         items
             .borrow()
-            .get(&subcategory_enum)
+            .get(&subcategory)
             .unwrap_or_default()
             .ids
             .clone()
@@ -151,7 +172,6 @@ pub fn get_items_by_subcategory_logic(category: String, subcategory: String) -> 
         return Err(ItemError::NoItemsAssociated);
     }
 
-    // Obtener todos los elementos asociados a los IDs
     let items_in_subcategory = ITEMS.with(|items_map| {
         let items_map = items_map.borrow();
         item_ids
@@ -185,7 +205,7 @@ pub fn update_item_logic(id: u64, item: UpdateItem, item_owner: String) -> Resul
                     contract_address: old_item.contract_address,
                     stock: item.stock.unwrap_or(old_item.stock),
                     category: old_item.category,
-                    subcategory: old_item.subcategory
+                    subcategory: old_item.subcategory,
                 };
 
                 items.insert(id, updated_item);

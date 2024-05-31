@@ -15,7 +15,7 @@ pub struct Item {
     pub contract_address: String,
     pub stock: u64,
     pub category: crate::types::category::Category,
-    pub subcategory: crate::types::subcategory::Subcategory, // Campo subcategoría obligatorio
+    pub subcategory: String,
 }
 
 #[derive(CandidType, Deserialize)]
@@ -27,10 +27,8 @@ pub struct CreateItem {
     pub contract_address: String,
     pub stock: u64,
     pub category: String,
-    pub subcategory: String, // Campo subcategoría obligatorio
+    pub subcategory: String,
 }
-
-
 
 #[derive(CandidType, Deserialize)]
 pub struct UpdateItem {
@@ -59,6 +57,7 @@ impl Storable for Item {
 pub enum ItemError {
     AlreadyExist,
     ItemNotAllowed,
+    Invalid,
     NotExist,
     Unauthorized,
     UpdateError,
@@ -68,4 +67,3 @@ pub enum ItemError {
     AlreadyVoted,
     OutOfStock,
 }
-
