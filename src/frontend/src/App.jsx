@@ -8,8 +8,7 @@ function App() {
     <div className="App">
     <UserProvider>
     {/* <Items /> */}
-  {/* <AuthComponent /> */}
-<PinataExample />
+  <AuthComponent /> 
   </UserProvider>
 </div>
   );
