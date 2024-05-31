@@ -10,9 +10,8 @@ use crate::types::storable::{
 use crate::types::shipping::{AddItem, ShippingCard};
 use ic_stable_structures::memory_manager::{MemoryId, MemoryManager, VirtualMemory};
 use ic_stable_structures::{DefaultMemoryImpl, StableBTreeMap};
-use types::subcategory;
 use std::cell::RefCell;
-use crate::types::subcategory::Subcategory;
+use crate::types::category::SubCategory;
 
 use crate::operations::item::{
     set_item_logic, get_items_logic, get_item_logic, check_if_item_exists_logic,
@@ -70,8 +69,9 @@ thread_local! {
         MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(2))),
     ));
 
-    static SUBCATEGORY_ITEMS: RefCell<StableBTreeMap<Subcategory, VecStorable, Memory>> = RefCell::new(StableBTreeMap::init(
-        MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(6))),
+
+    static SUBCATEGORY_ITEMS: RefCell<StableBTreeMap<SubCategory, VecStorable, Memory>> = RefCell::new(StableBTreeMap::init(
+        MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(3))),
     ));
 
     static OWNER_SHIPPING_CARD: RefCell<StableBTreeMap<String, ShippingCard, Memory>> = RefCell::new(StableBTreeMap::init(
@@ -119,7 +119,7 @@ fn get_items_owner(owner: String) -> Result<Vec<(u64, Item)>, ItemError> {
 }
 
 #[ic_cdk::query]
-fn get_items_by_subcategory(category: String, subcategory: String) -> Result<Vec<(u64, Item)>, ItemError> {
+fn get_items_by_category(category: String, subcategory: String) -> Result<Vec<(u64, Item)>, ItemError> {
     get_items_by_subcategory_logic(category, subcategory)
 }
 
