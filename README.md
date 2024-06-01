@@ -1,61 +1,39 @@
-# `Creativas`
+Creativas
+La discriminación financiera afecta a millones de personas. Debido a la desigualdad en el acceso financiero, la brecha de oportunidades, el impacto global y el desarrollo limitado, un 53% de la población adulta en México está desbancarizada. Esto representa alrededor de 67 millones de personas, datos que respaldan nuestra causa y demuestran la magnitud del desafío que enfrentamos.
+Además, las altas tasas cobradas por los bancos agravan esta situación:
+    • Mantenimiento de cuenta: 8 USD mensuales.
+    • Transferencias interbancarias: 2%.
+    • Retención en origen sobre los intereses: 5%.
+    • Retiros en cajeros automáticos: 1%.
+    • Emisión de cheques: 0.5%.
+    • Impuesto sobre el valor añadido (IVA): 16%.
+    • Los créditos para pequeñas y medianas empresas (PYMEs) pueden tener una tasa de interés anual que varía, pero generalmente puede llegar hasta el 35.3%
 
-Welcome to your new `Creativas` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+Creativas es una plataforma tecnológica descentralizada que facilita la inclusión financiera para cualquier persona, eliminando las barreras burocráticas y la lentitud de los mecanismos convencionales de bancos y fondos de inversión.
+Nuestra solución permite a las emprendedoras y emprendedores vender sus productos y/o servicios, así como contribuir y comerciar con pequeños capitales. Esto amplía el acceso a quienes no pueden invertir en los bancos y fondos de inversión debido a los engorrosos requisitos que exigen.
+Nuestra plataforma ofrece:
+    1. Ecommerce y Pasarela de Pagos:
+        ◦ Evita proveedores y tarifas.
+        ◦ Realiza pagos globales, rápidos y seguros.
+        ◦ Utiliza Rootstock con contratos inteligentes en Solidity y se integra con Ethereum.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+        ◦ API Integre los pagos criptográficos en su software TPV o en su tienda web
+        ◦ 1% de comision por venta.
+        ◦ Vende y compra productos y servicios de forma anonima.
+        ◦ Recibe los pagos de la venta de tus productos de forma inmediata.
 
-To learn more before you start working with `Creativas`, see the following documentation available online:
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
+    2. Financiamiento de Emprendimiento NFT Venture:
+        ◦ Genera ERC1155 para comerciar con inversores.
+        ◦ Transfiere contribución y feed con contratos inteligentes.
+        ◦ La tokenización de emprendimientos permite atraer a más patrocinadores al proporcionar una forma segura y transparente de contribuir en proyectos, incrementando el alcance y la viabilidad financiera de los mismos.
+        ◦ En lineas generales la plataforma se resumen Crear campañas, ofrecer recompensas y realizar contribuciones. 
+        ◦ Y cobramos una tarifa del 4 % del monto total recaudado, , pero solo si la campaña tiene éxito y alcanza su objetivo de financiación dentro del período que el creador del proyecto haya difinido en su creacion. Esto significa que si un proyecto no logra alcanzar su objetivo de financiación, no se cobrarán tarifas.
 
-If you want to start working on your project right away, you might want to try the following commands:
+    3. Portafolio de inversion:
+        ◦ Ofrece mejores opciones y combinaciones de contribución a los patrocinadores e inversores.
+        ◦ Impulsado por Inteligencia Artificial en smart contrat en la blockchain para asegurar su transparencia.
 
-```bash
-cd Creativas/
-dfx help
-dfx canister --help
-```
-
-## Running the project locally
-
-If you want to test your project locally, you can use the following commands:
-
-```bash
-# Starts the replica, running in the background
-dfx start --background
-
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
-
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
-
-If you have made changes to your backend canister, you can generate a new candid interface with
-
-```bash
-npm run generate
-```
-
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
-
-If you are making frontend changes, you can start a development server with
-
-```bash
-npm start
-```
-
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
-
-### Note on frontend environment variables
-
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
-
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+En Creativas, no solo facilitamos transacciones; brindamos libertad, transparencia y confianza. Empoderamos a los emprendedores y les brindamos control sobre sus finanzas. Nuestra propuesta de valor se centra en dar herramientas para el éxito eliminando barreras financieras, democratizando el financiamiento, y contribuyendo al crecimiento económico e innovación en América Latina en un modelo peer to peer.
+Existe un tamaño de mercado de 67 millones de personas desbancarizadas en México donde podemos lograr un impacto significativo, ayudando a innumerables emprendedores a superar las barreras financieras y alcanzar sus objetivos para lograr libertad financiera. Las proyecciones representan el potencial de crecimiento y rentabilidad de Creativas al capturar solo el 0.01% del mercado SOM. Con números moderados, podemos generar un fee el primer año total de US$ 105,097.82.
+Nuestra visión es convertirnos en la plataforma de referencia para la inclusión financiera en América Latina. Creemos que, al empoderar a las personas y proporcionarles las herramientas necesarias para tener éxito, podemos ayudar a impulsar el crecimiento económico y la innovación en toda la región.

@@ -14,6 +14,8 @@ export default function useItems() {
     const [ownerItems, setOwnerItems] = useState([]);
     const [loadingOwnerItems, setLoadingOwnerItems] = useState(false);
     const [ownerItemsError, setOwnerItemsError] = useState(null);
+    const [updateError, setUpdateError] = useState(null);
+    const [deleteError, setDeleteError] = useState(null);
 
     useEffect(() => {
         // Function to fetch all items from the backend
@@ -73,10 +75,56 @@ export default function useItems() {
         }
     };
 
+    // Function to fetch items by category from the backend
+    const getItemsByCategory = async (category, subcategory) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await eccomerce.get_items_by_category(category, subcategory);
+            setItems(data);
+            setLoading(false);
+        } catch (err) {
+            setError(err);
+            setLoading(false);
+        }
+    };
+
+    // Function to update an item in the backend
+    const updateItem = async (id, updatedItem, itemOwner) => {
+        setLoading(true);
+        setUpdateError(null);
+        try {
+            await eccomerce.update_item(id, updatedItem, itemOwner);
+            // Actualizar la lista de items después de la actualización
+            setItems(prevItems => prevItems.filter(item => item.id !== id));
+            setLoading(false);
+        } catch (err) {
+            setUpdateError(err);
+            setLoading(false);
+        }
+    };
+
+    // Function to remove an item from the backend
+    const removeItem = async (id, itemOwner) => {
+        setLoading(true);
+        setDeleteError(null);
+        try {
+            await eccomerce.remove_item(id, itemOwner);
+            // Actualizar la lista de items después de la eliminación
+            setItems(prevItems => prevItems.filter(item => item.id !== id));
+            setLoading(false);
+        } catch (err) {
+            setDeleteError(err);
+            setLoading(false);
+        }
+    };
+
     return { 
         items, loading, error, setItems, 
         creating, createError, createItem, 
         item, loadingItem, itemError, getItem,
-        ownerItems, loadingOwnerItems, ownerItemsError, getItemsByOwner 
+        ownerItems, loadingOwnerItems, ownerItemsError, getItemsByOwner,
+        getItemsByCategory, updateItem, removeItem,
+        updateError, deleteError
     };
 }
