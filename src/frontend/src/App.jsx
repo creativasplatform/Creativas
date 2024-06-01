@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { UserProvider } from './context/userContext.jsx';
-import AuthComponent from "./components/login.jsx";
-import Items from "./components/Items.jsx";
+import Navbar from "./landing/Navbar.jsx";
+import Body from "./landing/Body";
+
 function App() {
   return (
     <div className="App">
-    <UserProvider>
-    <Items />
-  {/* <AuthComponent /> */}
-
-  </UserProvider>
-</div>
+      <UserProvider>
+        <Navbar/>
+        <Body/>
+      </UserProvider>
+    </div>
   );
 }
 
