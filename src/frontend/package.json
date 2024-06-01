@@ -36,8 +36,11 @@
     "axios": "^1.6.5",
     "dotenv": "^16.4.5",
     "ethers": "^5.7.2",
+<<<<<<< HEAD
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.7.8",
+=======
+>>>>>>> a4abfd0247d4c9a26924253517d4ed09b48370f3
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1"
