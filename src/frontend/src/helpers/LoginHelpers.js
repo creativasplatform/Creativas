@@ -12,12 +12,10 @@ import { dcentProviderOptions } from "@rsksmart/rlogin-dcent-provider";
 
 
 
-const rpcUrls = {
-  30: 'https://public-node.rsk.co',
+export const rpcUrls = {
   31: 'https://public-node.testnet.rsk.co',
 }
 
-const supportedChains = Object.keys(rpcUrls).map(Number)
 
 
 // Create a new rLogin instance with your custom providerOptions outside of the 
@@ -58,7 +56,6 @@ export const rLogin = new RLogin({
     }
   },
   rpcUrls,
-  supportedChains,
   defaultTheme: 'dark', // Establece el tema oscuro como predeterminado
   customThemes: {
     dark: {

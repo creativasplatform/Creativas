@@ -1,11 +1,18 @@
-
-// components/AuthComponent.js
 import React, { useEffect, useState } from 'react';
-import useUser from '../hooks/useUser.jsx';
+import useUser from '../hooks/user/useuser.jsx/index.js';
 import { web3auth } from '../helpers/Web3authHelpers.js';
 
 const AuthComponent = () => {
-  const { isLoggedIn, address, balance, loginWallet, loginWeb3Auth, logout, getUserInfo, restoreConnection } = useUser();
+  const {
+    isLoggedIn,
+    address,
+    balance,
+    loginWallet,
+    loginWeb3Auth,
+    logout,
+    restoreConnection,
+    IsValidChain
+  } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,6 +40,7 @@ const AuthComponent = () => {
         <div>
           <p>Address: {address}</p>
           <p>Balance: {balance}</p>
+          <p>{IsValidChain ? "User in valid chain" : "User not in valid chain"}</p>
           <button onClick={logout}>Logout</button>
         </div>
       ) : (
