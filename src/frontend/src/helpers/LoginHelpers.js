@@ -55,7 +55,7 @@ export const rLogin = new RLogin({
       }
     }
   },
-  rpcUrls,
+  
   defaultTheme: 'dark', // Establece el tema oscuro como predeterminado
   customThemes: {
     dark: {

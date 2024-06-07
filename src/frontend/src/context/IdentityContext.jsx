@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
-import { createActor } from "declarations/nft_venture";
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createActor } from "declarations/user_signatures";
 import { HttpAgent } from "@dfinity/agent";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
@@ -10,19 +10,32 @@ const DfinityContext = createContext();
 export const DfinityProvider = ({ children }) => {
     const [actor, setActor] = useState(null);
 
-    const createActorWithIdentity = async () => {
-        const privateKeyString = import.meta.env.VITE_PRIVATE_IDENTITY;
-        const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-        const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
+    const createActorWithIdentity = useCallback(async () => {
+        try {
+            const privateKeyString = import.meta.env.VITE_PRIVATE_IDENTITY;
+            const API_KEY = import.meta.env.VITE_PINATA_API_KEY;
+            console.log("Api key", API_KEY)
+            console.log("Private key", privateKeyString);
+            const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+            const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
+            console.log("Identity", identity);
+            // Agente
+            const agent = new HttpAgent({ identity, host: 'http://localhost:1200' });
 
-        // Agente
-        const agent = new HttpAgent({ identity, host: 'http://localhost:1200' });
+            // Crear actor
+            const canisterId = "bw4dl-smaaa-aaaaa-qaacq-cai";
+            const newActor = createActor(canisterId, { agent });
+            console.log(newActor);
+            setActor(newActor);
+        } catch (error) {
+            console.error("Error creating actor:", error);
+        }
+    }, []);
 
-        // Crear actor
-        const canisterId = "br5f7-7uaaa-aaaaa-qaaca-cai";
-        const newActor = createActor(canisterId, { agent });
-        setActor(newActor);
-    };
+    useEffect(() => {
+        createActorWithIdentity();
+    }, []);
+
 
     return (
         <DfinityContext.Provider value={{ actor, createActorWithIdentity }}>
