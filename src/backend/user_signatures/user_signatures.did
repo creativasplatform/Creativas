@@ -1,0 +1,22 @@
+type SignatureError = variant {
+    AlreadyExist;
+    InsertionFailed;
+    NotExist;
+};
+
+type Result = variant {
+    Ok;
+    Err: SignatureError;
+};
+
+
+
+type Result_Signature = variant {
+    Ok: text;
+    Err: SignatureError;
+};
+service : {
+    add_signature : (text, text) -> (Result);
+    has_signature : (text) -> (bool) query;
+    get_signature : (text) -> (Result_Signature) query;
+}

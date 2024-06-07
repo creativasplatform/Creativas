@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import usePinata from '../hooks/usepinata.jsx'; // Importa el hook usePinata que acabamos de crear
+import usePinata from '../hooks/pinata/usepinata.jsx'; // Importa el hook usePinata que acabamos de crear
 
 const PinataExample = () => {
     const [selectedFile, setSelectedFile] = useState(null);

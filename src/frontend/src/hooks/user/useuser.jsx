@@ -223,64 +223,75 @@ const useUser = () => {
 
   // Restaurar la conexión al cargar el componente
   const restoreConnection = async () => {
+    setLoading(true);
     const connectionData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
     if (connectionData) {
       const { authType, wallet_type } = connectionData;
       try {
         if (authType === 'wallet' && wallet_type === 'MetaMask') {
           if (window.ethereum) {
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const web3Provider = new providers.Web3Provider(window.ethereum);
-            const signer = web3Provider.getSigner();
-            const address = await signer.getAddress();
-            const balance = await web3Provider.getBalance(address);
-            setSigner(signer);
-            setAddress(address);
-            setBalance(balance.toString());
-            setAuthType('wallet');
-            setIsLoggedIn(true);
+            if (window.ethereum.isConnected()) {
+              await window.ethereum.request({ method: 'eth_requestAccounts' });
+              const web3Provider = new providers.Web3Provider(window.ethereum);
+              const signer = web3Provider.getSigner();
+              const address = await signer.getAddress();
+              const balance = await web3Provider.getBalance(address);
+              setSigner(signer);
+              setAddress(address);
+              setBalance(balance.toString());
+              setAuthType('wallet');
+              setIsLoggedIn(true);
 
-            const network = await web3Provider.getNetwork();
-            setIsValidChain(supportedChains.includes(network.chainId));
+              const network = await web3Provider.getNetwork();
+              setIsValidChain(supportedChains.includes(network.chainId));
 
-            // Manejar eventos de cambio de cuentas y cadenas
-            const handleAccountsChanged = async (accounts) => {
-              if (accounts.length === 0) {
-                return handleLogout();
+              // Manejar eventos de cambio de cuentas y cadenas
+              const handleAccountsChanged = async (accounts) => {
+                if (accounts.length === 0) {
+                  return handleLogout();
+                }
+                const newAddress = accounts[0];
+                setAddress(newAddress);
+                const newBalance = await web3Provider.getBalance(newAddress);
+                setBalance(newBalance.toString());
+              };
+
+              const handleChainChanged = async (chainId) => {
+                setIsValidChain(supportedChains.includes(Number(chainId)));
+              };
+
+              const handleDisconnect = () => handleLogout();
+
+              // Eliminar listeners anteriores para evitar duplicados
+              if (window.ethereum.removeAllListeners) {
+                window.ethereum.removeAllListeners('accountsChanged');
+                window.ethereum.removeAllListeners('chainChanged');
+                window.ethereum.removeAllListeners('disconnect');
               }
-              const newAddress = accounts[0];
-              setAddress(newAddress);
-              const newBalance = await web3Provider.getBalance(newAddress);
-              setBalance(newBalance.toString());
-            };
 
-            const handleChainChanged = async (chainId) => {
-              setIsValidChain(supportedChains.includes(Number(chainId)));
-            };
+              // Agregar listeners
+              window.ethereum.on('accountsChanged', handleAccountsChanged);
+              window.ethereum.on('chainChanged', handleChainChanged);
+              window.ethereum.on('disconnect', handleDisconnect);
+              setLoading(false);
+            } else {
+              clearConnection()
+              setLoading(false);
 
-            const handleDisconnect = () => handleLogout();
-
-            // Eliminar listeners anteriores para evitar duplicados
-            if (window.ethereum.removeAllListeners) {
-              window.ethereum.removeAllListeners('accountsChanged');
-              window.ethereum.removeAllListeners('chainChanged');
-              window.ethereum.removeAllListeners('disconnect');
             }
-
-            // Agregar listeners
-            window.ethereum.on('accountsChanged', handleAccountsChanged);
-            window.ethereum.on('chainChanged', handleChainChanged);
-            window.ethereum.on('disconnect', handleDisconnect);
-
-          } else {
-            clearConnection();
+          } else if (authType === 'web3auth') {
+            await handleLoginWeb3Auth();
+            setIsValidChain(true);
+            setLoading(false);
           }
-        } else if (authType === 'web3auth') {
-          await handleLoginWeb3Auth();
-          setIsValidChain(true);
+
+        } else {
+          clearConnection()
+          setLoading(false);
         }
       } catch (error) {
         clearConnection();
+        setLoading(false);
       }
     }
   };
@@ -293,6 +304,8 @@ const useUser = () => {
     authType,
     balance,
     IsValidChain,
+    RloginResponse,
+    logoutWallet,
     loginWallet: handleLoginWallet,
     loginWeb3Auth: handleLoginWeb3Auth,
     logout: handleLogout,

@@ -1,5 +1,5 @@
 import React from 'react';
-import useItems from '../hooks/useItems.jsx';
+import useItems from '../hooks/items/useItems.jsx';
 
 const Items = () => {
     const { items, loading, error } = useItems();
