@@ -10,14 +10,12 @@ const BodyMarketplace = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const categories = [
-        { id: 1, name: "Arte" },
-        { id: 2, name: "Business" },
-        { id: 3, name: "Comics" },
-        { id: 4, name: "Games" },
-        { id: 5, name: "Category 5" },
-        { id: 6, name: "Category 6" },
-        { id: 7, name: "Category 7" },
-        { id: 8, name: "Category 8" },
+        { id: 1, name: "Technology" },
+        { id: 2, name: "Gaming" },
+        { id: 3, name: "Music" },
+        { id: 4, name: "Movies" },
+        { id: 5, name: "Art" },
+    
     ];
 
     const handleOpenModal = (modalId) => {

@@ -1,5 +1,7 @@
-import React , { useState }  from 'react';
+import React, { useState } from 'react';
 import CreativasLogo from '../assets/CreativasLogo2.png';
+import { SearchIcon } from "./SearchIcon.jsx";
+import { Input } from "@nextui-org/react";
 
 const Navbar = ({ onOpenModal }) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -11,32 +13,52 @@ const Navbar = ({ onOpenModal }) => {
   const handleCloseLoginModal = () => {
     setOpenLoginModal(false);
   };
+
   return (
-    <nav className="bg-[#0b0c0c] pt-8 relative">
+    <nav className="bg-customblack pt-8 relative">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-        <a className="flex items-center space-x-3 rtl:space-x-reverse">
+        <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4"> {/* Ajusta las clases aquí */}
           <img src={CreativasLogo} className="h-8" alt="Creativas Logo" />
+          <button
+            type="button"
+            className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={handleOpenLoginModal}
+          >
+            Explorer
+          </button>
         </a>
-        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+
+        {/* Barra de búsqueda centrada */}
+        <div className="flex-grow flex items-center justify-center mr-64 mt-4">
+          <Input
+            classNames={{
+              base: "max-w-full sm:max-w-[20rem] h-10 rounded-md bg-white",
+              mainWrapper: "h-full",
+              input: "text-small outline-none",
+              inputWrapper: "h-full font-normal text-default-500 bg-customblack dark:bg-customblack border border-white",
+            }}
+            placeholder="Type to search..."
+            size="sm"
+            startContent={<SearchIcon size={18} />}
+            type="search"
+          />
+        </div>
+
+        <div className="hidden w-full md:block md:w-auto mt-4" id="navbar-default">
           <ul className="font-medium flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
-            <button 
-              type="button" 
-              className="text-white bg-[#111927] hover:bg-[#1C2533] focus:outline-none focus:ring-4 focus:ring-[#1C2533] font-medium rounded text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={onOpenModal}
-            >
-              Open Modal
-            </button>
-            <button
-              type="button"
-              className="text-white bg-[#111927] hover:bg-[#1C2533] focus:outline-none focus:ring-4 focus:ring-[#1C2533] font-medium rounded text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={handleOpenLoginModal}
-            >
-              Iniciar sesión
-            </button>
+            <li className="mb-2 md:mb-0">
+              <button
+                type="button"
+                className="text-customblack bg-green hover:bg-green-ligth focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={handleOpenLoginModal}
+              >
+                Log in
+              </button>
+            </li>
           </ul>
         </div>
       </div>
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 h-[1px] bg-white "></div>
+
       {openLoginModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
           <div className="relative w-full max-w-md">
