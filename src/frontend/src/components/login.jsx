@@ -36,7 +36,7 @@ const AuthComponent = () => {
     const result = await signMessage("Acepta los terminos y condiciones");
     if (result && result.signature) {
       await addUserSignature(result.signature);
-      setNeedsSignature(false); // Update state to hide the accept button
+      setNeedsSignature(false); 
     }
   }, [signMessage, addUserSignature]);
 

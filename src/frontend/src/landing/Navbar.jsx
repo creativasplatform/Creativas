@@ -18,17 +18,18 @@ const Navbar = () => {
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul className="font-medium flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>
-              <a href="#" className="block px-2  text-lg text-white rounded md:bg-transparent">Docs</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">Docs</a>
             </li>
             <li>
-              <a href="#" className="block px-2  text-lg text-white rounded md:bg-transparent">Community</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">Community</a>
             </li>
             <li>
-              <a href="#" className="block px-2  text-lg text-white rounded md:bg-transparent">FAQ</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">FAQ</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-lg text-white rounded md:bg-transparent" aria-current="page">About us</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">About us</a>
             </li>
+
             <button
               type="button"
               onClick={handleButtonClick}
