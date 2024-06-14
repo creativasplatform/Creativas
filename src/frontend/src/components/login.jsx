@@ -58,7 +58,19 @@ import useSignMessages from '../hooks/user/usesignsignatures.jsx'; // Asegúrate
 import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx'; // Asegúrate de importar el hook de manejo de firmas
 
 const AuthComponent = () => {
-  const { isLoggedIn, address, balance, loginWallet, loginWeb3Auth, logout, getUserInfo, restoreConnection } = useUser();
+  const {
+    isLoggedIn,
+    address,
+    balance,
+    logoutWallet,
+    authType,
+    RloginResponse,
+    loginWallet,
+    loginWeb3Auth,
+    logout,
+    restoreConnection,
+    IsValidChain
+  } = useUser();
   const [loading, setLoading] = useState(true);
   const [needsSignature, setNeedsSignature] = useState(false);
 
