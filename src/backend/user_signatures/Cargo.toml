@@ -1,0 +1,15 @@
+[package]
+name = "user_signatures"
+version = "0.1.0"
+edition = "2021"
+
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+candid = "0.8.2"
+ic-cdk = "0.7.0"
+serde = "1.0"
+ic-stable-structures = "0.6.1"
+b3_utils = "0.10.0"

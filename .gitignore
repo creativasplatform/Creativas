@@ -12,10 +12,11 @@
 
 # generated files
 **/declarations/
+src/backend/NFTVenture/
 
 # rust
 target/
-
+NFTVenture/
 # frontend code
 node_modules/
 dist/

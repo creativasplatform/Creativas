@@ -624,22 +624,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086"
 
 [[package]]
-name = "nft_venture"
-version = "0.1.0"
-dependencies = [
- "b3_utils",
- "candid 0.8.4",
- "ic-cdk 0.7.4",
- "ic-stable-structures",
- "serde",
- "serde_derive",
- "serde_json",
- "strsim",
- "unicode-normalization",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "num-bigint"
 version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1136,6 +1120,17 @@ name = "unicode-xid"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
+
+[[package]]
+name = "user_signatures"
+version = "0.1.0"
+dependencies = [
+ "b3_utils",
+ "candid 0.8.4",
+ "ic-cdk 0.7.4",
+ "ic-stable-structures",
+ "serde",
+]
 
 [[package]]
 name = "version_check"
