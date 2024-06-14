@@ -41,7 +41,7 @@ export const loginWallet = async () => {
           params: [RSK_TESTNET_CHAIN],
         });
       } catch (addError) {
-        console.log("Error al agregar la red RSK Testnet: " + addError.message);
+        console.log("Error adding RSK Testnet network: " + addError.message);
         throw new Error("Error adding RSK Testnet network. Please switch to the supported network.");
       }
     }
