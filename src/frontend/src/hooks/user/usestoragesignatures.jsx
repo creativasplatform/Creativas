@@ -15,8 +15,6 @@ const useSignatureStorage = () => {
             return;
         }
         try {
-            console.log("message", signature);
-            console.log("Actor", actor);
             // Llama a la función add_signature del canister usando el actor
             await actor.add_signature(address, signature);
         } catch (err) {
@@ -39,7 +37,6 @@ const useSignatureStorage = () => {
     // Función para verificar si existe una firma
     const hasUserSignature = async () => {
         try {
-            console.log("Hola");
             // Llama a la función has_signature del canister usando el actor
             const hasSignature = await user_signatures.has_signature(address);
             return hasSignature;

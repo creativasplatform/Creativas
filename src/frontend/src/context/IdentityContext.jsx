@@ -13,13 +13,9 @@ export const DfinityProvider = ({ children }) => {
     const createActorWithIdentity = useCallback(async () => {
         try {
             const privateKeyString = import.meta.env.VITE_PRIVATE_IDENTITY;
-            const API_KEY = import.meta.env.VITE_PINATA_API_KEY;
-            console.log("Api key", API_KEY)
-            console.log("Private key", privateKeyString);
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
-            console.log("Identity", identity);
-            // Agente
+    
             const agent = new HttpAgent({ identity, host: 'http://localhost:1200' });
 
             // Crear actor
