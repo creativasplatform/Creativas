@@ -1,12 +1,11 @@
-import Gif from '../assets/Gif.gif'
+import Creativas from '../assets/Creativas3.gif';
 
 const Body = () => {
     return (
-
-<div class="bg-black  w-full h-screen mt-0 " >
-  <img src={Gif}></img>
-</div>
-    )
+        <div className="relative bg-[#0c0b0b] h-[550px] w-full"> 
+            <img className="flex" src={Creativas} alt="Planeta" />
+        </div>
+    );
 }
 
-export default Body; 
+export default Body;
