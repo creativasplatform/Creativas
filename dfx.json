@@ -1,13 +1,6 @@
 {
   "canisters": {
-    "eccomerce": {
-      "type": "rust",
-      "candid": "src/backend/eccomerce/eccomerce.did",
-      "package": "eccomerce",
-      "declarations": {
-        "node_compatibility": true
-      }
-    },
+
     "nft_venture": {
       "type": "rust",
       "candid": "src/backend/nft_venture/nft_venture.did",
@@ -39,7 +32,7 @@
   },
   "networks": {
     "local": {
-      "bind": "127.0.0.1:1200",
+      "bind": "127.0.0.1:8080",
       "type": "ephemeral"
     },
     "ic": {
