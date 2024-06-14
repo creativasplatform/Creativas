@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import useUser from '../hooks/user/useuser.jsx';
+
+// components/AuthComponent.js
+import React, { useEffect, useState } from 'react';
+import useUser from '../hooks/useUser.jsx';
 import { web3auth } from '../helpers/Web3authHelpers.js';
 import useSignMessages from '../hooks/user/usesignsignatures.jsx'; // Asegúrate de importar el hook de firma de mensajes
 import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx'; // Asegúrate de importar el hook de manejo de firmas
