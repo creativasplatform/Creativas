@@ -120,7 +120,7 @@ const Navbar = () => {
     <nav className="bg-customblack pt-8 relative">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
         <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4">
-          <img src={CreativasLogo} className="h-8" alt="Creativas Logo" />
+          <img src={CreativasLogo} className="h-10 w-200" alt="Creativas Logo" />
           <button
             type="button"
             className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
@@ -131,15 +131,15 @@ const Navbar = () => {
           </button>
         </a>
 
-        <div className="flex-grow flex items-center justify-center ml-12 mt-4">
+        <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
           <Input
             classNames={{
-              base: "max-w-full sm:max-w-[20rem] h-10 rounded-xl-lg bg-white",
+              base: "max-w-full sm:max-w-[20rem] h-10  bg-white  rounded-lg ",
               mainWrapper: "h-full",
-              input: "text-small outline-none",
-              inputWrapper: "h-full font-thin text-default-500 bg-customblack dark:bg-customblack border border-white",
+              input: "text-small outline-none ",
+              inputWrapper: "h-full font-thin text-default-500 bg-customblack dark:bg-customblack border border-white rounded-lg ",
             }}
-            placeholder="Type to search..."
+            placeholder="   Type to search..."
             size="sm"
             startContent={<SearchIcon size={18} />}
             type="search"
@@ -225,9 +225,9 @@ const Navbar = () => {
           
 
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <div className="w-2/4 h-[0.5px] bg-gray-600"></div>
-            <span className="text-gray-400 text-sm">Or</span>
-            <div className="w-2/4 h-[0.5px] bg-gray-600"></div>
+            <div className="w-2/4 h-[0.5px] bg-white"></div>
+            <span className="text-white text-sm">Or</span>
+            <div className="w-2/4 h-[0.5px] bg-white"></div>
           </div>
 
           <button

@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import NavbarMarketplace from './NavbarMarketplace';
 import StepProgress from './StepProgress';
 import Categories from './Categories';
+import categoriaone from "../assets/categories/categoria1.png"
+import categoriatwo from "../assets/categories/categoria2.png"
+import categoriathree from "../assets/categories/categoria3.png"
+import { Image } from '@nextui-org/react';
+
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
@@ -11,12 +16,17 @@ const NFTFunding = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const categories = [
-        { id: 1, name: "Technology" },
-        { id: 2, name: "Gaming" },
-        { id: 3, name: "Music" },
-        { id: 4, name: "Movies" },
-        { id: 5, name: "Art" },
-    
+        { id: 1, name: "Technology", image: categoriatwo },
+        { id: 2, name: "Gaming", image: categoriatwo },
+        { id: 3, name: "Music", image: categoriathree },
+        { id: 4, name: "Movies", image: categoriatwo },
+        { id: 5, name: "Art", image: categoriatwo },
+        { id: 6, name: "Web3", image: categoriathree },
+        { id: 7, name: "Art", image: categoriatwo },
+        { id: 8, name: "Web3", image: categoriathree },
+
+
+
     ];
 
     const handleOpenModal = (modalId) => {
@@ -25,8 +35,8 @@ const NFTFunding = () => {
 
     const handleCloseModal = () => {
         setOpenModal(null);
-        setCurrentStep(1); // Reinicia al primer paso al cerrar el modal
-        setSelectedCategory(null); // Reinicia la selección de la categoría al cerrar el modal
+        setCurrentStep(1);
+        setSelectedCategory(null);
     };
 
     const handleInputChange = (e) => {
@@ -47,23 +57,29 @@ const NFTFunding = () => {
                             {categories.map((category) => (
                                 <div
                                     key={category.id}
-                                    className={`p-4 bg-white rounded-lg shadow dark:bg-gray-800 cursor-pointer ${selectedCategory === category.id ? 'border-2 border-blue-500' : ''}`}
+                                    className={`relative rounded-lg shadow cursor-pointer ${selectedCategory === category.id ? 'border-2 border-secondary' : ''}`}
                                     onClick={() => handleCategorySelect(category.id)}
+                                    style={{ background: 'linear-gradient(to bottom, black 50%, white 50%)' }}
                                 >
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{category.name}</h3>
+                                    <Image
+                                        src={category.image}
+                                        alt={category.name}
+                                        width="100%"
+                                        height="240px"
+                                        objectFit="cover"
+                                        className="rounded-t-lg"
+                                    />
+                                    <div className="p-4">
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">{category.name}</h3>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                         <div className="flex justify-between mt-4">
                             <button
-                                onClick={handleCloseModal}
-                                className="px-4 py-2 bg-gray-500 text-white rounded"
-                            >
-                                Cancel
-                            </button>
-                            <button
                                 onClick={() => setCurrentStep(2)}
-                                className="px-4 py-2 bg-blue-500 text-white rounded"
+                                className="text-white  bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+
                                 disabled={!selectedCategory} // Desactiva el botón si no hay categoría seleccionada
                             >
                                 Next
@@ -110,7 +126,7 @@ const NFTFunding = () => {
                             </button>
                             <button
                                 onClick={() => setCurrentStep(3)}
-                                className="px-4 py-2 bg-blue-500 text-white rounded"
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                             >
                                 Next
                             </button>
@@ -174,46 +190,46 @@ const NFTFunding = () => {
 
     return (
         <>
-            <NavbarMarketplace/>
+            <NavbarMarketplace />
             <Categories onOpenModal={() => handleOpenModal('extralarge-modal')} />
             {openModal === 'extralarge-modal' && (
-                <div 
-                    id="extralarge-modal" 
-                    tabIndex="-1" 
+                <div
+                    id="extralarge-modal"
+                    tabIndex="-1"
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full"
                 >
-                    <div className="relative w-full max-w-7xl min-h-[80vh]"> {/* Establecer altura mínima */}
-                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-800 h-full">
+                    <div className="relative w-full max-w-4xl max-h-[100vh] min-w-[40vw]">
+                        <div className="relative bg-black rounded-lg shadow dark:bg-gray-800 h-full" >
                             <div className="flex flex-col h-full">
-                                <div className="p-4 bg-[#31323E] rounded-t-lg flex justify-between items-center">
-                                    <h3 className="text-xl font-medium text-white">
+                                <div className="p-4 bg-[#31323E] rounded-t-lg flex justify-between items-center ">
+                                    <h3 className="text-xl font-semibold text-white">
                                         Create Project
                                     </h3>
-                                    <button 
-                                        type="button" 
-                                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                                    <button
+                                        type="button"
+                                        className="text-gray-400 bg-transparent hover:bg-gray-500 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                         onClick={handleCloseModal}
                                     >
-                                        <svg 
-                                            className="w-3 h-3" 
-                                            aria-hidden="true" 
-                                            xmlns="http://www.w3.org/2000/svg" 
-                                            fill="none" 
+                                        <svg
+                                            className="w-3 h-3"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
                                             viewBox="0 0 14 14"
                                         >
-                                            <path 
-                                                stroke="currentColor" 
-                                                strokeLinecap="round" 
-                                                strokeLinejoin="round" 
-                                                strokeWidth="2" 
-                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" 
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                                             />
                                         </svg>
                                         <span className="sr-only">Close modal</span>
                                     </button>
                                 </div>
                                 <StepProgress currentStep={currentStep} />
-                                <div className="p-6 space-y-6 bg-[#050B1C] rounded-b-lg flex-grow">
+                                <div className="p-6 space-y-6 bg-gray-800 rounded-b-lg flex-grow">
                                     {renderModalContent()}
                                 </div>
                             </div>
@@ -221,11 +237,11 @@ const NFTFunding = () => {
                     </div>
                 </div>
             )}
-        
+
             {openModal === 'verification-modal' && (
-                <div 
-                    id="verification-modal" 
-                    tabIndex="-1" 
+                <div
+                    id="verification-modal"
+                    tabIndex="-1"
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full"
                 >
                     <div className="relative w-full max-w-2xl min-h-[60vh]"> {/* Establecer altura mínima */}
@@ -234,24 +250,24 @@ const NFTFunding = () => {
                                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                                     Verify and Complete
                                 </h3>
-                                <button 
-                                    type="button" 
-                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                                <button
+                                    type="button"
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                     onClick={handleCloseModal}
                                 >
-                                    <svg 
-                                        className="w-3 h-3" 
-                                        aria-hidden="true" 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        fill="none" 
+                                    <svg
+                                        className="w-3 h-3"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
                                         viewBox="0 0 14 14"
                                     >
-                                        <path 
-                                            stroke="currentColor" 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth="2" 
-                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" 
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                                         />
                                     </svg>
                                     <span className="sr-only">Close modal</span>
