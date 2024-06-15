@@ -3,13 +3,34 @@ import Card from './CardNFT';
 import CategoriesBar from './CategoriesBar';
 import masicon from "../assets/mas.png"; // Importa el icono aquí
 
-const Categories = () => {
+const Categories = ({onOpenModal}) => {
   const collections = [
     {
       title: 'Tecate Comuna',
       description: '9.2K items - 10.8K ETH',
-      image: 'path_to_image_1.jpg'
     },
+    {
+      title: 'Tecate Comuna',
+      description: '9.2K items - 10.8K ETH',
+    },
+    
+    {
+      title: 'Tecate Comuna',
+      description: '9.2K items - 10.8K ETH',
+    },
+    
+    {
+      title: 'Tecate Comuna',
+      description: '9.2K items - 10.8K ETH',
+    },
+        {
+      title: 'Tecate Comuna',
+      description: '9.2K items - 10.8K ETH',
+    },
+    
+    
+
+
     // Otros elementos de colección pueden ir aquí si los tienes
   ];
 
