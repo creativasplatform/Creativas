@@ -7,7 +7,7 @@ const categories = [
 
 const CategoriesBar = () => {
   return (
-    <div className="bg-[#0b0c0c] text-white p-4">
+    <div className="bg-[#0b0c0c] text-white p-4 h-full">
       <div className="flex space-x-4 overflow-x-auto">
         {categories.map((category, index) => (
           <button 

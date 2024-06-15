@@ -8,13 +8,12 @@ const Categories = () => {
     {
       title: 'Tecate Comuna',
       description: '9.2K items - 10.8K ETH',
-      image: 'path_to_image_1.jpg'
     },
     // Añadir más colecciones aquí
   ];
 
   return (
-    <div className="bg-[#0b0c0c] text-white p-4">
+    <div className="bg-[#0b0c0c] text-white p-4 h-full">
       <h2 className="text-2xl font-bold mb-4">Explore collections</h2>
       <CategoriesBar />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
