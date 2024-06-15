@@ -16,15 +16,15 @@ export const DfinityProvider = ({ children }) => {
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
     
-            const agent = new HttpAgent({ identity, host: 'http://localhost:1200' });
+            const agent = new HttpAgent({ identity, host: 'http://localhost:8080' });
 
             // Crear actor
-            const canisterId = "bw4dl-smaaa-aaaaa-qaacq-cai";
+            const canisterId = import.meta.env.VITE_CANISTER_ID;
+            console.log(canisterId)
             const newActor = createActor(canisterId, { agent });
-            console.log(newActor);
             setActor(newActor);
         } catch (error) {
-            console.error("Error creating actor:", error);
+            console.error("Error creating actorr:", error);
         }
     }, []);
 

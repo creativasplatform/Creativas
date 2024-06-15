@@ -9,7 +9,7 @@ const LOCAL_STORAGE_KEY = "walletConnection";
 
 // Definir la red RSK Testnet
 const RSK_TESTNET_CHAIN = {
-  chainId: '0x1F', // Hexadecimal de 31
+  chainId: '0x1F', 
   chainName: 'RSK Testnet',
   nativeCurrency: {
     name: 'Test RSK Bitcoin',
@@ -30,22 +30,6 @@ export const loginWallet = async () => {
     const address = await signer.getAddress();
     const wallet_type = RloginResponder.provider.isMetaMask ? 'MetaMask' : null;
 
-    const chainIdHex = RSK_TESTNET_CHAIN.chainId;
-    const chainId = parseInt(chainIdHex, 16);
-    const currentChainId = parseInt(await RloginResponder.provider.request({ method: 'eth_chainId' }), 16);
-
-    if (chainId !== currentChainId) {
-      try {
-        await RloginResponder.provider.request({
-          method: 'wallet_addEthereumChain',
-          params: [RSK_TESTNET_CHAIN],
-        });
-      } catch (addError) {
-        console.log("Error adding RSK Testnet network: " + addError.message);
-        throw new Error("Error adding RSK Testnet network. Please switch to the supported network.");
-      }
-    }
-
     return { web3Provider, address, signer, wallet_type, RloginResponder };
   } catch (error) {
     console.error("Error logging in with wallet:", error);
@@ -53,7 +37,6 @@ export const loginWallet = async () => {
   }
 };
 
-// Función para cerrar sesión en la billetera
 export const logoutWallet = async (response) => {
   try {
     if (response?.provider?.removeAllListeners) {
@@ -67,9 +50,7 @@ export const logoutWallet = async (response) => {
   }
 };
 
-// Hook personalizado para gestionar el usuario
 const useUser = () => {
-  // Obtener variables y funciones del contexto de usuario
   const {
     isLoggedIn,
     setIsLoggedIn,
@@ -130,6 +111,10 @@ const useUser = () => {
         const newBalance = await web3Provider.getBalance(newAddress);
         setBalance(newBalance.toString());
       };
+
+
+      const network = await web3Provider.getNetwork();
+      setIsValidChain(supportedChains.includes(network.chainId));
 
       const handleChainChanged = async (chainId) => {
         setIsValidChain(supportedChains.includes(Number(chainId)));

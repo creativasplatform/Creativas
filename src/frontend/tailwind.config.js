@@ -1,13 +1,75 @@
 /** @type {import('tailwindcss').Config} */
+import { nextui } from "@nextui-org/react";
+
 export default {
   content: [
     "./src/**/*.{js,ts,tsx,jsx,css}", 
-    'node_modules/flowbite-react/lib/esm/**/*.js'
+    'node_modules/flowbite-react/lib/esm/**/*.js',
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customblack:'#0c0b0b', 
+        primary: '#10142b',
+        'primary-ligth': '#272b40', // Color primary con opacidad 0.8
+        secondary: '#6377db',
+        'secondary-ligth': '#8a9de8',
+        green: '#b1e5e3',
+        'green-ligth': '#effcf9 '
+      },
+      fontSize: {
+        'rem-8.75': '8.75rem',
+      },
+      spacing: {
+        '7px': '7px',
+      },
+      rotate: {
+        '45': '45deg',
+        '135': '135deg',
+      },
+      translate: {
+        'x-6': '1.5rem',
+        'x-full': '100%',
+      },
+      opacity: {
+        '100': '1',
+        '0': '0',
+      },
+      backgroundColor: {
+        'gray-1': '#D4D9E8',
+        'gray-2': '#EAEEFB',
+      },
+      borderColor: {
+        'stroke': '#D4D9E8',
+      },
+      textColor: {
+        'body-color': '#333',
+      },
+      screens: {
+        'xs': '450px',
+        'sm': '768px',
+        'md': '1024px',
+        'lg': '1280px',
+        'xl': '1536px',
+      },
+      transitionProperty: {
+        'all': 'all',
+      },
+      transitionDuration: { 
+        '500': '500ms',
+      },
+      transitionTimingFunction: { 
+        'in-out': 'ease-in-out',
+      },
+      backgroundImage: {
+        'gradient-to-b-custom': 'linear-gradient(to bottom, #0c0b0b, #10142b, #10142b, #0c0b0b)',
+      },
+    },
   },
-  plugins: ['flowbite/plugin'],
-}
+  darkMode: "class",
+  plugins: [nextui(), 'flowbite/plugin'],
+};
+
 

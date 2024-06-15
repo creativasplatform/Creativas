@@ -1,10 +1,9 @@
 {
   "canisters": {
-
-    "nft_venture": {
+    "eccomerce": {
       "type": "rust",
-      "candid": "src/backend/nft_venture/nft_venture.did",
-      "package": "nft_venture",
+      "candid": "src/backend/eccomerce/eccomerce.did",
+      "package": "eccomerce",
       "declarations": {
         "node_compatibility": true
       }
@@ -20,7 +19,6 @@
     "frontend": {
       "dependencies": [
         "eccomerce",
-        "nft_venture",
         "user_signatures"
       ],
       "source": [

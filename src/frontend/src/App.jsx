@@ -7,10 +7,13 @@ import Card from "./landing/Card.jsx";
 import NavbarMarketplace from "./NFTFunding/NavbarMarketplace.jsx";
 import BodyMarketplace from "./NFTFunding/BodyMarketplace.jsx";
 import Categories from "./NFTFunding/Categories.jsx";
-
+import { UserProvider } from './context/userContext';
+import { DfinityProvider } from "./context/IdentityContext.jsx";
 function App() {
   return (
     <div className="App">
+        <UserProvider>
+          <DfinityProvider>
       <Routes>
         <Route path="/" element={
           <>
@@ -26,6 +29,8 @@ function App() {
           </>
         } />
       </Routes>
+      </DfinityProvider>
+      </UserProvider>
     </div>
   );
 }
