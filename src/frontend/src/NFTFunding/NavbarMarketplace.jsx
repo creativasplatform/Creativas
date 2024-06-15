@@ -133,7 +133,7 @@ const Navbar = () => {
         <div className="flex-grow flex items-center justify-center ml-12 mt-4">
           <Input
             classNames={{
-              base: "max-w-full sm:max-w-[20rem] h-10 rounded-md bg-white",
+              base: "max-w-full sm:max-w-[20rem] h-10 rounded-xl-lg bg-white",
               mainWrapper: "h-full",
               input: "text-small outline-none",
               inputWrapper: "h-full font-normal text-default-500 bg-customblack dark:bg-customblack border border-white",

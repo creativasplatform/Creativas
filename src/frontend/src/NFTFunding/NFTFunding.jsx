@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import NavbarMarketplace from './NavbarMarketplace';
 import StepProgress from './StepProgress';
+import Categories from './Categories';
 
-const BodyMarketplace = () => {
+const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({ title: '', description: '' });
@@ -173,8 +174,8 @@ const BodyMarketplace = () => {
 
     return (
         <>
-            <NavbarMarketplace onOpenModal={() => handleOpenModal('extralarge-modal')} />
-        
+            <NavbarMarketplace/>
+            <Categories onOpenModal={() => handleOpenModal('extralarge-modal')} />
             {openModal === 'extralarge-modal' && (
                 <div 
                     id="extralarge-modal" 
@@ -267,4 +268,4 @@ const BodyMarketplace = () => {
     );
 };
 
-export default BodyMarketplace;
+export default NFTFunding;

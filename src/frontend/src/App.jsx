@@ -5,7 +5,7 @@ import Body from "./landing/Body.jsx";
 import Navbar from "./landing/Navbar.jsx";
 import Card from "./landing/Card.jsx";
 import NavbarMarketplace from "./NFTFunding/NavbarMarketplace.jsx";
-import BodyMarketplace from "./NFTFunding/BodyMarketplace.jsx";
+import NFTFunding from "./NFTFunding/NFTFunding.jsx";
 import Categories from "./NFTFunding/Categories.jsx";
 import { UserProvider } from './context/userContext';
 import { DfinityProvider } from "./context/IdentityContext.jsx";
@@ -22,10 +22,10 @@ function App() {
             <Card />
           </>
         } />
-        <Route path="/marketplace" element={
+        <Route path="/Nfts" element={
           <>
-            <BodyMarketplace/>
-            <Categories />
+            <NFTFunding/>
+       
           </>
         } />
       </Routes>
