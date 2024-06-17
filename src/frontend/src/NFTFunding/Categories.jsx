@@ -45,7 +45,7 @@ const Categories = ({onOpenModal}) => {
           <button
           onClick={onOpenModal}
             type="button"
-            className="mr-32 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
+            className="mr-28 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
           >
             <img src={masicon} className="h-4 w-4 mr-2" alt="Add Icon" /> {/* Añade margen a la derecha del icono */}
             Create a Project

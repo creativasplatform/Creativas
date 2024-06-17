@@ -12,12 +12,13 @@ import { dcentProviderOptions } from "@rsksmart/rlogin-dcent-provider";
 
 export const rpcUrls = {
   31: 'https://public-node.testnet.rsk.co',
+  11155111 : 'https://sepolia.infura.io/v3/c9cff4159b23445abffec6c3273932ae', // Sepoli
 }
 
+const requiredChainsId = [31]
 
+const optionalChainsId = Object.keys(rpcUrls).map(Number).filter(chainId => chainId !== 31)
 
-// Create a new rLogin instance with your custom providerOptions outside of the 
-// component.
 export const rLogin = new RLogin({
   cacheProvider: false,
   providerOptions: {
@@ -25,41 +26,39 @@ export const rLogin = new RLogin({
       package: WalletConnect2Provider,
       options: {
         projectId: 'd20d52a02de4faf7056d37c0b7558dfb',
-        chains: ['31'],
+        chains: requiredChainsId,
+        optionalChainsId: optionalChainsId,
         showQrModal: true,
         rpcMap: rpcUrls,
       }
     },
-
-      /*
-    portis: {
-      package: Portis,
-      options: {
-        id: "a1c8672b-7b1c-476b-b3d0-41c27d575920",
-        network: {
-          nodeUrl: "https://public-node.testnet.rsk.co",
-          chainId: 31
-        }
-      }
+    // portis: {
+    //   package: Portis,
+    //   options: {
+    //     id: "a1c8672b-7b1c-476b-b3d0-41c27d575920",
+    //     network: {
+    //       nodeUrl: 'https://public-node.testnet.rsk.co',
+    //       chainId: 31,
+    //     }
+    //   }
+    // },
+    torus: {
+      package: Torus,
     },
-    */
-    "custom-ledger": ledgerProviderOptions,
-    "custom-dcent": dcentProviderOptions,
-    "custom-trezor": {
+    'custom-ledger': {
+      ...ledgerProviderOptions,
+    },
+    'custom-dcent': {
+      ...dcentProviderOptions,
+    },
+    'custom-trezor': {
       ...trezorProviderOptions,
       options: {
-        manifestEmail: "info@iovlabs.org",
-        manifestAppUrl: "https://basic-sample.rlogin.identity.rifos.org/"
+        manifestEmail: 'info@iovlabs.org',
+        manifestAppUrl: 'https://basic-sample.rlogin.identity.rifos.org/',
       }
     }
   },
-  
-  defaultTheme: 'dark', // Establece el tema oscuro como predeterminado
-  customThemes: {
-    dark: {
-      background: "#10142b", // Cambia el color de fondo
-      color: "#faf9f5" // Cambia el color del texto
-    }
-  }
-});
-
+  defaultTheme: "dark",
+  rpcUrls,
+})

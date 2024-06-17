@@ -3,23 +3,9 @@ import { providers } from 'ethers';
 import { web3auth } from '../../helpers/Web3authHelpers.js';
 import { useUserContext } from '../../context/userContext.jsx';
 import { rLogin } from '../../helpers/LoginHelpers.js';
+import { NETWORKS } from '../../helpers/ChainsConfig.js'; // Importa la configuración de las redes desde el archivo networkConfig.js
 
 const LOCAL_STORAGE_KEY = "walletConnection";
-
-
-// Definir la red RSK Testnet
-const RSK_TESTNET_CHAIN = {
-  chainId: '0x1F', 
-  chainName: 'RSK Testnet',
-  nativeCurrency: {
-    name: 'Test RSK Bitcoin',
-    symbol: 'tRBTC',
-    decimals: 18,
-  },
-  rpcUrls: ['https://public-node.testnet.rsk.co'],
-  blockExplorerUrls: ['https://explorer.testnet.rsk.co'],
-};
-
 
 export const loginWallet = async () => {
   try {
@@ -60,12 +46,16 @@ const useUser = () => {
     setAddress,
     signer,
     setSigner,
+    Provider,
+    setProvider,
     authType,
     setAuthType,
     balance,
     setBalance,
     IsValidChain,
     setIsValidChain,
+    ChainUser,
+    setChainUser
   } = useUserContext();
 
   // Estados locales
@@ -73,7 +63,7 @@ const useUser = () => {
   const [error, setError] = useState(null);
 
   // Cadenas de bloques soportadas
-  const supportedChains = [31];
+  const supportedChains = [31, 11155111];
 
   // Guardar la conexión en el almacenamiento local
   const saveConnection = (authType, wallet_type) => {
@@ -85,6 +75,7 @@ const useUser = () => {
   const clearConnection = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   };
+
 
   // Manejar el inicio de sesión con la billetera
   const handleLoginWallet = useCallback(async () => {
@@ -100,8 +91,17 @@ const useUser = () => {
       setIsLoggedIn(true);
       saveConnection('wallet', wallet_type);
       setRloginResponse(RloginResponder);
+      setProvider(web3Provider);
 
-      // Manejar eventos de cambio de cuentas y cadenas
+      const network = await web3Provider.getNetwork();
+      const isValidChain = supportedChains.includes(network.chainId);
+      setIsValidChain(isValidChain);
+
+      // Solo actualizar la cadena si es válida
+      if (isValidChain) {
+        setChainUser(network.chainId);
+      }
+
       const handleAccountsChanged = async (accounts) => {
         if (accounts.length === 0) {
           return handleLogout();
@@ -112,12 +112,14 @@ const useUser = () => {
         setBalance(newBalance.toString());
       };
 
-
-      const network = await web3Provider.getNetwork();
-      setIsValidChain(supportedChains.includes(network.chainId));
-
       const handleChainChanged = async (chainId) => {
-        setIsValidChain(supportedChains.includes(Number(chainId)));
+        const isValidChain = supportedChains.includes(Number(chainId));
+        setIsValidChain(isValidChain);
+
+        // Solo actualizar la cadena si es válida
+        if (isValidChain) {
+          setChainUser(Number(chainId));
+        }
       };
 
       const handleDisconnect = () => handleLogout();
@@ -133,7 +135,72 @@ const useUser = () => {
     } finally {
       setLoading(false);
     }
-  }, [setAddress, setIsLoggedIn, setSigner, setAuthType, setBalance, setRloginResponse]);
+  }, [setAddress, setIsLoggedIn, setSigner, setAuthType, setBalance, setRloginResponse, setChainUser, setProvider]);
+
+
+
+  const changeNetworkWallet = async (chainId) => {
+    try {
+
+      if (!signer && !Provider) {
+        throw new Error("Please log in with a wallet first.");
+      }
+
+      const networkConfig = NETWORKS[chainId];
+      if (!networkConfig) {
+        throw new Error("Unsupported chainId.");
+      }
+
+      const currentNetwork = await Provider.provider.request({ method: "eth_chainId", });
+      const currentChainId = parseInt(currentNetwork, 16);
+
+      // Verificar si la red ya está presente en el proveedor de Web3
+      if (currentChainId !== networkConfig.chainId) {
+        // Si no está presente, intentar agregar la red
+        const addParams = {
+          chainId: '0x' + parseInt(networkConfig.chainId).toString(16),
+          chainName: networkConfig.chainName,
+          rpcUrls: networkConfig.rpcUrls,
+          blockExplorerUrls: networkConfig.blockExplorerUrls,
+          nativeCurrency: networkConfig.nativeCurrency,
+        };
+
+        try {
+          await Provider.provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [addParams],
+          });
+        } catch (addError) {
+          console.error("Failed to add network:", addError);
+          throw new Error("Failed to add network. Please check your wallet settings.");
+        }
+      }
+
+      // Switching network
+      await Provider.provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${networkConfig.chainId.toString(16)}` }],
+      });
+
+      // Obtener la dirección y saldo actualizados en la nueva red
+      const newAddress = await signer.getAddress();
+      const newBalance = await Provider.getBalance(newAddress);
+
+      // Actualizar context con la información de la nueva red
+      setAddress(newAddress);
+      setBalance(newBalance.toString());
+      setIsValidChain(true);
+      setChainUser(networkConfig.chainId);
+      const wallet_type = Provider.provider.isMetaMask ? 'MetaMask' : null;
+      saveConnection('wallet', wallet_type);
+      setError(null);
+    } catch (error) {
+      console.error("Error switching network:", error);
+      setError("Failed to switch network.");
+    }
+  };
+
+
 
   // Manejar el inicio de sesión con Web3Auth
   const handleLoginWeb3Auth = useCallback(async () => {
@@ -153,12 +220,13 @@ const useUser = () => {
       saveConnection('web3auth', null);
       setIsValidChain(true);
       setRloginResponse(null);
+      setProvider(web3Provider)
     } catch (error) {
       setError("Failed to login with Web3Auth");
     } finally {
       setLoading(false);
     }
-  }, [setSigner, setAddress, setAuthType, setIsLoggedIn, setBalance]);
+  }, [setSigner, setAddress, setAuthType, setIsLoggedIn, setBalance, setProvider]);
 
   // Manejar el cierre de sesión
   const handleLogout = useCallback(async () => {
@@ -172,18 +240,20 @@ const useUser = () => {
       }
       clearConnection();
       setRloginResponse(null);
+      setProvider(null)
       setAddress("");
       setSigner(null);
       setAuthType(null);
       setIsLoggedIn(false);
       setBalance(null);
       setIsValidChain(true);
+      setChainUser(null)
     } catch (error) {
       setError("Failed to logout");
     } finally {
       setLoading(false);
     }
-  }, [authType, RloginResponse, setAddress, setSigner, setAuthType, setIsLoggedIn, setBalance, setRloginResponse]);
+  }, [authType, RloginResponse, setAddress, setSigner, setAuthType, setIsLoggedIn, setBalance, setRloginResponse, setProvider]);
 
   // Obtener información del usuario
   const getUserInfo = async () => {
@@ -226,9 +296,21 @@ const useUser = () => {
               setBalance(balance.toString());
               setAuthType('wallet');
               setIsLoggedIn(true);
+              setProvider(web3Provider)
+              const wallet_type = web3Provider.provider.isMetaMask ? 'MetaMask' : null;
+              saveConnection('wallet', wallet_type);
+
 
               const network = await web3Provider.getNetwork();
-              setIsValidChain(supportedChains.includes(network.chainId));
+              const isValidChain = supportedChains.includes(network.chainId);
+              setIsValidChain(isValidChain);
+
+
+              // Solo actualizar la cadena si es válida
+              if (isValidChain) {
+                setChainUser(network.chainId);
+              }
+
 
               // Manejar eventos de cambio de cuentas y cadenas
               const handleAccountsChanged = async (accounts) => {
@@ -242,7 +324,14 @@ const useUser = () => {
               };
 
               const handleChainChanged = async (chainId) => {
-                setIsValidChain(supportedChains.includes(Number(chainId)));
+                const isValidChain = supportedChains.includes(Number(chainId));
+                setIsValidChain(isValidChain);
+
+
+                // Solo actualizar la cadena si es válida
+                if (isValidChain) {
+                  setChainUser(Number(chainId));
+                }
               };
 
               const handleDisconnect = () => handleLogout();
@@ -266,7 +355,6 @@ const useUser = () => {
             }
           } else if (authType === 'web3auth') {
             await handleLoginWeb3Auth();
-            setIsValidChain(true);
             setLoading(false);
           }
 
@@ -286,11 +374,14 @@ const useUser = () => {
     isLoggedIn,
     address,
     signer,
+    Provider,
     authType,
     balance,
     IsValidChain,
+    ChainUser,
     RloginResponse,
     logoutWallet,
+    changeNetworkWallet,
     loginWallet: handleLoginWallet,
     loginWeb3Auth: handleLoginWeb3Auth,
     logout: handleLogout,

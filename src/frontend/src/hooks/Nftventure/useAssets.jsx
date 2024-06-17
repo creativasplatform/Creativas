@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAssets, getAssetById, getAssetsOfOwner, addAsset, updateAsset } from '../../views/Nftventure/Assets.js';
-import { ProjectStatus } from '../../helpers/StatusHelpers.js';
+import { ProjectStatus } from '../../helpers/AssetsHelpers.js/index.js';
 import { useUserContext } from '../../context/userContext.jsx';
 
 export default function useAssets() {

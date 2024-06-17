@@ -7,10 +7,11 @@ export const UserProvider = ({ children }) => {
   const [RloginResponse, setRloginResponse] = useState(null); 
   const [address, setAddress] = useState("");
   const [signer, setSigner] = useState(null);
+  const [Provider, setProvider] = useState(null);
   const [authType, setAuthType] = useState(null);
   const [balance, setBalance] = useState(null);
   const [IsValidChain, setIsValidChain] = useState(true);
-  const [chain, setChain] = useState(true);
+  const [ChainUser, setChainUser] = useState(null);
 
   const value = {
     isLoggedIn,
@@ -21,14 +22,16 @@ export const UserProvider = ({ children }) => {
     setAddress,
     signer,
     setSigner,
+    Provider,
+    setProvider,
     authType,
     setAuthType,
     balance,
     setBalance,
     IsValidChain,
     setIsValidChain,
-    chain,
-    setChain
+    ChainUser,
+    setChainUser
 
   };
 

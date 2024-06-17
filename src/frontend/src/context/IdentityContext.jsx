@@ -20,7 +20,7 @@ export const DfinityProvider = ({ children }) => {
 
             // Crear actor
             const canisterId = import.meta.env.VITE_CANISTER_ID;
-            console.log(canisterId)
+
             const newActor = createActor(canisterId, { agent });
             setActor(newActor);
         } catch (error) {

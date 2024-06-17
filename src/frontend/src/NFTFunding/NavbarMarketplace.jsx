@@ -24,7 +24,7 @@ const Navbar = () => {
     loginWeb3Auth,
     logout,
     restoreConnection,
-    IsValidChain,
+    ChainUser,
   } = useUser();
   const [loading, setLoading] = useState(true);
   const [needsSignature, setNeedsSignature] = useState(false);
@@ -111,9 +111,6 @@ const Navbar = () => {
     }
   };
 
-  if (loading || signingLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <nav className="bg-customblack pt-8 relative">
@@ -138,7 +135,7 @@ const Navbar = () => {
               input: "text-small outline-none ",
               inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg ",
             }}
-            placeholder="Type to search..."
+            placeholder="  Search projects..."
             size="sm"
             startContent={<SearchIcon size={18} />}
             type="search"
@@ -147,18 +144,19 @@ const Navbar = () => {
         <div className="hidden w-full md:block md:w-auto mr-12 mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>
-              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">Community</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">Funding</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">FAQ</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white">Portfolio</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">About us</a>
+              <a href="#" className="block px-2 text-lg text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Marketplace</a>
             </li>
           </ul>
         </div>
         <div className="hidden w-full md:block md:w-auto mt-4" id="navbar-default">
-          <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
+          <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 -mr-4">
+          <li>      <Chain/></li>
             <li className="mb-2 md:mb-0">
             {isLoggedIn ? (
   <div className="relative">
@@ -182,10 +180,10 @@ const Navbar = () => {
 
             </li>
 
-            
+          
           </ul>
 
-          <Chain/>
+    
         </div>
       </div>
 
