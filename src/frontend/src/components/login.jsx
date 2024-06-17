@@ -1,4 +1,4 @@
-// components/AuthComponent.js
+
 import React, { useEffect, useState } from 'react';
 import useUser from '../hooks/user/useuser.jsx';
 import { web3auth } from '../helpers/Web3authHelpers.js';

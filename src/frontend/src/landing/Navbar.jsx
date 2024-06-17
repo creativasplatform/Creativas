@@ -6,7 +6,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    navigate('/marketplace'); // Redirigir a la ruta deseada
+    navigate('/nfts'); // Redirigir a la ruta deseada
   };
 
   return (

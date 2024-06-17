@@ -7,8 +7,6 @@ import Torus from "@toruslabs/torus-embed";
 import { trezorProviderOptions } from "@rsksmart/rlogin-trezor-provider";
 import { ledgerProviderOptions } from "@rsksmart/rlogin-ledger-provider";
 import { dcentProviderOptions } from "@rsksmart/rlogin-dcent-provider";
-// import { defaultTheme } from "@rsksmart/rlogin/dist/theme";
-// import { themes } from "@rsksmart/rlogin/dist/theme";
 
 
 

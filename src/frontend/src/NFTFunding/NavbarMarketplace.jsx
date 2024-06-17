@@ -9,8 +9,7 @@ import useSignMessages from '../hooks/user/usesignsignatures.jsx';
 import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
 import walleticon from "../assets/wallet.png"
 import googleicon from "../assets/google.png"
-
-
+import Chain from './SetChain.jsx';
 const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
@@ -137,9 +136,9 @@ const Navbar = () => {
               base: "max-w-full sm:max-w-[20rem] h-10  bg-white  rounded-lg ",
               mainWrapper: "h-full",
               input: "text-small outline-none ",
-              inputWrapper: "h-full font-thin text-default-500 bg-customblack dark:bg-customblack border border-white rounded-lg ",
+              inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg ",
             }}
-            placeholder="   Type to search..."
+            placeholder="Type to search..."
             size="sm"
             startContent={<SearchIcon size={18} />}
             type="search"
@@ -161,25 +160,32 @@ const Navbar = () => {
         <div className="hidden w-full md:block md:w-auto mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
             <li className="mb-2 md:mb-0">
-              {isLoggedIn ? (
-                <button
-                  type="button"
-                  className="text-white  bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  onClick={logout}
-                >
-                  Log out
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="text-white  bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  onClick={handleOpenLoginModal}
-                >
-                  Log in
-                </button>
-              )}
+            {isLoggedIn ? (
+  <div className="relative">
+    <button
+      type="button"
+      className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 flex items-center space-x-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      <span className="truncate">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
+
+    </button>
+  </div>
+) : (
+  <button
+    type="button"
+    className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    onClick={handleOpenLoginModal}
+  >
+    Log in
+  </button>
+)}
+
             </li>
+
+            
           </ul>
+
+          <Chain/>
         </div>
       </div>
 

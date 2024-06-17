@@ -7,7 +7,8 @@ import categoriaone from "../assets/categories/categoria1.png"
 import categoriatwo from "../assets/categories/categoria2.png"
 import categoriathree from "../assets/categories/categoria3.png"
 import { Image } from '@nextui-org/react';
-
+import { SearchIcon } from "./SearchIcon.jsx";
+import { Input } from "@nextui-org/react";
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
@@ -53,9 +54,26 @@ const NFTFunding = () => {
             case 1:
                 return (
                     <>
+                      <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
+          <Input
+            classNames={{
+              base: "max-w-full sm:max-w-[20rem] h-10  bg-[#34343F]  rounded-lg ",
+              mainWrapper: "h-full",
+              input: "text-small outline-none ",
+              inputWrapper: "h-full font-thin text-white bg-[#19191E] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
+            }}
+            placeholder="   Enter project category..."
+            size="sm"
+            startContent={<SearchIcon size={18} />}
+            type="search"
+          />
+          </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      
                             {categories.map((category) => (
+
                                 <div
+
                                     key={category.id}
                                     className={`relative rounded-lg shadow cursor-pointer ${selectedCategory === category.id ? 'border-2 border-secondary' : ''}`}
                                     onClick={() => handleCategorySelect(category.id)}
@@ -65,7 +83,7 @@ const NFTFunding = () => {
                                         src={category.image}
                                         alt={category.name}
                                         width="100%"
-                                        height="240px"
+                                        height="200px"
                                         objectFit="cover"
                                         className="rounded-t-lg"
                                     />
@@ -75,7 +93,7 @@ const NFTFunding = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className="flex justify-between mt-4">
+                        <div className="flex justify-end mt-4">
                             <button
                                 onClick={() => setCurrentStep(2)}
                                 className="text-white  bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -228,8 +246,11 @@ const NFTFunding = () => {
                                         <span className="sr-only">Close modal</span>
                                     </button>
                                 </div>
+                                
                                 <StepProgress currentStep={currentStep} />
                                 <div className="p-6 space-y-6 bg-gray-800 rounded-b-lg flex-grow">
+
+   
                                     {renderModalContent()}
                                 </div>
                             </div>

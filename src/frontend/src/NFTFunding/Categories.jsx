@@ -38,7 +38,7 @@ const Categories = ({onOpenModal}) => {
     <div className="bg-[#0b0c0c] text-white p-4">
       <div className="flex items-center justify-between">
         {/* Título "Explore collections" a la izquierda con tipografía semibold */}
-        <h2 className="text-5xl font-semibold mb-4 mt-8 ml-8">Explore collections</h2>
+        <h2 className="text-5xl font-semibold mb-4 mt-8 ml-8">Explore Projects</h2>
 
         {/* Botón "Create a Project" con el icono al lado y tipografía thin */}
         <div className="flex items-center">
