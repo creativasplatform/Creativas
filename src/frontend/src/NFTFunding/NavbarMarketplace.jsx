@@ -12,7 +12,7 @@ import googleicon from "../assets/google.png";
 import Sidebar from './Sidebar';
 import Chain from './SetChain.jsx';
 import { useUserContext } from "../context/userContext.jsx";
-
+import connect from "../assets/connect.png"
 const Navbar = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -211,8 +211,11 @@ const Navbar = () => {
                   className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   onClick={handleOpenLoginModal}
                 >
-                  Log in
+               
+                  <span>Log in</span>
+               
                 </button>
+                
               )}
             </li>
           </ul>
