@@ -5,7 +5,7 @@ export default {
   content: [
     "./src/**/*.{js,ts,tsx,jsx,css}", 
     'node_modules/flowbite-react/lib/esm/**/*.js',
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   
   theme: {
@@ -17,7 +17,8 @@ export default {
         secondary: '#6377db',
         'secondary-ligth': '#8a9de8',
         green: '#b1e5e3',
-        'green-ligth': '#effcf9 '
+        'green-ligth': '#effcf9',
+        success: '#b1e5e3',
       },
       fontSize: {
         'rem-8.75': '8.75rem',
@@ -65,7 +66,9 @@ export default {
       },
       backgroundImage: {
         'gradient-to-b-custom': 'linear-gradient(to bottom, #0c0b0b, #10142b, #10142b, #0c0b0b)',
+        'gradient-to-c-custom': 'linear-gradient(to bottom, #171D2E, #171D2E, #171D2E, #050B1C)',
       },
+      
     },
   },
   darkMode: "class",

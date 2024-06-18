@@ -59,7 +59,7 @@ export default function Chain() {
   return (
     <Dropdown onOpenChange={handleToggle}>
       <DropdownTrigger>
-        <Button
+        <Button 
           className="text-white bg-customblack hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
         >
           <img
@@ -72,7 +72,7 @@ export default function Chain() {
           />
         </Button>
       </DropdownTrigger>
-      <DropdownMenu
+      <DropdownMenu 
         className="text-white bg-gray-800 font-thin text-sm px-5 py-2.5 dark rounded-lg"
         aria-label="Action event example"
         css={{ position: "absolute", right: 0 }}

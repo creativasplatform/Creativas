@@ -12,6 +12,7 @@ import { DfinityProvider } from "./context/IdentityContext.jsx";
 function App() {
   return (
     <div className="App">
+
         <UserProvider>
           <DfinityProvider>
       <Routes>
@@ -31,6 +32,7 @@ function App() {
       </Routes>
       </DfinityProvider>
       </UserProvider>
+    
     </div>
   );
 }
