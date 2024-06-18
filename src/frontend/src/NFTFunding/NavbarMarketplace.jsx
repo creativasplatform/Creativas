@@ -7,25 +7,27 @@ import useUser from '../hooks/user/useuser.jsx';
 import { web3auth } from '../helpers/Web3authHelpers.js';
 import useSignMessages from '../hooks/user/usesignsignatures.jsx';
 import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
-import walleticon from "../assets/wallet.png"
-import googleicon from "../assets/google.png"
+import walleticon from "../assets/wallet.png";
+import googleicon from "../assets/google.png";
 import Chain from './SetChain.jsx';
+import { useUserContext } from "../context/userContext.jsx";
+
 const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
   const {
     isLoggedIn,
     address,
-    balance,
     logoutWallet,
     authType,
     RloginResponse,
     loginWallet,
     loginWeb3Auth,
-    logout,
     restoreConnection,
-    ChainUser,
+    changeNetworkWallet,
   } = useUser();
+
+  const { Provider } = useUserContext();
   const [loading, setLoading] = useState(true);
   const [needsSignature, setNeedsSignature] = useState(false);
 
@@ -82,7 +84,6 @@ const Navbar = () => {
     };
   }, [authType, RloginResponse, logoutWallet]);
 
-
   const handleOpenLoginModal = () => {
     setOpenLoginModal(true);
   };
@@ -111,6 +112,26 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    const handleProviderChange = async () => {
+      if (Provider) {
+        console.log("Provider is available, changing network...");
+        const savedNetwork = localStorage.getItem('selectedNetwork');
+        if (savedNetwork) {
+          console.log("Ejecutando el cambio a la red:", savedNetwork);
+          await changeNetworkWallet(savedNetwork);
+        } else {
+          console.error("No saved network found");
+        }
+      }
+    };
+
+    handleProviderChange();
+  }, [Provider, changeNetworkWallet]);
+
+  const handleProvider = () => {
+    console.log(Provider);
+  };
 
   return (
     <nav className="bg-customblack pt-8 relative">
@@ -156,99 +177,89 @@ const Navbar = () => {
         </div>
         <div className="hidden w-full md:block md:w-auto mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 -mr-4">
-          <li>      <Chain/></li>
+            <li><Chain /></li>
             <li className="mb-2 md:mb-0">
-            {isLoggedIn ? (
-  <div className="relative">
-    <button
-      type="button"
-      className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 flex items-center space-x-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    >
-      <span className="truncate">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
-
-    </button>
-  </div>
-) : (
-  <button
-    type="button"
-    className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    onClick={handleOpenLoginModal}
-  >
-    Log in
-  </button>
-)}
-
+              {isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    type="button"
+                    className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 flex items-center space-x-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    <span className="truncate">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  onClick={handleOpenLoginModal}
+                >
+                  Log in
+                </button>
+              )}
             </li>
-
-          
           </ul>
-
-    
         </div>
       </div>
 
       {openLoginModal && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
-  <div className="relative w-full max-w-md ">
-    <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
-      <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700 ">
-        <p className="text-lg text-white font-thin">Welcome again</p>
-        <button
-          type="button"
-          className="text-white bg-transparent hover:bg-gray-600 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          onClick={handleCloseLoginModal}
-        >
-          <svg
-            className="w-3 h-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-          <span className="sr-only">Close modal</span>
-        </button>
-      </div>
-      <div className="p-6 space-y-6 bg-gray-800 rounded-xl">
-        <p className="text-center text-lg text-white font-thin">Log in</p>
-        <div className="space-y-4">
-          <button
-            className="w-full px-4 py-2 text-sm font-thin text-white bg-[#19191E] rounded-lg hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-600 dark:hover:bg-gray-600"
-            onClick={handleLoginWallet}
-          >
-            <img src={walleticon} className="inline-block w-4 h-4 mr-2" alt="Wallet Icon" />
-            Wallets
-          </button>
-          
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
+          <div className="relative w-full max-w-md ">
+            <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
+              <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700 ">
+                <p className="text-lg text-white font-thin">Welcome again</p>
+                <button
+                  type="button"
+                  className="text-white bg-transparent hover:bg-gray-600 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  onClick={handleCloseLoginModal}
+                >
+                  <svg
+                    className="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+              </div>
+              <div className="p-6 space-y-6 bg-gray-800 rounded-xl">
+                <p className="text-center text-lg text-white font-thin">Log in</p>
+                <div className="space-y-4">
+                  <button
+                    className="w-full px-4 py-2 text-sm font-thin text-white bg-[#19191E] rounded-lg hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-600 dark:hover:bg-gray-600"
+                    onClick={handleLoginWallet}
+                  >
+                    <img src={walleticon} className="inline-block w-4 h-4 mr-2" alt="Wallet Icon" />
+                    Wallets
+                  </button>
 
-          <div className="flex items-center justify-center space-x-4 mt-2">
-            <div className="w-2/4 h-[0.5px] bg-white"></div>
-            <span className="text-white text-sm">Or</span>
-            <div className="w-2/4 h-[0.5px] bg-white"></div>
+                  <div className="flex items-center justify-center space-x-4 mt-2">
+                    <div className="w-2/4 h-[0.5px] bg-white"></div>
+                    <span className="text-white text-sm">Or</span>
+                    <div className="w-2/4 h-[0.5px] bg-white"></div>
+                  </div>
+
+                  <button
+                    className="w-full px-4 py-2 text-sm font-thin text-white bg-[#19191E] rounded-lg hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-600 dark:hover:bg-gray-600"
+                    onClick={handleLoginWeb3Auth}
+                  >
+                    <img src={googleicon} className="inline-block w-4 h-4 mr-2" alt="Google Icon" />
+                    Google
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <button
-            className="w-full px-4 py-2 text-sm font-thin text-white bg-[#19191E] rounded-lg hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-600 dark:hover:bg-gray-600"
-            onClick={handleLoginWeb3Auth}
-          >
-            <img src={googleicon} className="inline-block w-4 h-4 mr-2" alt="Google Icon" />
-            Google
-          </button>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
- 
-     
       )}
     </nav>
   );

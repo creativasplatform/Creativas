@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
   const [balance, setBalance] = useState(null);
   const [IsValidChain, setIsValidChain] = useState(true);
   const [ChainUser, setChainUser] = useState(null);
+  const [network, setNetwork] = useState(null);
 
   const value = {
     isLoggedIn,
@@ -31,7 +32,9 @@ export const UserProvider = ({ children }) => {
     IsValidChain,
     setIsValidChain,
     ChainUser,
-    setChainUser
+    setChainUser,
+    network,
+    setNetwork
 
   };
 
