@@ -5,14 +5,25 @@ import { Input } from "@nextui-org/react";
 import explorerIcon from "../assets/explorer.png";
 import useUser from '../hooks/user/useuser.jsx';
 import { web3auth } from '../helpers/Web3authHelpers.js';
-import useSignMessages from '../hooks/user/usesignsignatures.jsx';
-import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
+// import useSignMessages from '../hooks/user/usesignsignatures.jsx';
+// import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
 import walleticon from "../assets/wallet.png";
 import googleicon from "../assets/google.png";
+import Sidebar from './Sidebar';
 import Chain from './SetChain.jsx';
 import { useUserContext } from "../context/userContext.jsx";
 
 const Navbar = () => {
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+    const toggleSidebar = () => {
+      setIsSidebarOpen(!isSidebarOpen);
+    };
+  
+    const closeSidebar = () => {
+      setIsSidebarOpen(false);
+    };
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
   const {
@@ -28,29 +39,29 @@ const Navbar = () => {
   } = useUser();
 
   const { Provider } = useUserContext();
-  const [loading, setLoading] = useState(true);
-  const [needsSignature, setNeedsSignature] = useState(false);
+  // const [loading, setLoading] = useState(true);
+  // const [needsSignature, setNeedsSignature] = useState(false);
 
-  const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
-  const { hasUserSignature, addUserSignature, error: signatureError } = useSignatureStorage();
+  // const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
+  // const { hasUserSignature, addUserSignature, error: signatureError } = useSignatureStorage();
 
-  const checkUserSignature = useCallback(async () => {
-    if (isLoggedIn && address) {
-      const hasSignature = await hasUserSignature();
-      setNeedsSignature(!hasSignature);
-      if (!hasSignature) {
-        console.log("El usuario no ha firmado todavía");
-      }
-    }
-  }, [isLoggedIn, address, hasUserSignature]);
+  // const checkUserSignature = useCallback(async () => {
+  //   if (isLoggedIn && address) {
+  //     const hasSignature = await hasUserSignature();
+  //     setNeedsSignature(!hasSignature);
+  //     if (!hasSignature) {
+  //       console.log("El usuario no ha firmado todavía");
+  //     }
+  //   }
+  // }, [isLoggedIn, address, hasUserSignature]);
 
-  const handleAcceptTerms = useCallback(async () => {
-    const result = await signMessage("Acepta los términos y condiciones");
-    if (result && result.signature) {
-      await addUserSignature(result.signature);
-      setNeedsSignature(false);
-    }
-  }, [signMessage, addUserSignature]);
+  // const handleAcceptTerms = useCallback(async () => {
+  //   const result = await signMessage("Acepta los términos y condiciones");
+  //   if (result && result.signature) {
+  //     await addUserSignature(result.signature);
+  //     setNeedsSignature(false);
+  //   }
+  // }, [signMessage, addUserSignature]);
 
   useEffect(() => {
     const initWeb3Auth = async () => {
@@ -129,9 +140,6 @@ const Navbar = () => {
     handleProviderChange();
   }, [Provider, changeNetworkWallet]);
 
-  const handleProvider = () => {
-    console.log(Provider);
-  };
 
   return (
     <nav className="bg-customblack pt-8 relative">
@@ -183,10 +191,19 @@ const Navbar = () => {
                 <div className="relative">
                   <button
                     type="button"
-                    className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 flex items-center space-x-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    onClick={toggleSidebar}
+                    className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 flex items-center space-x-2"
                   >
                     <span className="truncate">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
                   </button>
+
+                  {isSidebarOpen && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end">
+                      <div className="relative">
+                        <Sidebar onClose={closeSidebar} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <button
