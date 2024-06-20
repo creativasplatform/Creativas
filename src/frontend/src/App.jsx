@@ -7,7 +7,6 @@ import Card from "./landing/Card.jsx";
 import NavbarMarketplace from "./NFTFunding/NavbarMarketplace.jsx";
 import NFTFunding from "./NFTFunding/NFTFunding.jsx";
 import Categories from "./NFTFunding/Categories.jsx";
-import Footer from "./landing/Footer.jsx";
 import { UserProvider } from './context/userContext';
 import { DfinityProvider } from "./context/IdentityContext.jsx";
 function App() {
@@ -15,7 +14,7 @@ function App() {
     <div className="App">
 
         <UserProvider>
-          {/* <DfinityProvider> */}
+          <DfinityProvider>
       <Routes>
         <Route path="/" element={
           <>
@@ -31,8 +30,7 @@ function App() {
           </>
         } />
       </Routes>
-      <Footer/>
-      {/* </DfinityProvider> */}
+      </DfinityProvider>
       </UserProvider>
     
     </div>

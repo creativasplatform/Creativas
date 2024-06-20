@@ -58,4 +58,4 @@ const useSignatureStorage = () => {
     };
 };
 
-// export default useSignatureStorage;
+export default useSignatureStorage;
