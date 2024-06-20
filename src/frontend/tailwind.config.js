@@ -15,6 +15,7 @@ export default {
         primary: '#10142b',
         'primary-ligth': '#272b40', // Color primary con opacidad 0.8
         secondary: '#6377db',
+        'secondary-bright': '#8495e6', // Color secundario más brillante
         'secondary-ligth': '#8a9de8',
         green: '#b1e5e3',
         'green-ligth': '#effcf9',
