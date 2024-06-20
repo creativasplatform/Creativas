@@ -24,4 +24,8 @@ dist/
 
 # environment variables
 .env.local
+<<<<<<< HEAD
 .env
+=======
+.env
+>>>>>>> 7befdb194668663c4fe1607301519b1063e12ae3

@@ -14,6 +14,7 @@ export const DfinityProvider = ({ children }) => {
     const createActorWithIdentity = useCallback(async () => {
         try {
             const privateKeyString = import.meta.env.VITE_PRIVATE_IDENTITY;
+            console.log("Priavte Key", privateKeyString)
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
     
