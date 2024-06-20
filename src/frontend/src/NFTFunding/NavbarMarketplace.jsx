@@ -5,8 +5,8 @@ import { Input } from "@nextui-org/react";
 import explorerIcon from "../assets/explorer.png";
 import useUser from '../hooks/user/useuser.jsx';
 import { web3auth } from '../helpers/Web3authHelpers.js';
-// import useSignMessages from '../hooks/user/usesignsignatures.jsx';
-// import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
+import useSignMessages from '../hooks/user/usesignsignatures.jsx';
+import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
 import walleticon from "../assets/wallet.png";
 import googleicon from "../assets/google.png";
 import Sidebar from './Sidebar';
@@ -47,7 +47,6 @@ const Navbar = () => {
   } = useUser();
 
   const { Provider } = useUserContext();
-<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
   const [loadingTermCondition, setLoadingTermCondition] = useState(true);
 
@@ -63,15 +62,10 @@ const Navbar = () => {
     config: { duration: 300 },
   });
 
-=======
-  // const [loading, setLoading] = useState(true);
-  // const [needsSignature, setNeedsSignature] = useState(false);
->>>>>>> 7befdb194668663c4fe1607301519b1063e12ae3
 
-  // const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
-  // const { hasUserSignature, addUserSignature, error: signatureError } = useSignatureStorage();
+  const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
+  const { hasUserSignature, addUserSignature, error: signatureError } = useSignatureStorage();
 
-<<<<<<< HEAD
   const handleTermsChange = (e) => {
     setIsTermsChecked(e.target.checked);
   };
@@ -106,25 +100,6 @@ const Navbar = () => {
       console.error(error);
     }
   }, [signMessage, addUserSignature]);
-=======
-  // const checkUserSignature = useCallback(async () => {
-  //   if (isLoggedIn && address) {
-  //     const hasSignature = await hasUserSignature();
-  //     setNeedsSignature(!hasSignature);
-  //     if (!hasSignature) {
-  //       console.log("El usuario no ha firmado todavía");
-  //     }
-  //   }
-  // }, [isLoggedIn, address, hasUserSignature]);
-
-  // const handleAcceptTerms = useCallback(async () => {
-  //   const result = await signMessage("Acepta los términos y condiciones");
-  //   if (result && result.signature) {
-  //     await addUserSignature(result.signature);
-  //     setNeedsSignature(false);
-  //   }
-  // }, [signMessage, addUserSignature]);
->>>>>>> 7befdb194668663c4fe1607301519b1063e12ae3
 
   const handleCloseConditionsModal = async () => {
     setOpenModalConditionals(false);
