@@ -8,7 +8,8 @@ const DfinityContext = createContext();
 
 // Proveedor del contexto
 export const DfinityProvider = ({ children }) => {
-    const [actor, setActor] = useState(null);
+    const [actorUserSiganeture, setActorUserSiganeture] = useState(null);
+    const [AnonymousaActorUserSiganeture, setAnonymousActorUserSiganeture] = useState(null)
 
     const createActorWithIdentity = useCallback(async () => {
         try {
@@ -16,13 +17,19 @@ export const DfinityProvider = ({ children }) => {
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
     
-            const agent = new HttpAgent({ identity, host: 'http://localhost:8080' });
+            const agent = new HttpAgent({ identity, host: 'http://localhost:8000' });
 
             // Crear actor
             const canisterId = import.meta.env.VITE_CANISTER_ID;
 
             const newActor = createActor(canisterId, { agent });
-            setActor(newActor);
+
+
+            const newActorAnonymous = createActor(canisterId);
+
+
+            setActorUserSiganeture(newActor);
+            setAnonymousActorUserSiganeture(newActorAnonymous)
         } catch (error) {
             console.error("Error creating actorr:", error);
         }
@@ -34,7 +41,7 @@ export const DfinityProvider = ({ children }) => {
 
 
     return (
-        <DfinityContext.Provider value={{ actor, createActorWithIdentity }}>
+        <DfinityContext.Provider value={{ actorUserSiganeture, createActorWithIdentity, AnonymousaActorUserSiganeture }}>
             {children}
         </DfinityContext.Provider>
     );

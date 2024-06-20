@@ -3,7 +3,7 @@ import { providers } from 'ethers';
 import { web3auth } from '../../helpers/Web3authHelpers.js';
 import { useUserContext } from '../../context/userContext.jsx';
 import { rLogin } from '../../helpers/LoginHelpers.js';
-import { NETWORKS } from '../../helpers/ChainsConfig.js'; // Importa la configuración de las redes desde el archivo networkConfig.js
+import { NETWORKS, chainConfigWeb3authRsk, chainConfigWeb3authSepolia } from '../../helpers/ChainsConfig.js'; // Importa la configuración de las redes desde el archivo networkConfig.js
 
 const LOCAL_STORAGE_KEY = "walletConnection";
 
@@ -65,12 +65,12 @@ const useUser = () => {
   // Cadenas de bloques soportadas
   const supportedChains = [31, 11155111];
 
-  // Guardar la conexión en el almacenamiento local
   const saveConnection = (authType, wallet_type) => {
+
     const connectionData = authType === 'wallet' ? { authType, wallet_type } : { authType };
+  
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(connectionData));
   };
-
   // Borrar la conexión del almacenamiento local
   const clearConnection = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
@@ -79,14 +79,10 @@ const useUser = () => {
 
   const changeNetworkWallet = useCallback(async (chainId) => {
     try {
-      console.log(signer)
-      console.log(Provider)
-      if (!signer && !Provider) {
-        console.log("Error aca")
+      if (!signer && !Provider && authType === "wallet") {
         throw new Error("Please log in with a wallet first.");
       }
 
-      console.log(chainId)
 
       const networkConfig = NETWORKS[chainId];
       if (!networkConfig) {
@@ -202,6 +198,72 @@ const useUser = () => {
     }
   }, [setAddress, setIsLoggedIn, setSigner, setAuthType, setBalance, setRloginResponse, setChainUser, setProvider]);
 
+
+  const changeNetworkWeb3auth = useCallback(async (chainId) => {
+    setLoading(true);
+    setError(null);
+  
+    if (!signer && !Provider && authType === "web3auth") {
+      throw new Error("Please log in with a wallet first.");
+    }
+  
+    try {
+      let chainConfig;
+  
+      // Seleccionar la configuración de la cadena según el nombre de la red
+      if (chainId === 'RSK_TESTNET') {
+        chainConfig = chainConfigWeb3authRsk;
+      } else if (chainId === 'SEPOLIA_TESTNET') {
+        chainConfig = chainConfigWeb3authSepolia;
+      } else {
+        throw new Error("Unsupported network name.");
+      }
+  
+      try {
+        await web3auth.addChain(chainConfig);
+      } catch (addChainError) {
+        console.error("Failed to add network:", addChainError);
+        throw new Error("Failed to add network. Please check your Web3Auth settings.");
+      }
+  
+      // Cambiar a la nueva cadena
+      try {
+        await web3auth.switchChain({ chainId: chainConfig.chainId });
+      } catch (switchChainError) {
+        console.error("Failed to switch network:", switchChainError);
+        throw new Error("Failed to switch network. Please check your Web3Auth settings.");
+      }
+  
+
+      const web3authProvider = await web3auth.connect();
+      const web3Provider = new providers.Web3Provider(web3authProvider);
+      const newAddress = await web3Provider.getSigner().getAddress();
+      const newBalance = await web3Provider.getBalance(newAddress);
+  
+  
+      setAddress(newAddress);
+      setBalance(newBalance.toString());
+      setIsValidChain(true);
+      const network = await web3Provider.getNetwork();
+      const isValidChain = supportedChains.includes(network.chainId);
+      setIsValidChain(isValidChain);
+
+      // Solo actualizar la cadena si es válida
+      if (isValidChain) {
+        setChainUser(network.chainId);
+      }
+  
+      saveConnection('web3auth', null);
+      setError(null);
+    } catch (error) {
+      console.error("Error switching network:", error);
+      setError("Failed to switch network.");
+    } finally {
+      setLoading(false);
+    }
+  }, [setAddress, setBalance, setIsValidChain, setChainUser, setError]);
+  
+
   // Manejar el inicio de sesión con Web3Auth
   const handleLoginWeb3Auth = useCallback(async () => {
     setLoading(true);
@@ -221,6 +283,16 @@ const useUser = () => {
       setIsValidChain(true);
       setRloginResponse(null);
       setProvider(web3Provider)
+      
+      const network = await web3Provider.getNetwork();
+      const isValidChain = supportedChains.includes(network.chainId);
+      setIsValidChain(isValidChain);
+
+      // Solo actualizar la cadena si es válida
+      if (isValidChain) {
+        setChainUser(network.chainId);
+      }
+
     } catch (error) {
       setError("Failed to login with Web3Auth");
     } finally {
@@ -353,13 +425,14 @@ const useUser = () => {
               setLoading(false);
 
             }
-          } else if (authType === 'web3auth') {
-            await handleLoginWeb3Auth();
-            setLoading(false);
+          } else  {
+              clearConnection()
+              setLoading(false);
           }
 
-        } else {
-          clearConnection()
+        } else if (authType === 'web3auth') {
+
+          await handleLoginWeb3Auth();
           setLoading(false);
         }
       } catch (error) {
@@ -380,6 +453,7 @@ const useUser = () => {
     IsValidChain,
     ChainUser,
     RloginResponse,
+    changeNetworkWeb3auth,
     logoutWallet,
     changeNetworkWallet,
     loginWallet: handleLoginWallet,

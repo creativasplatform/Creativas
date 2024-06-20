@@ -10,8 +10,8 @@ import { Image } from '@nextui-org/react';
 import { SearchIcon } from "./SearchIcon.jsx";
 import { Input } from "@nextui-org/react";
 import writeicon from "../assets/write.png"
-import { Checkbox } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
+import agendaicon from "../assets/agenda.png"
+
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
@@ -48,6 +48,14 @@ const NFTFunding = () => {
         setSelectedCategory(categoryId);
     };
 
+    const handleCalendar = (e) => {
+        e.preventDefault();
+       
+    }
+
+    const handlebutton = () => {
+        console.log("Funciona")
+    }
     const renderModalContent = () => {
         switch (currentStep) {
             case 1:
@@ -56,10 +64,10 @@ const NFTFunding = () => {
                         <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
                             <Input
                                 classNames={{
-                                    base: "max-w-full sm:max-w-[20rem] h-10  bg-[#34343F]  rounded-lg ",
+                                    base: "max-w-full sm:max-w-[20rem] h-10  bg-[#202129]  rounded-lg ",
                                     mainWrapper: "h-full",
                                     input: "text-small outline-none ",
-                                    inputWrapper: "h-full font-thin text-white bg-[#19191E] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
+                                    inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
                                 }}
                                 placeholder="   Enter project category..."
                                 size="sm"
@@ -77,15 +85,13 @@ const NFTFunding = () => {
                                     onClick={() => handleCategorySelect(category.id)}
                                     style={{ background: 'linear-gradient(to bottom, black 50%, white 50%)' }}
                                 >
-                                    
-                                    <Image
-                                       src={category.image}
+
+                                    <img
+                                        className="rounded-lg w-full h-[200px] object-cover rounded-t-lg"
+                                        src={category.image}
                                         alt={category.name}
-                                        width="100%"
-                                        height="200px"
-                                        objectFit="cover"
-                                        className="rounded-t-lg"
                                     />
+
                                     <div className="p-4">
                                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">{category.name}</h3>
                                     </div>
@@ -125,7 +131,7 @@ const NFTFunding = () => {
                                         placeholder='Creativas'
                                         onChange={handleInputChange}
 
-                                        className="mb-8 mt-2 w-[600px] text-white bg-[#19191E] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
+                                        className="mb-8 mt-2 w-[600px] text-white bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
 
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
@@ -141,7 +147,7 @@ const NFTFunding = () => {
                                         value={formData.description}
                                         onChange={handleInputChange}
 
-                                        className="mb-24 text-white w-[600px] bg-[#19191E] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
+                                        className="mb-6 text-white w-[600px] bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
                                         rows="8"
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
@@ -172,12 +178,12 @@ const NFTFunding = () => {
             case 3:
                 return (
                     <>
-                        <h3 className="text-xl font-semibold text-[#D5D6E1] ml-2">
+                        <h3 className="text-xl font-semibold text-[#D5D6E1] ml-14">
                             Project specification
                         </h3>
-                        <form className="space-y-4 max-w-lg -ml-28">
+                        <form onSubmit={handleCalendar} className="space-y-4 max-w-lg -ml-20">
                             <div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1 mb-3">
+                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1 mb-1">
                                     Funding objective
                                 </label>
                                 <Input
@@ -185,7 +191,7 @@ const NFTFunding = () => {
                                         base: "max-w-full sm:max-w-[20rem] h-10  bg-[#34343F] mb-4 rounded-lg",
                                         mainWrapper: "h-full",
                                         input: "text-small outline-none ",
-                                        inputWrapper: "h-full font-thin text-white bg-[#19191E] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
+                                        inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
                                     }}
                                     labelPlacement="outside"
                                     startContent={
@@ -260,9 +266,20 @@ const NFTFunding = () => {
                                         No
                                     </label>
                                 </div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1 mb-2">
+                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
                                     Final day of project financing
                                 </label>
+                                <div className='relative -mt-4 mb-8'>
+                                    <button
+                                        onClick={handlebutton}
+                                        className="w-64 -mt-2 flex items-center justify-between -mt-3 mb-12 font-monserrat text-white bg-[#202129] hover:bg-[#4B4B54] border border-[#34343F] focus:outline-none font-thin rounded-lg text-sm px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <span className='text-gray-400'>Choose a date</span>
+                                      
+                                    </button>
+                                    <img src={agendaicon} alt="Write Icon" className="w-5 h-5 ml-56 -mt-20" />
+                                        
+                                </div>
+
                             </div>
 
                         </form>
@@ -270,7 +287,7 @@ const NFTFunding = () => {
 
 
                         <div className="flex justify-end">
-                        <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
+                            <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                             <button
                                 onClick={() => setCurrentStep(2)}
                                 className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

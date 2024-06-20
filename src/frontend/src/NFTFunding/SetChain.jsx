@@ -12,7 +12,7 @@ import { useUserContext } from "../context/userContext.jsx";
 
 export default function Chain() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoggedIn, IsValidChain, ChainUser, changeNetworkWallet } = useUser();
+  const { isLoggedIn, IsValidChain, ChainUser, changeNetworkWallet, changeNetworkWeb3auth, authType } = useUser();
   const { network, setNetwork } = useUserContext();
 
   useEffect(() => {
@@ -32,7 +32,11 @@ export default function Chain() {
 
   const handleNetworkChange = async (chainId) => {
     try {
-      await changeNetworkWallet(chainId);
+      if (authType === 'wallet') {
+        await changeNetworkWallet(chainId);
+      } else if (authType === 'web3auth') {
+        await changeNetworkWeb3auth(chainId);
+      }
       setNetwork(chainId); // Update the network context
       localStorage.setItem('selectedNetwork', chainId); // Save the selected network to localStorage
       setIsOpen(false);
@@ -40,10 +44,10 @@ export default function Chain() {
       console.error("Error switching network:", error);
     }
   };
-  
 
   const RSK_TESTNET = Number(NETWORKS.RSK_TESTNET.chainId);
   const SEPOLIA_TESTNET = Number(NETWORKS.SEPOLIA_TESTNET.chainId);
+
 
   // Determine the initial icon to show
   const initialIcon = () => {

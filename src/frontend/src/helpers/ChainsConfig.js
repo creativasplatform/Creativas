@@ -41,7 +41,7 @@ export const chainConfigWeb3authRsk = {
 };
 
 export const chainConfigWeb3authSepolia = {
-    chainId: "0x1f", // 31 en hexadecimal para RSK Testnet
+    chainId: "0xaa36a7", // 31 en hexadecimal para RSK Testnet
     rpcTarget: "https://sepolia.infura.io/v3/c9cff4159b23445abffec6c3273932ae",
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     displayName: "Sepolia Testnet",

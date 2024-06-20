@@ -11,47 +11,99 @@ import walleticon from "../assets/wallet.png";
 import googleicon from "../assets/google.png";
 import Chain from './SetChain.jsx';
 import { useUserContext } from "../context/userContext.jsx";
-import connect from "../assets/connect.png"
+import { useSpring, useTransition, animated } from '@react-spring/web';
+import alert from "../assets/alert.png"
 const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false); // Nuevo estado
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+
   const {
     isLoggedIn,
     address,
     logoutWallet,
+    logout,
     authType,
     RloginResponse,
     loginWallet,
     loginWeb3Auth,
     restoreConnection,
     changeNetworkWallet,
+    changeNetworkWeb3auth
   } = useUser();
 
   const { Provider } = useUserContext();
   const [loading, setLoading] = useState(true);
-  const [needsSignature, setNeedsSignature] = useState(false);
+  const [loadingTermCondition, setLoadingTermCondition] = useState(true);
+
+  const modalLoginAnimation = useSpring({
+    opacity: openLoginModal ? 1 : 0,
+    transform: openLoginModal ? 'scale(1)' : 'scale(0.9)',
+    config: { duration: 300 },
+  });
+
+  const modalConditionalsAnimation = useSpring({
+    opacity: openModalConditionals ? 1 : 0,
+    transform: openModalConditionals ? 'scale(1)' : 'scale(0.9)',
+    config: { duration: 300 },
+  });
+
 
   const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
   const { hasUserSignature, addUserSignature, error: signatureError } = useSignatureStorage();
 
+  const handleTermsChange = (e) => {
+    setIsTermsChecked(e.target.checked);
+  };
+
+  const handlePrivacyChange = (e) => {
+    setIsPrivacyChecked(e.target.checked);
+  };
+
   const checkUserSignature = useCallback(async () => {
     if (isLoggedIn && address) {
       const hasSignature = await hasUserSignature();
-      setNeedsSignature(!hasSignature);
       if (!hasSignature) {
-        console.log("El usuario no ha firmado todavía");
+        handleOpenConditionsModal();
       }
+    } else {
+      console.error("Please log in with a wallet first.");
     }
   }, [isLoggedIn, address, hasUserSignature]);
 
   const handleAcceptTerms = useCallback(async () => {
-    const result = await signMessage("Acepta los términos y condiciones");
-    if (result && result.signature) {
-      await addUserSignature(result.signature);
-      setNeedsSignature(false);
+    try {
+      const result = await signMessage("Accept the terms and conditions");
+      if (result && result.signature) {
+        const response = await addUserSignature(result.signature);
+        if (response) {
+          setTermsAccepted(true);
+        } else {
+          console.error("Something went wrong");
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
   }, [signMessage, addUserSignature]);
 
+  const handleCloseConditionsModal = async () => {
+    setOpenModalConditionals(false);
+    if (!termsAccepted) {
+      await logout();
+    }
+  };
+
+  useEffect(() => {
+    if (termsAccepted) {
+      handleCloseConditionsModal();
+    }
+  }, [termsAccepted]);
+
+  
   useEffect(() => {
     const initWeb3Auth = async () => {
       if (web3authInitialized) return;
@@ -85,6 +137,7 @@ const Navbar = () => {
   }, [authType, RloginResponse, logoutWallet]);
 
   const handleOpenLoginModal = () => {
+    console.log(address)
     setOpenLoginModal(true);
   };
 
@@ -92,11 +145,21 @@ const Navbar = () => {
     setOpenLoginModal(false);
   };
 
+  const handleOpenConditionsModal = () => {
+    setOpenModalConditionals(true);
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && address) {
+      checkUserSignature();
+    }
+  }, [isLoggedIn, address]);
+
+
   const handleLoginWallet = async () => {
     try {
       setOpenLoginModal(false);
       await loginWallet();
-      checkUserSignature();
     } catch (error) {
       console.error("Error logging in with wallet:", error);
     }
@@ -106,7 +169,7 @@ const Navbar = () => {
     try {
       setOpenLoginModal(false);
       await loginWeb3Auth();
-      checkUserSignature();
+      
     } catch (error) {
       console.error("Error logging in with Web3Auth:", error);
     }
@@ -115,11 +178,13 @@ const Navbar = () => {
   useEffect(() => {
     const handleProviderChange = async () => {
       if (Provider) {
-        console.log("Provider is available, changing network...");
         const savedNetwork = localStorage.getItem('selectedNetwork');
         if (savedNetwork) {
-          console.log("Ejecutando el cambio a la red:", savedNetwork);
-          await changeNetworkWallet(savedNetwork);
+          if (authType === "wallet") {
+            await changeNetworkWallet(savedNetwork);
+          } else if (authType === "web3auth") {
+            await changeNetworkWeb3auth(savedNetwork);
+          }
         } else {
           console.error("No saved network found");
         }
@@ -127,14 +192,12 @@ const Navbar = () => {
     };
 
     handleProviderChange();
-  }, [Provider, changeNetworkWallet]);
+  }, [Provider, authType, changeNetworkWallet, changeNetworkWeb3auth]);
 
-  const handleProvider = () => {
-    console.log(Provider);
-  };
 
   return (
     <nav className="bg-customblack pt-8 relative">
+
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
         <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4">
           <img src={CreativasLogo} className="h-10 w-200" alt="Creativas Logo" />
@@ -194,11 +257,12 @@ const Navbar = () => {
                   className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   onClick={handleOpenLoginModal}
                 >
-               
+
                   <span>Log in</span>
-               
+
                 </button>
-                
+
+
               )}
             </li>
           </ul>
@@ -207,7 +271,7 @@ const Navbar = () => {
 
       {openLoginModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
-          <div className="relative w-full max-w-md ">
+          <animated.div style={modalLoginAnimation} className="relative w-full max-w-md">
             <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
               <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700 ">
                 <p className="text-lg text-white font-thin">Welcome again</p>
@@ -261,8 +325,121 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </animated.div>
         </div>
+
+      )}
+
+      {openModalConditionals && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
+          <animated.div style={modalConditionalsAnimation} className="relative w-full max-w-md">
+            <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
+              <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700 ">
+                <p className="text-lg text-white text-center font-medium ml-28" >Terms and Conditions</p>
+                <button
+                  type="button"
+                  className="text-white bg-transparent hover:bg-gray-600 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  onClick={handleCloseConditionsModal}
+                >
+                  <svg
+                    className="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+              </div>
+              <div className="p-6 space-y-6 bg-gray-800 rounded-xl mt-4">
+                <div className='bg-[#202129] rounded-md p-1 h-[170px]'>
+                  <img src={alert} alt="Alert Icon" className="absolute mt-20 ml-3.5 transform -translate-y-1/2 w-8 h-8" />
+                  <p class="font-thin p-4 mb-3 -mt-2 ml-12 text-[#D5D6E1] dark:text-gray-200 text-sm">Please review our terms and conditions before using the <strong class="font-semibold text-white dark:text-white"> Creativas Platform. </strong>  We will ask for a signature with your wallet once you click continue to connect to the platform and accept the terms and conditions. Creativas is an experimental platform, please act consciously and at your own risk.</p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start ml-16 ">
+                    <div className="flex items-center h-5 mt-4">
+                      <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="check">
+                        <input
+                          type="checkbox"
+                          className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+                          id="termsCheck"
+                          checked={isTermsChecked}
+                          onChange={handleTermsChange}
+                        />
+                        <span
+                          className="absolute  text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+                            stroke="currentColor" stroke-width="1">
+                            <path fill-rule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clip-rule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </label>
+                    </div>
+                    <div className='mt-1.5 -ml-2'>
+                      <label htmlFor="terms" className="ms-2 text-sm font-medium text-white dark:text-gray-200 font-montserrat">I accept the <a className="text-secondary hover:underline dark:text-secondary">Terms and Conditions.</a></label>
+                    </div>
+                  </div>
+                  <div className="flex items-start mb-5 ml-16">
+                    <div className="flex items-center h-5">
+                      <label class="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="check">
+                        <input
+                          type="checkbox"
+                          className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+                          id="privacyCheck"
+                          checked={isPrivacyChecked}
+                          onChange={handlePrivacyChange}
+                        />
+                        <span
+                          className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+                            stroke="currentColor" stroke-width="1">
+                            <path fill-rule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clip-rule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </label>  </div>
+                    <div className='-mt-3 -ml-2'>
+                      <label htmlFor="terms" className="ms-2 text-sm font-medium text-white dark:text-gray-200 font-montserrat">I accept the <a className="text-secondary hover:underline dark:text-secondary">Privacy Policy.</a></label>
+
+
+                    </div>
+
+                    <div className='mt-12 -ml-56'>
+                      <button
+                        onClick={handleAcceptTerms}
+                        type="submit"
+                        className="w-[300px] rounded border border-secondary bg-secondary p-1 text-white text-center text-sm transition hover:bg-secondary-ligth"
+                        disabled={!isTermsChecked || !isPrivacyChecked}
+                      >
+
+                        Continue
+                      </button>
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+          </animated.div>
+        </div>
+
       )}
     </nav>
   );

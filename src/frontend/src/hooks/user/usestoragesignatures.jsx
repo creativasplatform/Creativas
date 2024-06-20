@@ -1,35 +1,41 @@
 import { useState } from 'react';
 import { useDfinity } from '../../context/IdentityContext.jsx';
 import { useUserContext } from '../../context/userContext.jsx';
-import { user_signatures } from 'declarations/user_signatures';
 
 const useSignatureStorage = () => {
-    const { actor } = useDfinity();
-    const [error, setError] = useState(null);
+    const { actorUserSiganeture, AnonymousaActorUserSiganeture } = useDfinity();
     const { address } = useUserContext();
 
     // Función para agregar una firma
     const addUserSignature = async (signature) => {
-        if (!actor) {
-            setError(new Error("Actor is not initialized"));
+        if (!actorUserSiganeture) {
+            console.error("Actor is not initialized.");
             return;
         }
+    
+        console.log(address)
         try {
-            // Llama a la función add_signature del canister usando el actor
-            await actor.add_signature(address, signature);
+            const result = await actorUserSiganeture.add_signature(address, signature);
+            
+            if (result.Err) {
+                console.log("Something was wrong")
+            } else {
+                console.log(signature)
+                return signature;
+            }
         } catch (err) {
-            setError(err);
+            console.error("Unexpected error:", err);
         }
     };
+    
 
     // Función para obtener una firma
     const getUserSignature = async () => {
         try {
             // Llama a la función get_signature del canister usando el actor
-            const signature = await user_signatures.get_signature(address);
+            const signature = await AnonymousaActorUserSiganeture.get_signature(address);
             return signature;
         } catch (err) {
-            setError(err);
             return null;
         }
     };
@@ -37,11 +43,10 @@ const useSignatureStorage = () => {
     // Función para verificar si existe una firma
     const hasUserSignature = async () => {
         try {
-            // Llama a la función has_signature del canister usando el actor
-            const hasSignature = await user_signatures.has_signature(address);
+            const hasSignature = await AnonymousaActorUserSiganeture.has_signature(address);
             return hasSignature;
         } catch (err) {
-            setError(err);
+            console.error(err)
             return false;
         }
     };
@@ -50,7 +55,6 @@ const useSignatureStorage = () => {
         addUserSignature,
         getUserSignature,
         hasUserSignature,
-        error
     };
 };
 

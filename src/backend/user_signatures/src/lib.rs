@@ -8,7 +8,6 @@ use b3_utils::caller_is_controller;
 #[derive(CandidType, Deserialize, Clone, Debug, PartialEq)]
 pub enum SignatureError {
     AlreadyExist,
-    InsertionFailed,
     NotExist
 }
 
@@ -26,9 +25,8 @@ fn add_signature(user_address: String, signature: String) -> Result<(), Signatur
         let mut signatures = signatures.borrow_mut();
         if signatures.contains_key(&user_address) {
             Err(SignatureError::AlreadyExist)
-        } else if signatures.insert(user_address.clone(), signature.clone()).is_none() {
-            Err(SignatureError::InsertionFailed)
         } else {
+            signatures.insert(user_address.clone(), signature.clone());
             Ok(())
         }
     })
