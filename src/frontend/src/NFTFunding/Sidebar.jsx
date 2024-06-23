@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import imagen from '../assets/imagen.png'
 import Tarjeta from '../assets/Tarjeta.png'
 import useUser from '../hooks/user/useuser.jsx';
-import { useSpring, useTransition, animated, config } from '@react-spring/web';
-const Sidebar = ({ onClose, isSidebarOpen }) => {
+import { useSpring, useTransition, animated } from '@react-spring/web';
+const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState('NFT');
   const {
     address,
@@ -11,8 +11,9 @@ const Sidebar = ({ onClose, isSidebarOpen }) => {
   } = useUser();
 
   const handlelogout = async () => {
-    console.log("Hola")
     await logout();
+    setIsSidebarOpen(false)
+    onClose;
   } 
 
   const transitions = useSpring({

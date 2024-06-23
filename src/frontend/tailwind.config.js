@@ -20,7 +20,7 @@ export default {
         'secondary-ligth': '#8a9de8',
         green: '#b1e5e3',
         'green-ligth': '#effcf9',
-        success: '#b1e5e3',
+        default: '#6377db'
       },
       fontSize: {
         'rem-8.75': '8.75rem',

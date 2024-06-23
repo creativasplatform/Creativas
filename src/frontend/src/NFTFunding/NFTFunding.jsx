@@ -11,17 +11,16 @@ import { SearchIcon } from "./SearchIcon.jsx";
 import { Input } from "@nextui-org/react";
 import writeicon from "../assets/write.png"
 import agendaicon from "../assets/agenda.png"
-
-import { today, getLocalTimeZone, } from "@internationalized/date";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-
+import "../index.scss"
+import { DatePicker } from "@nextui-org/react";
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({ title: '', description: '' });
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+
 
 
     const categories = [
@@ -60,13 +59,7 @@ const NFTFunding = () => {
         setCurrentStep(1);
     };
 
-    const handleCalendar = () => {
-        onOpen();
-    }
 
-    const handleCloseCalendar = () => {
-        onClose()
-    }
 
     const renderModalContent = () => {
         switch (currentStep) {
@@ -74,12 +67,12 @@ const NFTFunding = () => {
                 return (
                     <>
                         <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-                            <Input color='default' variant='faded'
+                            <Input color='default' variant='bordered'
                                 classNames={{
                                     base: 'max-w-full sm:max-w-[20rem] h-10  bg-[#202129]  rounded-lg ',
                                     mainWrapper: 'h-full',
                                     input: 'text-small outline-none ',
-                                    inputWrapper: 'h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ',
+                                    inputWrapper: 'h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-white dark:border-[#34343F]  rounded-lg ',
                                 }}
                                 placeholder="   Enter project category..."
                                 size="sm"
@@ -103,7 +96,7 @@ const NFTFunding = () => {
                                     />
 
                                     <div className="p-4">
-                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">{category.name}</h3>
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-900  text-center">{category.name}</h3>
                                     </div>
                                 </div>
                             ))}
@@ -112,7 +105,7 @@ const NFTFunding = () => {
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                             <button
                                 onClick={() => setCurrentStep(2)}
-                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 disabled={!selectedCategory}
                             >
                                 Next
@@ -136,7 +129,7 @@ const NFTFunding = () => {
                                         value={formData.title}
                                         placeholder="Creativas"
                                         onChange={handleInputChange}
-                                        className="mb-8 mt-2 w-[600px] text-white bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
+                                        className="mb-8 mt-2 w-[600px] text-white bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
                                 </div>
@@ -150,7 +143,7 @@ const NFTFunding = () => {
                                         placeholder="Project to improve our finances...."
                                         value={formData.description}
                                         onChange={handleInputChange}
-                                        className="mb-6 text-white w-[600px] bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
+                                        className="mb-6 text-white w-[600px] bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
                                         rows="8"
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
@@ -161,13 +154,13 @@ const NFTFunding = () => {
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                             <button
                                 onClick={handlePreviousStep}
-                                className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             >
                                 Previous
                             </button>
                             <button
                                 onClick={handleNextStep}
-                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth  focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             >
                                 Next
                             </button>
@@ -266,69 +259,22 @@ const NFTFunding = () => {
                                         No
                                     </label>
                                 </div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
-                                    Final day of project financing
-                                </label>
+
                                 <div className='relative -mt-4 mb-24'>
-                                    <button
-                                        type="button" // Cambiar el tipo a "button"
-                                        onClick={handleCalendar}
-                                        className="w-64 -mt-2 flex items-center justify-between -mt-3 mb-12 font-monserrat text-white bg-[#202129] hover:bg-[#4B4B54] border border-[#34343F] focus:outline-none font-thin rounded-lg text-sm px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                        <span className='text-gray-400'>Choose a date</span>
-                                    </button>
-
-
-                                    <img src={agendaicon} alt="Write Icon" className="w-5 h-5 ml-56 -mt-20" />
-
+                                    <div className="w-full flex flex-col gap-1">
+                                        <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
+                                            Final day of project financing
+                                        </label>
+                                        <DatePicker color='default' className='bg-[#202129] border-[#34343F] rounded-lg' 
+                                            label="Choose a date"
+                                            variant="bordered"
+                                            showMonthAndYearPickers
+                                        
+                                        />
+                                    </div>
 
                                 </div>
-                                <Modal backdrop="opaque"
-                                    isOpen={isOpen}
-                                    onOpenChange={onOpenChange}
-                                    radius="lg"
-                                    classNames={{
-                                        body: "py-6",
-                                        backdrop: "bg-customblack/50 backdrop-opacity-40",
-                                        base: "border-[#292f46] bg-gray-800 dark:bg-gray-800 text-white h-[550px]",
-                                        header: "border-b-[1px] border-[#292f46] bg-[#31323E]",
-                                        footer: "border-t-[1px] border-gray-700 ",
 
-                                    }}
-                                >
-                                    <ModalContent>
-                                        {(handleCloseCalendar) => (
-                                            <>
-                                                <ModalHeader className="flex flex-col gap-1">Choose a date</ModalHeader>
-                                                <ModalBody>
-                                                    <Calendar
-                                                        aria-label="Date (Min Date Value)"
-                                                        defaultValue={today(getLocalTimeZone())}
-                                                        minValue={today(getLocalTimeZone())}
-                                                        classNames={{
-                                                            base: 'text-white rounded-lg bg-gray-800',
-                                                            headerWrapper: 'p-2 rounded-t-lg bg-[#31323E]',
-                                                            header: 'text-white',
-                                                            title: 'text-white font-bold',
-                                                            gridWrapper: 'p-2 rounded-b-lg',
-                                                            grid: 'text-white',
-                                                            gridHeader: 'text-white  bg-gray-800',
-
-                                                        }}
-                                                    />
-
-                                                </ModalBody>
-                                                <ModalFooter>
-
-                                                    <Button className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                                        onPress={handleCloseCalendar}>
-                                                        Next
-                                                    </Button>
-                                                </ModalFooter>
-                                            </>
-                                        )}
-                                    </ModalContent>
-                                </Modal>
 
                             </div>
 

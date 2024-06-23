@@ -225,7 +225,7 @@ const Navbar = () => {
           <img src={CreativasLogo} className="h-10 w-200" alt="Creativas Logo" />
           <button
             type="button"
-            className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
+            className="text-white bg-secondary hover:bg-secondary-ligth dark:bg-secondary dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
             onClick={handleOpenLoginModal}
           >
             <img src={explorerIcon} className="h-4 w-4 mr-2" alt="Explorer Icon" />
@@ -234,7 +234,7 @@ const Navbar = () => {
         </a>
 
         <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-          <Input color='default' variant='faded'
+          <Input color='default' variant='bordered'
             classNames={{
               base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
               mainWrapper: "h-full",
@@ -303,7 +303,7 @@ const Navbar = () => {
                   {isSidebarOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end">
                       <div className="relative">
-                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen}/>
+                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
                       </div>
                     </div>
                   )}
@@ -311,7 +311,7 @@ const Navbar = () => {
               ) : (
                 <button
                   type="button"
-                  className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="text-white bg-gray-800 hover:bg-gray-600 dark:bg-gray-800  dark:hover:bg-gray-600  focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   onClick={handleOpenLoginModal}
                 >
 
@@ -358,11 +358,11 @@ const Navbar = () => {
                 <p className="text-center text-lg text-white font-thin">Log in</p>
                 <div className="space-y-4">
                   <button
-                    className="w-full px-4 py-2 text-sm font-thin text-white bg-[#19191E] rounded-lg hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-600 dark:hover:bg-gray-600"
+                    className="w-full px-4 py-2 text-sm font-thin text-black bg-[#19191E] rounded-lg hover:bg-gray-700 dark:[#19191E] dark:text-white dark:hover:bg-gray-700"
                     onClick={handleLoginWallet}
                   >
                     <img src={walleticon} className="inline-block w-4 h-4 mr-2" alt="Wallet Icon" />
-                    Wallets
+                    Wallet
                   </button>
 
                   <div className="flex items-center justify-center space-x-4 mt-2">
@@ -372,7 +372,7 @@ const Navbar = () => {
                   </div>
 
                   <button
-                    className="w-full px-4 py-2 text-sm font-thin text-white bg-[#19191E] rounded-lg hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-600 dark:hover:bg-gray-600"
+                    className="w-full px-4 py-2 text-sm font-thin text-black bg-[#19191E] rounded-lg hover:bg-gray-700 dark:[#19191E] dark:text-white dark:hover:bg-gray-700"
                     onClick={handleLoginWeb3Auth}
                   >
                     <img src={googleicon} className="inline-block w-4 h-4 mr-2" alt="Google Icon" />
