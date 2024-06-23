@@ -1,162 +1,122 @@
+// src/NFTFunding/BodyMarketplace.jsx
 import React, { useState } from 'react';
-import { Input } from '@nextui-org/react';
-import { Image } from '@nextui-org/react';
-import SearchIcon from './SearchIcon';
-import StepProgress from './StepProgress';
 import NavbarMarketplace from './NavbarMarketplace';
-import writeicon from '../assets/write.png';
-import agendaicon from '../assets/agenda.png';
-import categoriaone from '../assets/categories/categoria1.png';
-import categoriatwo from '../assets/categories/categoria2.png';
-import categoriathree from '../assets/categories/categoria3.png';
+import StepProgress from './StepProgress';
+import Categories from './Categories';
+import categoriaone from "../assets/categories/categoria1.png"
+import categoriatwo from "../assets/categories/categoria2.png"
+import categoriathree from "../assets/categories/categoria3.png"
+import { Calendar, Image } from '@nextui-org/react';
+import { SearchIcon } from "./SearchIcon.jsx";
+import { Input } from "@nextui-org/react";
+import writeicon from "../assets/write.png"
+import agendaicon from "../assets/agenda.png"
+
+import { today, getLocalTimeZone, } from "@internationalized/date";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+
 
 const NFTFunding = () => {
-  const [openModal, setOpenModal] = useState(null);
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({ title: '', description: '' });
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [OpenCalendar, setOpenCalendar] = useState(false);
+    const [openModal, setOpenModal] = useState(null);
+    const [currentStep, setCurrentStep] = useState(1);
+    const [formData, setFormData] = useState({ title: '', description: '' });
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
-  const categories = [
-    { id: 1, name: 'Technology', image: categoriatwo },
-    { id: 2, name: 'Gaming', image: categoriatwo },
-    { id: 3, name: 'Music', image: categoriathree },
-    { id: 4, name: 'Movies', image: categoriatwo },
-  ];
 
-  const handleOpenModal = (modalId) => {
-    setOpenModal(modalId);
-  };
+    const categories = [
+        { id: 1, name: 'Technology', image: categoriatwo },
+        { id: 2, name: 'Gaming', image: categoriatwo },
+        { id: 3, name: 'Music', image: categoriathree },
+        { id: 4, name: 'Movies', image: categoriatwo },
+    ];
 
-  const handleCloseModal = () => {
-    setOpenModal(null);
-    setCurrentStep(1);
-    setSelectedCategory(null);
-    setFormData({ title: '', description: '' }); // Limpiar formData al cerrar el modal
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const handleOpenModal = (modalId) => {
+        setOpenModal(modalId);
+    };
 
-  const handleCategorySelect = (categoryId) => {
-    setSelectedCategory(categoryId);
-  };
+    const handleCloseModal = () => {
+        setOpenModal(null);
+        setCurrentStep(1);
+        setSelectedCategory(null);
+        setFormData({ title: '', description: '' });
+    };
 
-  const handleNextStep = () => {
-    setCurrentStep(3); // Cambiar al paso 3
-    // Aquí podrías realizar alguna acción adicional si es necesario
-  };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
-  const handlePreviousStep = () => {
-    setCurrentStep(1); // Volver al paso 1
-  };
+    const handleCategorySelect = (categoryId) => {
+        setSelectedCategory(categoryId);
+    };
 
-  const renderModalContent = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <>
-            <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-              <Input
-                classNames={{
-                  base: 'max-w-full sm:max-w-[20rem] h-10  bg-[#202129]  rounded-lg ',
-                  mainWrapper: 'h-full',
-                  input: 'text-small outline-none ',
-                  inputWrapper: 'h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ',
-                }}
-                placeholder="   Enter project category..."
-                size="sm"
-                startContent={<SearchIcon size={18} />}
-                type="search"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  className={`relative rounded-lg shadow cursor-pointer ${
-                    selectedCategory === category.id ? 'border-2 border-secondary' : ''
-                  }`}
-                  onClick={() => handleCategorySelect(category.id)}
-                  style={{ background: 'linear-gradient(to bottom, black 50%, white 50%)' }}
-                >
-                  <img
-                    className="rounded-lg w-full h-[200px] object-cover rounded-t-lg"
-                    src={category.image}
-                    alt={category.name}
-                  />
+    const handleNextStep = () => {
+        setCurrentStep(3);
+    };
 
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">{category.name}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-end mt-4">
-              <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
-              <button
-                onClick={() => setCurrentStep(2)}
-                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                disabled={!selectedCategory}
-              >
-                Next
-              </button>
-            </div>
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <form className="space-y-4 max-w-lg ml-40">
-              <div>
-                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 ml-1">
-                  Project Title
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    value={formData.title}
-                    placeholder="Creativas"
-                    onChange={handleInputChange}
-                    className="mb-8 mt-2 w-[600px] text-white bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
-                  />
-                  <img src={writeicon} alt="Write Icon" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
-                </div>
-                <div className="relative">
-                  <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 mb-2">
-                    Project Description
-                  </label>
-                  <textarea
-                    name="description"
-                    id="description"
-                    placeholder="Project to improve our finances...."
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    className="mb-6 text-white w-[600px] bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
-                    rows="8"
-                  />
-                  <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
-                </div>
-              </div>
-            </form>
-            <div className="flex justify-end mt-4">
-              <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
-              <button
-                onClick={handlePreviousStep}
-                className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Previous
-              </button>
-              <button
-                onClick={handleNextStep}
-                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
+    const handlePreviousStep = () => {
+        setCurrentStep(1);
+    };
+
+    const handleCalendar = () => {
+        onOpen();
+    }
+
+    const handleCloseCalendar = () => {
+        onClose()
+    }
+
+    const renderModalContent = () => {
+        switch (currentStep) {
+            case 1:
+                return (
+                    <>
+                        <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
+                            <Input color='default' variant='faded'
+                                classNames={{
+                                    base: 'max-w-full sm:max-w-[20rem] h-10  bg-[#202129]  rounded-lg ',
+                                    mainWrapper: 'h-full',
+                                    input: 'text-small outline-none ',
+                                    inputWrapper: 'h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ',
+                                }}
+                                placeholder="   Enter project category..."
+                                size="sm"
+                                startContent={<SearchIcon size={18} />}
+                                type="search"
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {categories.map((category) => (
+                                <div
+                                    key={category.id}
+                                    className={`relative rounded-lg shadow cursor-pointer ${selectedCategory === category.id ? 'border-2 border-secondary' : ''
+                                        }`}
+                                    onClick={() => handleCategorySelect(category.id)}
+                                    style={{ background: 'linear-gradient(to bottom, black 50%, white 50%)' }}
+                                >
+                                    <img
+                                        className="rounded-lg w-full h-[200px] object-cover rounded-t-lg"
+                                        src={category.image}
+                                        alt={category.name}
+                                    />
+
+                                    <div className="p-4">
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">{category.name}</h3>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex justify-end mt-4">
+                            <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
+                            <button
+                                onClick={() => setCurrentStep(2)}
+                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                disabled={!selectedCategory}
+                            >
+                                Next
+                            </button>
                         </div>
                     </>
                 );
@@ -168,55 +128,47 @@ const NFTFunding = () => {
                                 <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 ml-1">
                                     Project Title
                                 </label>
-
-                                <div className='relative'>
+                                <div className="relative">
                                     <input
-
                                         type="text"
                                         name="title"
                                         id="title"
                                         value={formData.title}
-                                        placeholder='Creativas'
+                                        placeholder="Creativas"
                                         onChange={handleInputChange}
-
                                         className="mb-8 mt-2 w-[600px] text-white bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
-
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
                                 </div>
-                                <div className='relative'>
+                                <div className="relative">
                                     <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 mb-2">
                                         Project Description
                                     </label>
                                     <textarea
                                         name="description"
                                         id="description"
-                                        placeholder='Project to improve our finances....'
+                                        placeholder="Project to improve our finances...."
                                         value={formData.description}
                                         onChange={handleInputChange}
-
                                         className="mb-6 text-white w-[600px] bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
                                         rows="8"
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
                                 </div>
                             </div>
-
                         </form>
-
-
                         <div className="flex justify-end mt-4">
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
-
                             <button
-                                onClick={() => setCurrentStep(1)}
-                                className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-
+                                onClick={handlePreviousStep}
+                                className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
                                 Previous
                             </button>
                             <button
-                                onClick={() => setCurrentStep(3)}
-                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                onClick={handleNextStep}
+                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
                                 Next
                             </button>
 
@@ -234,7 +186,7 @@ const NFTFunding = () => {
                                 <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1 mb-1">
                                     Funding objective
                                 </label>
-                                <Input
+                                <Input color='default' variant='faded'
                                     classNames={{
                                         base: "max-w-full sm:max-w-[20rem] h-10  bg-[#34343F] mb-4 rounded-lg",
                                         mainWrapper: "h-full",
@@ -317,22 +269,70 @@ const NFTFunding = () => {
                                 <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
                                     Final day of project financing
                                 </label>
-                                <div className='relative -mt-4 mb-8'>
+                                <div className='relative -mt-4 mb-24'>
                                     <button
-                                        onClick={handlebutton}
-                                        className="w-64 -mt-2 flex items-center justify-between -mt-3 mb-12 font-monserrat text-white bg-[#202129] hover:bg-[#4B4B54] border border-[#34343F] focus:outline-none font-thin rounded-lg text-sm px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        type="button" // Cambiar el tipo a "button"
+                                        onClick={handleCalendar}
+                                        className="w-64 -mt-2 flex items-center justify-between -mt-3 mb-12 font-monserrat text-white bg-[#202129] hover:bg-[#4B4B54] border border-[#34343F] focus:outline-none font-thin rounded-lg text-sm px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >
                                         <span className='text-gray-400'>Choose a date</span>
-                                      
                                     </button>
+
+
                                     <img src={agendaicon} alt="Write Icon" className="w-5 h-5 ml-56 -mt-20" />
-                                        
+
+
                                 </div>
+                                <Modal backdrop="opaque"
+                                    isOpen={isOpen}
+                                    onOpenChange={onOpenChange}
+                                    radius="lg"
+                                    classNames={{
+                                        body: "py-6",
+                                        backdrop: "bg-customblack/50 backdrop-opacity-40",
+                                        base: "border-[#292f46] bg-gray-800 dark:bg-gray-800 text-white h-[550px]",
+                                        header: "border-b-[1px] border-[#292f46] bg-[#31323E]",
+                                        footer: "border-t-[1px] border-gray-700 ",
+
+                                    }}
+                                >
+                                    <ModalContent>
+                                        {(handleCloseCalendar) => (
+                                            <>
+                                                <ModalHeader className="flex flex-col gap-1">Choose a date</ModalHeader>
+                                                <ModalBody>
+                                                    <Calendar
+                                                        aria-label="Date (Min Date Value)"
+                                                        defaultValue={today(getLocalTimeZone())}
+                                                        minValue={today(getLocalTimeZone())}
+                                                        classNames={{
+                                                            base: 'text-white rounded-lg bg-gray-800',
+                                                            headerWrapper: 'p-2 rounded-t-lg bg-[#31323E]',
+                                                            header: 'text-white',
+                                                            title: 'text-white font-bold',
+                                                            gridWrapper: 'p-2 rounded-b-lg',
+                                                            grid: 'text-white',
+                                                            gridHeader: 'text-white  bg-gray-800',
+
+                                                        }}
+                                                    />
+
+                                                </ModalBody>
+                                                <ModalFooter>
+
+                                                    <Button className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                        onPress={handleCloseCalendar}>
+                                                        Next
+                                                    </Button>
+                                                </ModalFooter>
+                                            </>
+                                        )}
+                                    </ModalContent>
+                                </Modal>
 
                             </div>
 
                         </form>
-
-
 
                         <div className="flex justify-end">
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>

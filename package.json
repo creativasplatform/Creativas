@@ -21,6 +21,8 @@
     "@dfinity/candid": "^0.15.7",
     "@dfinity/identity": "^0.15.1",
     "@dfinity/principal": "^0.15.7",
+    "@nextui-org/react": "^2.3.6",
+    "framer-motion": "^11.2.11",
     "vite-plugin-environment": "^1.1.3"
   }
 }

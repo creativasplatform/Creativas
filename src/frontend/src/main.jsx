@@ -12,7 +12,9 @@ root.render(
   <React.StrictMode>
     <NextUIProvider>
     <Router>
+    <main className="ligth">
       <App />
+      </main>
     </Router>
     </NextUIProvider>
   </React.StrictMode>

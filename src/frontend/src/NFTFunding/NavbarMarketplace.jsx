@@ -234,9 +234,9 @@ const Navbar = () => {
         </a>
 
         <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-          <Input
+          <Input color='default' variant='faded'
             classNames={{
-              base: "max-w-full sm:max-w-[20rem] h-10  bg-white  rounded-lg ",
+              base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
               mainWrapper: "h-full",
               input: "text-small outline-none ",
               inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg ",
@@ -262,7 +262,9 @@ const Navbar = () => {
         </div>
         <div className="hidden w-full md:block md:w-auto mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 -mr-4">
-            <li><Chain /></li>
+         {!isSidebarOpen && (
+                     <Chain />
+                  )}
             <li className="mb-2 md:mb-0">
               {isLoggedIn ? (
                 <div className="relative">
