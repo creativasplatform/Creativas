@@ -12,7 +12,9 @@ root.render(
   <React.StrictMode>
     <NextUIProvider>
     <Router>
+    <main className="dark">
       <App />
+      </main>
     </Router>
     </NextUIProvider>
   </React.StrictMode>

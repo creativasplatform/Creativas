@@ -6,12 +6,14 @@ import Categories from './Categories';
 import categoriaone from "../assets/categories/categoria1.png"
 import categoriatwo from "../assets/categories/categoria2.png"
 import categoriathree from "../assets/categories/categoria3.png"
-import { Image } from '@nextui-org/react';
+import { Calendar, Image } from '@nextui-org/react';
 import { SearchIcon } from "./SearchIcon.jsx";
 import { Input } from "@nextui-org/react";
 import writeicon from "../assets/write.png"
 import agendaicon from "../assets/agenda.png"
-
+import "../index.scss"
+import { DatePicker } from "@nextui-org/react";
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
@@ -19,15 +21,15 @@ const NFTFunding = () => {
     const [formData, setFormData] = useState({ title: '', description: '' });
     const [selectedCategory, setSelectedCategory] = useState(null);
 
+
+
     const categories = [
-        { id: 1, name: "Technology", image: categoriatwo },
-        { id: 2, name: "Gaming", image: categoriatwo },
-        { id: 3, name: "Music", image: categoriathree },
-        { id: 4, name: "Movies", image: categoriatwo },
-
-
-
+        { id: 1, name: 'Technology', image: categoriatwo },
+        { id: 2, name: 'Gaming', image: categoriatwo },
+        { id: 3, name: 'Music', image: categoriathree },
+        { id: 4, name: 'Movies', image: categoriatwo },
     ];
+
 
     const handleOpenModal = (modalId) => {
         setOpenModal(modalId);
@@ -37,6 +39,7 @@ const NFTFunding = () => {
         setOpenModal(null);
         setCurrentStep(1);
         setSelectedCategory(null);
+        setFormData({ title: '', description: '' });
     };
 
     const handleInputChange = (e) => {
@@ -48,26 +51,28 @@ const NFTFunding = () => {
         setSelectedCategory(categoryId);
     };
 
-    const handleCalendar = (e) => {
-        e.preventDefault();
-       
-    }
+    const handleNextStep = () => {
+        setCurrentStep(3);
+    };
 
-    const handlebutton = () => {
-        console.log("Funciona")
-    }
+    const handlePreviousStep = () => {
+        setCurrentStep(1);
+    };
+
+
+
     const renderModalContent = () => {
         switch (currentStep) {
             case 1:
                 return (
                     <>
                         <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-                            <Input
+                            <Input color='default' variant='bordered'
                                 classNames={{
-                                    base: "max-w-full sm:max-w-[20rem] h-10  bg-[#202129]  rounded-lg ",
-                                    mainWrapper: "h-full",
-                                    input: "text-small outline-none ",
-                                    inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
+                                    base: 'max-w-full sm:max-w-[20rem] h-10 rounded-lg ',
+                                    mainWrapper: 'h-full',
+                                    input: 'text-small outline-none ',
+                                    inputWrapper: 'h-full font-thin text-white bg-[#202129] dark:bg-[#202129] border border-white dark:border-[#34343F]  rounded-lg ',
                                 }}
                                 placeholder="   Enter project category..."
                                 size="sm"
@@ -77,15 +82,13 @@ const NFTFunding = () => {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             {categories.map((category) => (
-
                                 <div
-
                                     key={category.id}
-                                    className={`relative rounded-lg shadow cursor-pointer ${selectedCategory === category.id ? 'border-2 border-secondary' : ''}`}
+                                    className={`relative mb-4 rounded-lg shadow cursor-pointer ${selectedCategory === category.id ? 'border-2 border-secondary' : ''
+                                        }`}
                                     onClick={() => handleCategorySelect(category.id)}
                                     style={{ background: 'linear-gradient(to bottom, black 50%, white 50%)' }}
                                 >
-
                                     <img
                                         className="rounded-lg w-full h-[200px] object-cover rounded-t-lg"
                                         src={category.image}
@@ -93,19 +96,17 @@ const NFTFunding = () => {
                                     />
 
                                     <div className="p-4">
-                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">{category.name}</h3>
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-900  text-center">{category.name}</h3>
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className="flex justify-end mt-4">
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
-
-
                             <button
                                 onClick={() => setCurrentStep(2)}
-                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                disabled={!selectedCategory} // Desactiva el botón si no hay categoría seleccionada
+                                className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                disabled={!selectedCategory}
                             >
                                 Next
                             </button>
@@ -120,55 +121,47 @@ const NFTFunding = () => {
                                 <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 ml-1">
                                     Project Title
                                 </label>
-
-                                <div className='relative'>
+                                <div className="relative">
                                     <input
-
                                         type="text"
                                         name="title"
                                         id="title"
                                         value={formData.title}
-                                        placeholder='Creativas'
+                                        placeholder="Creativas"
                                         onChange={handleInputChange}
-
-                                        className="mb-8 mt-2 w-[600px] text-white bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
-
+                                        className="mb-8 mt-2 w-[600px] bg-[#202129] dark:bg-[#202129]  text-white mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
                                 </div>
-                                <div className='relative'>
+                                <div className="relative">
                                     <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 mb-2">
                                         Project Description
                                     </label>
                                     <textarea
                                         name="description"
                                         id="description"
-                                        placeholder='Project to improve our finances....'
+                                        placeholder="Project to improve our finances...."
                                         value={formData.description}
                                         onChange={handleInputChange}
-
-                                        className="mb-6 text-white w-[600px] bg-[#202129] mt-1 block p-2 border border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700"
+                                        className="mb-10 text-white w-[600px] bg-[#202129] dark:bg-[#202129]  mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                         rows="8"
                                     />
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
                                 </div>
                             </div>
-
                         </form>
-
-
                         <div className="flex justify-end mt-4">
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
-
                             <button
-                                onClick={() => setCurrentStep(1)}
-                                className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-
+                                onClick={handlePreviousStep}
+                                className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800"
+                            >
                                 Previous
                             </button>
                             <button
-                                onClick={() => setCurrentStep(3)}
-                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                onClick={handleNextStep}
+                                className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth  focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
                                 Next
                             </button>
 
@@ -181,17 +174,17 @@ const NFTFunding = () => {
                         <h3 className="text-xl font-semibold text-[#D5D6E1] ml-14">
                             Project specification
                         </h3>
-                        <form onSubmit={handleCalendar} className="space-y-4 max-w-lg -ml-20">
+                        <form className="space-y-4 max-w-lg -ml-20">
                             <div>
                                 <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1 mb-1">
                                     Funding objective
                                 </label>
-                                <Input
+                                <Input color='default' variant='faded'
                                     classNames={{
                                         base: "max-w-full sm:max-w-[20rem] h-10  bg-[#34343F] mb-4 rounded-lg",
                                         mainWrapper: "h-full",
                                         input: "text-small outline-none ",
-                                        inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#19191E] border border-[#34343F] rounded-lg ",
+                                        inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#202129] border border-[#34343F] rounded-lg ",
                                     }}
                                     labelPlacement="outside"
                                     startContent={
@@ -247,7 +240,7 @@ const NFTFunding = () => {
                                     </label>
                                 </div>
 
-                                <div class="inline-flex items-center">
+                                <div class="inline-flex items-center mb-4">
                                     <label class="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="check">
                                         <input type="checkbox"
                                             class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
@@ -266,38 +259,44 @@ const NFTFunding = () => {
                                         No
                                     </label>
                                 </div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
-                                    Final day of project financing
-                                </label>
-                                <div className='relative -mt-4 mb-8'>
-                                    <button
-                                        onClick={handlebutton}
-                                        className="w-64 -mt-2 flex items-center justify-between -mt-3 mb-12 font-monserrat text-white bg-[#202129] hover:bg-[#4B4B54] border border-[#34343F] focus:outline-none font-thin rounded-lg text-sm px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <span className='text-gray-400'>Choose a date</span>
-                                      
-                                    </button>
-                                    <img src={agendaicon} alt="Write Icon" className="w-5 h-5 ml-56 -mt-20" />
+
+                                <div className='relative mb-24'>
+                                    <div className="w-full flex flex-col gap-1">
+                                        <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
+                                            Final day of project financing
+                                        </label>
+                                        <DatePicker color='default' className='bg-[#202129] rounded-xl' 
+                                            label="Choose a date"
+                                            variant="bordered"
+                                            showMonthAndYearPickers
+                                            minValue={today(getLocalTimeZone())}
+                                            defaultValue={today(getLocalTimeZone())}
+                                    
+                                            classNames={{
+                                                errorMessage: 'text-black'
+                                            }}
                                         
+                                        />
+                                    </div>
+
                                 </div>
+
 
                             </div>
 
                         </form>
 
-
-
                         <div className="flex justify-end">
                             <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                             <button
                                 onClick={() => setCurrentStep(2)}
-                                className="mr-4 text-white bg-[#444553] hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-
+                                className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800">
                                 Previous
                             </button>
                             <button
                                 onClick={() => setOpenModal('verification-modal')}
-                                className="text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Next
+                                className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth  focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                >    Next
                             </button>
                         </div>
                     </>
@@ -348,7 +347,7 @@ const NFTFunding = () => {
                     <div className="relative w-full max-w-4xl max-h-[100vh] min-w-[40vw]">
                         <div className="relative bg-black rounded-lg shadow dark:bg-gray-800 h-full" >
                             <div className="flex flex-col h-full">
-                                <div className="p-4 bg-[#31323E] rounded-t-lg flex justify-between items-center ">
+                                <div className="p-4 bg-[#31323E] dark:bg-[#31323E] rounded-t-lg flex justify-between items-center ">
                                     <h3 className="text-xl font-semibold text-white">
                                         Create Project
                                     </h3>
@@ -392,13 +391,13 @@ const NFTFunding = () => {
                 <div
                     id="verification-modal"
                     tabIndex="-1"
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full"
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full "
                 >
-                    <div className="relative w-full max-w-2xl min-h-[60vh]"> {/* Establecer altura mínima */}
-                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-800 h-full">
-                            <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-700">
-                                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                                    Verify and Complete
+                    <div className="relative  w-full max-w-2xl min-h-[60vh]"> {/* Establecer altura mínima */}
+                        <div className="relative rounded-lg shadow dark:bg-gray-800 h-full">
+                            <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-700  bg-[#31323E] dark:bg-[#31323E]">
+                            <h3 className="text-xl font-semibold text-white dark:text-white">
+                                    Choose project images
                                 </h3>
                                 <button
                                     type="button"
