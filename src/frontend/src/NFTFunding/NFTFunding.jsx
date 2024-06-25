@@ -28,7 +28,7 @@ const NFTFunding = () => {
     const [hasRewards, setHasRewards] = useState(false);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [errors, setErrors] = useState({});
-
+    const [cards, setCards] = useState([{ id: 1 }, { id: 2 }]);
 
     const categories = [
         { id: 1, name: 'Technology', image: categoriatwo },
@@ -37,9 +37,23 @@ const NFTFunding = () => {
         { id: 4, name: 'Movies', image: categoriatwo },
     ];
 
+
+    const addCard = () => {
+        const newId = cards.length ? cards[cards.length - 1].id + 1 : 1;
+        setCards([...cards, { id: newId }]);
+    };
+
+    const removeCard = () => {
+        const newCards = cards.slice(0, -1); // Remove the last card
+        setCards(newCards);
+        if (newCards.length === 0) onClose(); // Close modal if no cards left
+    };
+
+
     const handleCheckboxChange = (value) => {
         setHasRewards(value);
         if (value) {
+
             onOpen();
         }
     };
@@ -50,7 +64,7 @@ const NFTFunding = () => {
             setHasRewards(false);
         }
     }, [isOpen]);
-    
+
     const handleModalClose = () => {
         onClose();
         setHasRewards(false);
@@ -148,56 +162,56 @@ const NFTFunding = () => {
             case 2:
                 return (
                     <>
-                          <form className="space-y-4 max-w-lg ml-40">
-                <div>
-                    <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 ml-1">
-                        Project Title
-                    </label>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="title"
-                            id="title"
-                            value={formData.title}
-                            placeholder="Creativas"
-                            onChange={handleInputChange}
-                            className={`mb-8 mt-2 w-[600px] bg-[#202129] dark:bg-[#202129] text-white mt-1 block p-2 border ${errors.title ? 'border-red-500' : 'border-[#34343F]'} dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                        />
-                        {errors.title && <p className="text-[#E16060] text-xs mt-1">{errors.title}</p>}
-                        <img src={writeicon} alt="Write Icon" className={`absolute right-2  ${errors.title ? 'top-1/4' : 'top-1/2'} transform -translate-y-1/2 w-5 h-5`} />
-                    </div>
-                    <div className="relative">
-                        <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 mt-4 mb-2">
-                            Project Description
-                        </label>
-                        <textarea
-                            name="description"
-                            id="description"
-                            placeholder="Project to improve our finances...."
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            className={`mb-8  text-white w-[600px] bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border ${errors.description ? 'border-red-500' : 'border-[#34343F]'} dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                            rows="8"
-                        />
-                        {errors.description && <p className="text-[#E16060] text-xs mt-1">{errors.description}</p>}
-                        <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
-                    </div>
-                </div>
-            </form>
-            <div className="flex justify-end mt-4">
-                <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
-                <button
-                    onClick={handlePreviousStep}
-                    className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800"
-                >
-                    Previous
-                </button>
-                <button
-                    onClick={handleNextStep}
-                    className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                    Next
-                </button>
+                        <form className="space-y-4 max-w-lg ml-40">
+                            <div>
+                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] mt-4 ml-1">
+                                    Project Title
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        id="title"
+                                        value={formData.title}
+                                        placeholder="Creativas"
+                                        onChange={handleInputChange}
+                                        className={`mb-8 mt-2 w-[600px] bg-[#202129] dark:bg-[#202129] text-white mt-1 block p-2 border ${errors.title ? 'border-red-500' : 'border-[#34343F]'} dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                                    />
+                                    {errors.title && <p className="text-[#E16060] text-xs mt-1">{errors.title}</p>}
+                                    <img src={writeicon} alt="Write Icon" className={`absolute right-2  ${errors.title ? 'top-1/4' : 'top-1/2'} transform -translate-y-1/2 w-5 h-5`} />
+                                </div>
+                                <div className="relative">
+                                    <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] mt-4 mb-2">
+                                        Project Description
+                                    </label>
+                                    <textarea
+                                        name="description"
+                                        id="description"
+                                        placeholder="Project to improve our finances...."
+                                        value={formData.description}
+                                        onChange={handleInputChange}
+                                        className={`mb-8  text-white w-[600px] bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border ${errors.description ? 'border-red-500' : 'border-[#34343F]'} dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                                        rows="8"
+                                    />
+                                    {errors.description && <p className="text-[#E16060] text-xs mt-1">{errors.description}</p>}
+                                    <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
+                                </div>
+                            </div>
+                        </form>
+                        <div className="flex justify-end mt-4">
+                            <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
+                            <button
+                                onClick={handlePreviousStep}
+                                className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                onClick={handleNextStep}
+                                className="text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                Next
+                            </button>
 
                         </div>
                     </>
@@ -210,7 +224,7 @@ const NFTFunding = () => {
                         </h3>
                         <form className="space-y-4 max-w-lg -ml-16">
                             <div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1 mb-1">
+                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-2 ml-1 mb-1">
                                     Funding objective
                                 </label>
                                 <Input color='default' variant='faded'
@@ -250,105 +264,230 @@ const NFTFunding = () => {
                                 <div className='relative'>
 
                                 </div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-2 ml-1">
-                With reward?
-            </label>
+                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-2 ml-1">
+                                    With reward?
+                                </label>
 
-            <div className="inline-flex items-center -ml-2 mb-4">
-                <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="checkYes">
-                    <input
-                        type="checkbox"
-                        className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
-                        id="checkYes"
-                        checked={hasRewards}
-                        onChange={() => handleCheckboxChange(true)}
-                    />
-                    <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                        </svg>
-                    </span>
-                </label>
-                <label className="mt-px font-medium text-sm text-[#D5D6E1] cursor-pointer select-none -ml-2" htmlFor="checkYes" onClick={() => handleCheckboxChange(true)}>
-                    Yes
-                </label>
-            </div>
+                                <div className="inline-flex items-center -ml-2 mb-4">
+                                    <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="checkYes">
+                                        <input
+                                            type="checkbox"
+                                            className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+                                            id="checkYes"
+                                            checked={hasRewards}
+                                            onChange={() => handleCheckboxChange(true)}
+                                        />
+                                        <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                    <label className="mt-px font-medium text-sm text-[#D5D6E1] cursor-pointer select-none -ml-2" htmlFor="checkYes" onClick={() => handleCheckboxChange(true)}>
+                                        Yes
+                                    </label>
+                                </div>
 
-            <div className="inline-flex items-center mb-4">
-                <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="checkNo">
-                    <input
-                        type="checkbox"
-                        className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
-                        id="checkNo"
-                        checked={!hasRewards}
-                        onChange={() => handleCheckboxChange(false)}
-                    />
-                    <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                        </svg>
-                    </span>
-                </label>
-                <label className="mt-px font-medium text-sm text-[#D5D6E1] cursor-pointer select-none -ml-2" htmlFor="checkNo" onClick={() => handleCheckboxChange(false)}>
-                    No
-                </label>
-            </div>
+                                <div className="inline-flex items-center mb-4">
+                                    <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="checkNo">
+                                        <input
+                                            type="checkbox"
+                                            className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-[#64677C] bg-[#202129] transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+                                            id="checkNo"
+                                            checked={!hasRewards}
+                                            onChange={() => handleCheckboxChange(false)}
+                                        />
+                                        <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                    <label className="mt-px font-medium text-sm text-[#D5D6E1] cursor-pointer select-none -ml-2" htmlFor="checkNo" onClick={() => handleCheckboxChange(false)}>
+                                        No
+                                    </label>
+                                </div>
 
-            <Modal
-                backdrop="opaque"
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                motionProps={{
-                    variants: {
-                        enter: {
-                            y: 0,
-                            opacity: 1,
-                            transition: {
-                                duration: 0.3,
-                                ease: "easeOut",
-                            },
-                        },
-                        exit: {
-                            y: -20,
-                            opacity: 0,
-                            transition: {
-                                duration: 0.2,
-                                ease: "easeIn",
-                            },
-                        },
-                    }
-                }}
-            >
-                <ModalContent>
-                    {() => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                            <ModalBody>
-                                <p>
-                                   Modal Rewards
-                                </p>
-                                <p>
-                                   Modal Rewards
-                                </p>
-                                <p>
-                                   Moda Rewards
-                                </p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={() => handleModalClose()}>
-                                    Close
-                                </Button>
-                                <Button color="primary">
-                                    Action
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+                                <Modal
+                                    size='xl'
+                                    backdrop="opaque"
+                                    isOpen={isOpen}
+                                    onOpenChange={onOpenChange}
+                                    motionProps={{
+                                        variants: {
+                                            enter: {
+                                                y: 0,
+                                                opacity: 1,
+                                                transition: {
+                                                    duration: 0.3,
+                                                    ease: "easeOut",
+                                                },
+                                            },
+                                            exit: {
+                                                y: -20,
+                                                opacity: 0,
+                                                transition: {
+                                                    duration: 0.2,
+                                                    ease: "easeIn",
+                                                },
+                                            },
+                                        }
+                                    }}
+                                    classNames={{
+                                        body: "py-6",
+                                        backdrop: "bg-customblack/50 backdrop-opacity-40",
+                                        base: "border-gray-600 bg-[#31323E] dark:bg-[#31323E] text-white",
+                                        header: "border-b-[1px] border-gray-500",
+                                        footer: "border-t-[1px] border-gray-500",
+                                        closeButton: "hover:bg-white/5 active:bg-white/10",
+                                    }}
+                                >
+                                    <ModalContent>
+                                        {() => (
+                                            <>
+                                                <ModalHeader className="flex flex-col gap-1">Tell us about your rewards</ModalHeader>
+                                                <ModalBody>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                        {cards.map((card) => (
+                                                            <div key={card.id} className="card bg-gray-800 p-4 rounded-lg w-full max-w-sm">
+                                                                <div className="flex justify-between items-center mb-4">
+                                                                    <div>Reward #{card.id}</div>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="text-gray-400 bg-transparent hover:bg-gray-500 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                        onClick={removeCard}
+                                                                    >
+                                                                        <svg
+                                                                            className="w-3 h-3"
+                                                                            aria-hidden="true"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none"
+                                                                            viewBox="0 0 14 14"
+                                                                        >
+                                                                            <path
+                                                                                stroke="currentColor"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                strokeWidth="2"
+                                                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                                                            />
+                                                                        </svg>
+                                                                        <span className="sr-only">Close modal</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div>
+                                                                    <label htmlFor={`name-${card.id}`} className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] mt-4 ml-1">
+                                                                        Reward name
+                                                                    </label>
+                                                                    <div className="relative mb-4">
+                                                                        <input
+                                                                            type="text"
+                                                                            name={`name-${card.id}`}
+                                                                            id={`name-${card.id}`}
+                                                                            placeholder="Reward Name"
+                                                                            className={`w-full bg-[#202129] dark:bg-[#202129] text-white mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <label htmlFor="price" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1]">Reward Price</label>
+                                                                    <Input color='default' variant='faded'
+                                                                        classNames={{
+                                                                            base: "max-w-full h-10  bg-[#34343F] mb-4 rounded-lg",
+                                                                            mainWrapper: "h-full",
+                                                                            input: "text-small outline-none ",
+                                                                            inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#202129] border border-[#34343F] rounded-lg ",
+                                                                        }}
+                                                                        labelPlacement="outside"
+                                                                        startContent={
+                                                                            <div className="pointer-events-none flex items-center">
+                                                                                <span className="ml-1 text-default-400 text-small">$</span>
+                                                                            </div>
+                                                                        }
+                                                                        endContent={
+                                                                            <div className="flex items-center">
+                                                                                <label className="sr-only" htmlFor="currency">
+                                                                                    Currency
+                                                                                </label>
+                                                                                <select
+                                                                                    className="outline-none border-0 bg-transparent text-white text-small"
+                                                                                    id="currency"
+                                                                                    name="currency"
+                                                                                >
+                                                                                    <option>USD</option>
+                                                                                    <option>ARS</option>
+                                                                                    <option>EUR</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        }
+                                                                        type="number"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <label htmlFor="amount" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1]">Number of Rewards:</label>
+                                                                    <Input color='default' variant='faded'
+                                                                        classNames={{
+                                                                            base: "max-w-full h-10  bg-[#34343F] mb-4 rounded-lg",
+                                                                            mainWrapper: "h-full",
+                                                                            input: "text-small outline-none ",
+                                                                            inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#202129] border border-[#34343F] rounded-lg ",
+                                                                        }}
+                                                                        labelPlacement="outside"
+                                                                        startContent={
+                                                                            <div className="pointer-events-none flex items-center">
+                                                                                <span className="ml-1 text-default-400 text-small">$</span>
+                                                                            </div>
+                                                                        }
+                                                                        endContent={
+                                                                            <div className="flex items-center">
+                                                                                <label className="sr-only" htmlFor="currency">
+                                                                                    Currency
+                                                                                </label>
+                                                                                <select
+                                                                                    className="outline-none border-0 bg-transparent text-white text-small"
+                                                                                    id="currency"
+                                                                                    name="currency"
+                                                                                >
+                                                                                    <option>USD</option>
+                                                                                    <option>ARS</option>
+                                                                                    <option>EUR</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        }
+                                                                        type="number"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] mt-4 mb-2">
+                                                                        Reward Description
+                                                                    </label>
+                                                                    <textarea
+                                                                        name="description"
+                                                                        id="description"
+                                                                        placeholder="Get some tickets to our concert...."
+                                                                        className="mb-4 text-white w-full bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                                        rows="4" // Reduce the number of rows to make the textarea shorter
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                    <Button className='bg-white' color="secondary" variant="faded" onPress={addCard}>
+                                                        Add reward
+                                                    </Button>
+                                                    <Button color="secondary">
+                                                        Save rewards
+                                                    </Button>
+                                                </ModalFooter>
+                                            </>
+                                        )}
+                                    </ModalContent>
+                                </Modal>
                                 <div className='relative mb-24'>
                                     <div className="w-full flex flex-col gap-1">
-                                        <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-gray-300 -mt-3 ml-1">
+                                        <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-3 ml-1">
                                             Final day of project financing
                                         </label>
                                         <DatePicker color='default' className='bg-[#202129]  rounded-xl' size='sm'
