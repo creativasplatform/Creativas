@@ -16,12 +16,11 @@ export default function Chain() {
   const { network, setNetwork } = useUserContext();
 
   useEffect(() => {
-    // Leer la red seleccionada del localStorage al montar el componente
     const savedNetwork = localStorage.getItem('selectedNetwork');
     if (savedNetwork) {
       setNetwork(savedNetwork);
     } else {
-      setNetwork('RSK_TESTNET'); // Default to Rootstock if no network is saved
+      setNetwork('RSK_TESTNET'); 
     }
   }, [setNetwork]);
   
@@ -37,8 +36,8 @@ export default function Chain() {
       } else if (authType === 'web3auth') {
         await changeNetworkWeb3auth(chainId);
       }
-      setNetwork(chainId); // Update the network context
-      localStorage.setItem('selectedNetwork', chainId); // Save the selected network to localStorage
+      setNetwork(chainId); 
+      localStorage.setItem('selectedNetwork', chainId); 
       setIsOpen(false);
     } catch (error) {
       console.error("Error switching network:", error);
@@ -48,8 +47,6 @@ export default function Chain() {
   const RSK_TESTNET = Number(NETWORKS.RSK_TESTNET.chainId);
   const SEPOLIA_TESTNET = Number(NETWORKS.SEPOLIA_TESTNET.chainId);
 
-
-  // Determine the initial icon to show
   const initialIcon = () => {
     if (!isLoggedIn && network === 'RSK_TESTNET') return rskicon;
     if (!isLoggedIn && network === 'SEPOLIA_TESTNET') return etherumicon;
@@ -57,7 +54,7 @@ export default function Chain() {
     if (!IsValidChain) return advertenciaicon;
     if (ChainUser === RSK_TESTNET) return rskicon;
     if (ChainUser === SEPOLIA_TESTNET) return etherumicon;
-    return advertenciaicon; // fallback icon if none of the conditions match
+    return advertenciaicon;
   };
 
   return (

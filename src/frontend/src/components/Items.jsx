@@ -3,9 +3,7 @@ import useItems from '../hooks/items/useItems.jsx';
 
 const Items = () => {
     const { items, loading, error } = useItems();
-    console.log(items)
-    console.log("Holla mundo")
-
+  
     if (loading) {
         return <p>Loading...</p>;
     }

@@ -1,9 +1,9 @@
 {
   "canisters": {
-    "eccomerce": {
+    "marketplace": {
       "type": "rust",
-      "candid": "src/backend/eccomerce/eccomerce.did",
-      "package": "eccomerce",
+      "candid": "src/backend/marketplace/marketplace.did",
+      "package": "marketplace",
       "declarations": {
         "node_compatibility": true
       }
@@ -18,7 +18,7 @@
     },
     "frontend": {
       "dependencies": [
-        "eccomerce",
+        "marketplace",
         "user_signatures"
       ],
       "source": [
@@ -30,7 +30,7 @@
   },
   "networks": {
     "local": {
-      "bind": "127.0.0.1:8000",
+      "bind": "127.0.0.1:8080",
       "type": "ephemeral"
     },
     "ic": {

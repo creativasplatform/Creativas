@@ -12,15 +12,13 @@ const useSignatureStorage = () => {
             console.error("Actor is not initialized.");
             return;
         }
-    
-        console.log(address)
+
         try {
             const result = await actorUserSiganeture.add_signature(address, signature);
             
             if (result.Err) {
-                console.log("Something was wrong")
+            console.error("Something was wrong")
             } else {
-                console.log(signature)
                 return signature;
             }
         } catch (err) {

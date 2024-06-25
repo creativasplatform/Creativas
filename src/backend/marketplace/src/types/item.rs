@@ -15,7 +15,7 @@ pub struct Item {
     pub contract_address: String,
     pub stock: u64,
     pub category: crate::types::category::Category,
-    pub subcategory: String,
+
 }
 
 #[derive(CandidType, Deserialize)]
@@ -27,7 +27,6 @@ pub struct CreateItem {
     pub contract_address: String,
     pub stock: u64,
     pub category: String,
-    pub subcategory: String,
 }
 
 #[derive(CandidType, Deserialize)]

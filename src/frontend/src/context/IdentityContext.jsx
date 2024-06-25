@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { createActor } from "../../../declarations/user_signatures";
+import { createActor } from "declarations/user_signatures";
 import { HttpAgent } from "@dfinity/agent";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
@@ -17,8 +17,9 @@ export const DfinityProvider = ({ children }) => {
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
     
-            const agent = new HttpAgent({ identity, host: 'http://127.0.0.1:8000' });
-
+            const agent = new HttpAgent({ identity, host: 'http://127.0.0.1:8080' });
+            const identidad = await agent.getPrincipal()
+       
             // Crear actor
             const canisterId = import.meta.env.VITE_CANISTER_ID;
 

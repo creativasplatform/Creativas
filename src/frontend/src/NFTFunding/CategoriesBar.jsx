@@ -2,7 +2,8 @@
 import React from 'react';
 
 const categories = [
-  'Trending', 'Top', 'Art', 'Collectibles', 'Business', 'Music', 'Photography', 'Sports', 'Technology', 'Utility', 'Virtual Worlds'
+  'All', 'Technology', 'Gaming', 'Music', 'Movies', 'Art'
+
 ];
 
 const CategoriesBar = () => {
@@ -13,7 +14,7 @@ const CategoriesBar = () => {
           <button 
             key={index}
             className={`px-4 py-2 whitespace-nowrap ${
-              category === 'Trending' ? 'border-b-2 border-secondary' : ''
+              category === 'All' ? 'border-b-2 border-secondary' : ''
             }`}
           >
             {category}

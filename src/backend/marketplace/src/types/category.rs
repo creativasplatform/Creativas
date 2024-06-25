@@ -5,15 +5,22 @@ const MAX_VALUE_SIZE_CATEGORY: u32 = 5000;
 
 #[derive(CandidType, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Copy, Debug, Hash)]
 pub enum Category {
-    Electronics,
-    Food,
+    Technology,
+    Gaming,
+    Music,
+    Movies,
+    Art
+    
 }
 
 impl Category {
     pub fn from_str(category: &str) -> Option<Self> {
         match category {
-            "Electronics" => Some(Category::Electronics),
-            "Food" => Some(Category::Food),
+            "Technology" => Some(Category::Technology),
+            "Gaming" => Some(Category::Gaming),
+            "Music" => Some(Category::Music),
+            "Movies" => Some(Category::Movies),
+            "Art" => Some(Category::Art),
             _ => None,
         }
     }
@@ -40,26 +47,3 @@ pub struct SubCategory {
     pub subcategory: String,
 }
 
-impl SubCategory {
-    pub fn new(category: Category, subcategory: &str) -> Self {
-        SubCategory {
-            category,
-            subcategory: subcategory.to_string(),
-        }
-    }
-}
-
-impl Storable for SubCategory {
-    fn to_bytes(&self) -> Cow<[u8]> {
-        Cow::Owned(Encode!(self).unwrap())
-    }
-
-    fn from_bytes(bytes: Cow<[u8]>) -> Self {
-        Decode!(bytes.as_ref(), Self).unwrap()
-    }
-
-    const BOUND: Bound = Bound::Bounded {
-        max_size: MAX_VALUE_SIZE_CATEGORY,
-        is_fixed_size: false,
-    };
-}

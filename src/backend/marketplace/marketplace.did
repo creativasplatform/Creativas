@@ -7,14 +7,13 @@ type Rating = variant {
     Five;
 };
 type Category = variant {
-    Electronics;
-    Food;
+    Technology;
+    Gaming;
+    Music;
+    Movies;
+    Art;
 };
 
-type SubCategory = variant {
-    category: Category;
-    subcategory: text;
-};
 
 type Review = record {
     rating: Rating;
@@ -36,7 +35,6 @@ type CreateItem = record {
     contract_address: text;
     stock: nat64;
     category: text;
-    subcategory: text;
 };
 
 
@@ -50,7 +48,6 @@ type Item = record {
     contract_address: text;
     stock: nat64;
     category: Category;
-    subcategory: text;
 };
 type ItemError = variant {
     AlreadyExist;
@@ -145,7 +142,7 @@ service : () -> {
     get_item : (nat64) -> (Result_item) query;
     get_item_owner : (nat64) -> (Result_get_owner);
     get_items_owner : (text) -> (ResultItems) query;
-    get_items_by_category: (text, text) -> (Result_get_category) query;
+    get_items_by_category: (text) -> (Result_get_category) query;
     update_item : (nat64, UpdateItem, text) -> (Result);
     remove_item : (nat64, text) -> (Result);
     add_item_card : (AddItem, text) -> (Result);
