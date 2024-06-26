@@ -3,8 +3,14 @@ require('@nomiclabs/hardhat-ethers');
 // Asegúrate de tener este plugin instalado
 require('hardhat-deploy');
 
+const dotenv =  require('dotenv')
+
+
+dotenv.config();
+
 // Cambia esta clave privada con la clave privada de tu cuenta de Bitfinity
-const ROOTSTOCK_PRIVATE_KEY = "30dbccd5b9934100c5e4ed422b0bea04a3b4eee5c34a044514557c6515aad348";
+const ROOTSTOCK_PRIVATE_KEY =  process.env.ROOTSTOCK_PRIVATE_KEY;
+
 
 module.exports = {
   solidity: {

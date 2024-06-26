@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.icon-round {
+  width: 32px; /* Ajusta el tamaño según tus necesidades */
+  height: 32px; /* Ajusta el tamaño según tus necesidades */
+  border-radius: 100%;
+}
+
+
 body {
   font-family: sans-serif;
   font-size: 1.5rem;

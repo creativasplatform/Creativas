@@ -3,7 +3,8 @@ import { createActor } from "declarations/user_signatures";
 import { HttpAgent } from "@dfinity/agent";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
-// Creamos el contexto
+const canisterId = import.meta.env.VITE_CANISTER_ID;
+const privateKeyString = import.meta.env.VITE_PRIVATE_IDENTITY;
 const DfinityContext = createContext();
 
 // Proveedor del contexto
@@ -13,23 +14,12 @@ export const DfinityProvider = ({ children }) => {
 
     const createActorWithIdentity = useCallback(async () => {
         try {
-            const privateKeyString = import.meta.env.VITE_PRIVATE_IDENTITY;
+
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
-    
-            const agent = new HttpAgent({ identity, host: 'http://127.0.0.1:8080' });
-            const identidad = await agent.getPrincipal()
-       
-            // Crear actor
-            const canisterId = import.meta.env.VITE_CANISTER_ID;
-
-            console.log("Canister id", canisterId)
-
+            const agent = new HttpAgent({ identity, host: 'http://127.0.0.1:8000' });
             const newActor = createActor(canisterId, { agent });
-    
             const newActorAnonymous = createActor(canisterId);
-
-
             setActorUserSiganeture(newActor);
             setAnonymousActorUserSiganeture(newActorAnonymous)
         } catch (error) {
