@@ -10,6 +10,13 @@ export default {
   
   theme: {
     extend: {
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+        raleway: ['Raleway', 'sans-serif'],
+      },
+      fontSize: {
+        'custom-p': ['18px', { lineHeight: '28px' }],
+      },
       colors: {
         customblack:'#0c0b0b', 
         primary: '#10142b',
@@ -67,6 +74,7 @@ export default {
       backgroundImage: {
         'gradient-to-b-custom': 'linear-gradient(to bottom, #0c0b0b, #10142b, #10142b, #0c0b0b)',
         'gradient-to-c-custom': 'linear-gradient(to bottom, #171D2E, #171D2E, #171D2E, #050B1C)',
+        'gradient-custom': 'linear-gradient(to bottom, #171D2E, #0c0b0b)'
       },
       
     },

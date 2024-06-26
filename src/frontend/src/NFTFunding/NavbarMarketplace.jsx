@@ -5,26 +5,16 @@ import { Input } from "@nextui-org/react";
 import explorerIcon from "../assets/explorer.png";
 import useUser from '../hooks/user/useuser.jsx';
 import { web3auth } from '../helpers/Web3authHelpers.js';
-// import useSignMessages from '../hooks/user/usesignsignatures.jsx';
- import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
+import useSignMessages from '../hooks/user/usesignsignatures.jsx';
+import useSignatureStorage from '../hooks/user/usestoragesignatures.jsx';
 import walleticon from "../assets/wallet.png";
 import googleicon from "../assets/google.png";
-import Sidebar from './Sidebar';
 import Chain from './SetChain.jsx';
+import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
 import { useSpring, useTransition, animated } from '@react-spring/web';
 import alert from "../assets/alert.png"
 const Navbar = () => {
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
-    const toggleSidebar = () => {
-      setIsSidebarOpen(!isSidebarOpen);
-    };
-  
-    const closeSidebar = () => {
-      setIsSidebarOpen(false);
-    };
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
@@ -46,6 +36,16 @@ const Navbar = () => {
     changeNetworkWeb3auth
   } = useUser();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   const { Provider } = useUserContext();
   const [loading, setLoading] = useState(true);
   const [loadingTermCondition, setLoadingTermCondition] = useState(true);
@@ -63,7 +63,7 @@ const Navbar = () => {
   });
 
 
-  // const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
+  const { signMessage, loading: signingLoading, error: signingError } = useSignMessages();
   const { hasUserSignature, addUserSignature, error: signatureError } = useSignatureStorage();
 
   const handleTermsChange = (e) => {
@@ -89,7 +89,9 @@ const Navbar = () => {
     try {
       const result = await signMessage("Accept the terms and conditions");
       if (result && result.signature) {
+
         const response = await addUserSignature(result.signature);
+        console.log("Respuesta", response)
         if (response) {
           setTermsAccepted(true);
         } else {
@@ -106,15 +108,22 @@ const Navbar = () => {
     if (!termsAccepted) {
       await logout();
     }
+
+    setTermsAccepted(false);
+    setIsTermsChecked(false)
+    setIsPrivacyChecked(false)
   };
 
   useEffect(() => {
     if (termsAccepted) {
       handleCloseConditionsModal();
-    }
+     } else {
+      console.error("Something was wrong")
+     }
+
   }, [termsAccepted]);
 
-  
+
   useEffect(() => {
     const initWeb3Auth = async () => {
       if (web3authInitialized) return;
@@ -180,7 +189,7 @@ const Navbar = () => {
     try {
       setOpenLoginModal(false);
       await loginWeb3Auth();
-      
+
     } catch (error) {
       console.error("Error logging in with Web3Auth:", error);
     }
@@ -260,7 +269,7 @@ const Navbar = () => {
                     onClick={toggleSidebar}
                     className="text-white bg-gray-800 hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 flex items-center space-x-2"
                   >
-                    <span className="truncate">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
+                     <span className="truncate">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
                   </button>
 
                   {isSidebarOpen && (
@@ -281,7 +290,6 @@ const Navbar = () => {
                   <span>Log in</span>
 
                 </button>
-
 
               )}
             </li>
