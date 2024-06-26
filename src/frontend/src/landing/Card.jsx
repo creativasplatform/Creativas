@@ -4,7 +4,7 @@ import color3 from "../assets/color3.png";
 
 const Card = () => {
   return (
-    <div className="flex flex-col items-center mb-16 bg-gradient-to-b-custom h-[450px]">
+    <div className="flex flex-col items-center mb-0 bg-gradient-to-b-custom h-[450px]">
       <div className="flex justify-center space-x-16 w-full mt-24">
         <div className="relative">
           <img
