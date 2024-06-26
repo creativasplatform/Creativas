@@ -28,11 +28,16 @@ const NFTFunding = () => {
     const [hasRewards, setHasRewards] = useState(false);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [errors, setErrors] = useState({});
-    const [cards, setCards] = useState([{ id: 1 }, { id: 2 }]);
+    const [cards, setCards] = useState([{ id: 1, rewardName: '', rewardPrice: 0, numberOfRewards: 0, rewardDescription: '' }, { id: 2, rewardName: '', rewardPrice: 0, numberOfRewards: 0, rewardDescription: '' }]);
+    const [fundingObjective, setFundingObjective] = useState('');
+    const [currency, setCurrency] = useState('USD');
+    const [endDate, setEndDate] = useState(today(getLocalTimeZone()).add({ days: 1 }));
+    const [rewards, setRewards] = useState([]);
+    const [rewardErrors, setRewardErrors] = useState({});
 
     const categories = [
         { id: 1, name: 'Technology', image: categoriatwo },
-        { id: 2, name: 'Gaming', image: categoriatwo },
+        { id: 2, name: 'Gaming', image: categoriaone },
         { id: 3, name: 'Music', image: categoriathree },
         { id: 4, name: 'Movies', image: categoriatwo },
     ];
@@ -40,7 +45,7 @@ const NFTFunding = () => {
 
     const addCard = () => {
         const newId = cards.length ? cards[cards.length - 1].id + 1 : 1;
-        setCards([...cards, { id: newId }]);
+        setCards([...cards, { id: newId, rewardName: '', rewardPrice: '', numberOfRewards: '', rewardDescription: '' }]);
     };
 
     const removeCard = () => {
@@ -50,25 +55,27 @@ const NFTFunding = () => {
     };
 
 
+    const handleFundingObjectiveChange = (e) => {
+        setFundingObjective(e.target.value);
+    };
+
+    const handleCurrencyChange = (e) => {
+        setCurrency(e.target.value);
+    };
+
+    const handleEndDateChange = (date) => {
+        setEndDate(date);
+    };
+
     const handleCheckboxChange = (value) => {
         setHasRewards(value);
-        if (value) {
-
-            onOpen();
-        }
+        if (value) onOpen();
     };
-
 
     useEffect(() => {
-        if (!isOpen) {
-            setHasRewards(false);
-        }
+        if (!isOpen) ;
     }, [isOpen]);
 
-    const handleModalClose = () => {
-        onClose();
-        setHasRewards(false);
-    };
     const handleOpenModal = (modalId) => {
         setOpenModal(modalId);
     };
@@ -78,6 +85,8 @@ const NFTFunding = () => {
         setCurrentStep(1);
         setSelectedCategory(null);
         setFormData({ title: '', description: '' });
+        setFundingObjective('');
+        setEndDate(today(getLocalTimeZone()).add({ days: 1 }));
     };
 
     const handleCategorySelect = (categoryId) => {
@@ -89,6 +98,70 @@ const NFTFunding = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
         setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
     };
+
+    const handleCardChange = (id, field, value) => {
+        setCards((prevCards) =>
+            prevCards.map((card) => (card.id === id ? { ...card, [field]: value } : card))
+        );
+
+        setRewardErrors((prevErrors) => ({
+            ...prevErrors,
+            [id]: { ...prevErrors[id], [field]: value ? '' : '' }
+        }));
+
+    }
+    const validateRewards = () => {
+        let valid = true;
+        const newErrors = {};
+    
+        cards.forEach((card) => {
+            const cardErrors = {};
+    
+            if (!card.rewardName) {
+                cardErrors.rewardName = 'This field is required';
+                valid = false;
+            }
+    
+            if (card.rewardPrice === undefined || card.rewardPrice === null || card.rewardPrice === '') {
+                cardErrors.rewardPrice = 'This field is required';
+                valid = false;
+            } else if (card.rewardPrice <= 0) {
+                cardErrors.rewardPrice = 'Price must be greater than 0';
+                valid = false;
+            }
+    
+            if (card.numberOfRewards === undefined || card.numberOfRewards === null || card.numberOfRewards === '') {
+                cardErrors.numberOfRewards = 'This field is required';
+                valid = false;
+            } else if (card.numberOfRewards <= 0) {
+                cardErrors.numberOfRewards = 'Number must be greater than 0';
+                valid = false;
+            }
+    
+            if (!card.rewardDescription) {
+                cardErrors.rewardDescription = 'This field is required';
+                valid = false;
+            }
+    
+            if (Object.keys(cardErrors).length > 0) {
+                newErrors[card.id] = cardErrors;
+            }
+        });
+    
+        setRewardErrors(newErrors);
+        return valid;
+    };
+    
+
+    const handleSaveRewards = () => {
+        if (validateRewards()) {
+
+            setRewards(cards);
+            onClose();
+            setHasRewards(true);
+        }
+    };
+
 
     const handleNextStep = () => {
         const newErrors = {};
@@ -177,7 +250,7 @@ const NFTFunding = () => {
                                         onChange={handleInputChange}
                                         className={`mb-8 mt-2 w-[600px] bg-[#202129] dark:bg-[#202129] text-white mt-1 block p-2 border ${errors.title ? 'border-red-500' : 'border-[#34343F]'} dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                                     />
-                                    {errors.title && <p className="text-[#E16060] text-xs mt-1">{errors.title}</p>}
+                                    {errors.title && <p className="text-[#E16060] text-xs -mt-4">{errors.title}</p>}
                                     <img src={writeicon} alt="Write Icon" className={`absolute right-2  ${errors.title ? 'top-1/4' : 'top-1/2'} transform -translate-y-1/2 w-5 h-5`} />
                                 </div>
                                 <div className="relative">
@@ -193,7 +266,7 @@ const NFTFunding = () => {
                                         className={`mb-8  text-white w-[600px] bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border ${errors.description ? 'border-red-500' : 'border-[#34343F]'} dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                                         rows="8"
                                     />
-                                    {errors.description && <p className="text-[#E16060] text-xs mt-1">{errors.description}</p>}
+                                    {errors.description && <p className="text-[#E16060] text-xs -mt-4">{errors.description}</p>}
                                     <img src={writeicon} alt="Write Icon" className="absolute right-2 top-12 transform -translate-y-1/2 w-5 h-5" />
                                 </div>
                             </div>
@@ -224,10 +297,12 @@ const NFTFunding = () => {
                         </h3>
                         <form className="space-y-4 max-w-lg -ml-16">
                             <div>
-                                <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-2 ml-1 mb-1">
+                                <label htmlFor="fundingObjective" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-2 ml-1 mb-1">
                                     Funding objective
                                 </label>
-                                <Input color='default' variant='faded'
+                                <Input
+                                    color='default'
+                                    variant='faded'
                                     classNames={{
                                         base: "max-w-full sm:max-w-[20rem] h-10  bg-[#34343F] mb-4 rounded-lg",
                                         mainWrapper: "h-full",
@@ -242,13 +317,13 @@ const NFTFunding = () => {
                                     }
                                     endContent={
                                         <div className="flex items-center">
-                                            <label className="sr-only" htmlFor="currency">
-                                                Currency
-                                            </label>
+                                            <label className="sr-only" htmlFor="currency">Currency</label>
                                             <select
                                                 className="outline-none border-0 bg-transparent text-white text-small"
                                                 id="currency"
                                                 name="currency"
+                                                value={currency}
+                                                onChange={handleCurrencyChange}
                                             >
                                                 <option>USD</option>
                                                 <option>ARS</option>
@@ -257,7 +332,10 @@ const NFTFunding = () => {
                                         </div>
                                     }
                                     type="number"
+                                    value={fundingObjective}
+                                    onChange={handleFundingObjectiveChange}
                                 />
+
                                 <div className='relative'>
 
                                 </div>
@@ -356,6 +434,7 @@ const NFTFunding = () => {
                                                                         type="button"
                                                                         className="text-gray-400 bg-transparent hover:bg-gray-500 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                                                         onClick={removeCard}
+
                                                                     >
                                                                         <svg
                                                                             className="w-3 h-3"
@@ -381,19 +460,25 @@ const NFTFunding = () => {
                                                                     </label>
                                                                     <div className="relative mb-4">
                                                                         <input
+                                                                            id={`rewardName-${card.id}`}
                                                                             type="text"
-                                                                            name={`name-${card.id}`}
-                                                                            id={`name-${card.id}`}
+                                                                            value={card.rewardName}
+                                                                            onChange={(e) => handleCardChange(card.id, 'rewardName', e.target.value)}
                                                                             placeholder="Reward Name"
+                                                                            error={rewardErrors[card.id]?.rewardName}
+
                                                                             className={`w-full bg-[#202129] dark:bg-[#202129] text-white mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                                                                         />
+                                                                        {rewardErrors[card.id]?.rewardName && <span className="text-[#E16060] text-sm">{rewardErrors[card.id]?.rewardName}</span>}
                                                                     </div>
                                                                 </div>
                                                                 <div>
                                                                     <label htmlFor="price" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1]">Reward Price</label>
                                                                     <Input color='default' variant='faded'
+
+
                                                                         classNames={{
-                                                                            base: "max-w-full h-10  bg-[#34343F] mb-4 rounded-lg",
+                                                                            base: "max-w-full h-10  bg-[#34343F] rounded-lg",
                                                                             mainWrapper: "h-full",
                                                                             input: "text-small outline-none ",
                                                                             inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#202129] border border-[#34343F] rounded-lg ",
@@ -420,42 +505,36 @@ const NFTFunding = () => {
                                                                                 </select>
                                                                             </div>
                                                                         }
+                                                                        id={`rewardPrice-${card.id}`}
+                                                                        value={card.rewardPrice}
+                                                                        onChange={(e) => handleCardChange(card.id, 'rewardPrice', e.target.value)}
                                                                         type="number"
+                                                                        error={rewardErrors[card.id]?.rewardPrice}
                                                                     />
+                                                                    {rewardErrors[card.id]?.rewardPrice && <span className="text-[#E16060] text-sm">{rewardErrors[card.id]?.rewardPrice}</span>}
+
                                                                 </div>
                                                                 <div>
                                                                     <label htmlFor="amount" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1]">Number of Rewards:</label>
                                                                     <Input color='default' variant='faded'
                                                                         classNames={{
-                                                                            base: "max-w-full h-10  bg-[#34343F] mb-4 rounded-lg",
+                                                                            base: "max-w-full h-10  bg-[#34343F] rounded-lg",
                                                                             mainWrapper: "h-full",
                                                                             input: "text-small outline-none ",
                                                                             inputWrapper: "h-full font-thin text-white bg-[#202129] dark:bg-[#202129] border border-[#34343F] rounded-lg ",
                                                                         }}
                                                                         labelPlacement="outside"
-                                                                        startContent={
-                                                                            <div className="pointer-events-none flex items-center">
-                                                                                <span className="ml-1 text-default-400 text-small">$</span>
-                                                                            </div>
-                                                                        }
-                                                                        endContent={
-                                                                            <div className="flex items-center">
-                                                                                <label className="sr-only" htmlFor="currency">
-                                                                                    Currency
-                                                                                </label>
-                                                                                <select
-                                                                                    className="outline-none border-0 bg-transparent text-white text-small"
-                                                                                    id="currency"
-                                                                                    name="currency"
-                                                                                >
-                                                                                    <option>USD</option>
-                                                                                    <option>ARS</option>
-                                                                                    <option>EUR</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        }
+
                                                                         type="number"
+                                                                        id={`numberOfRewards-${card.id}`}
+
+                                                                        value={card.numberOfRewards}
+                                                                        onChange={(e) => handleCardChange(card.id, 'numberOfRewards', e.target.value)}
+
+                                                                        error={rewardErrors[card.id]?.numberOfRewards}
                                                                     />
+                                                                    {rewardErrors[card.id]?.numberOfRewards && <span className="text-[#E16060]  text-sm">{rewardErrors[card.id]?.numberOfRewards}</span>}
+
                                                                 </div>
                                                                 <div>
                                                                     <label htmlFor="description" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] mt-4 mb-2">
@@ -463,11 +542,19 @@ const NFTFunding = () => {
                                                                     </label>
                                                                     <textarea
                                                                         name="description"
-                                                                        id="description"
+                                                                        id={`rewardDescription-${card.id}`}
+                                                                        type="text"
+                                                                        value={card.rewardDescription}
+                                                                        onChange={(e) => handleCardChange(card.id, 'rewardDescription', e.target.value)}
+
                                                                         placeholder="Get some tickets to our concert...."
-                                                                        className="mb-4 text-white w-full bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                                                        rows="4" // Reduce the number of rows to make the textarea shorter
+                                                                        className="text-white w-full bg-[#202129] dark:bg-[#202129] mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                                        rows="4"
+
+                                                                        error={rewardErrors[card.id]?.rewardDescription}
                                                                     />
+                                                                    {rewardErrors[card.id]?.rewardDescription && <span className="text-[#E16060] text-sm">{rewardErrors[card.id]?.rewardDescription}</span>}
+
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -477,7 +564,7 @@ const NFTFunding = () => {
                                                     <Button className='bg-white' color="secondary" variant="faded" onPress={addCard}>
                                                         Add reward
                                                     </Button>
-                                                    <Button color="secondary">
+                                                    <Button color="secondary" onClick={handleSaveRewards}>
                                                         Save rewards
                                                     </Button>
                                                 </ModalFooter>
@@ -487,19 +574,20 @@ const NFTFunding = () => {
                                 </Modal>
                                 <div className='relative mb-24'>
                                     <div className="w-full flex flex-col gap-1">
-                                        <label htmlFor="title" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-3 ml-1">
+                                        <label htmlFor="endDate" className="block text-sm font-medium text-[#D5D6E1] dark:text-[#D5D6E1] -mt-3 ml-1">
                                             Final day of project financing
                                         </label>
                                         <DatePicker color='default' className='bg-[#202129]  rounded-xl' size='sm'
-                                            label="Choose a date"
+                                            label="Campaign end date"
+                                            aria-label="Campaign end date"
                                             variant="bordered"
                                             showMonthAndYearPickers
                                             minValue={today(getLocalTimeZone()).add({ days: 1 })}
                                             defaultValue={today(getLocalTimeZone()).add({ days: 1 })}
+                                            value={endDate}
+                                            onChange={handleEndDateChange}
 
-                                            classNames={{
-                                                errorMessage: 'text-black'
-                                            }}
+
 
                                         />
                                     </div>

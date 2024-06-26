@@ -40,8 +40,12 @@ const useSignatureStorage = () => {
 
     // Función para verificar si existe una firma
     const hasUserSignature = async () => {
+        if (!AnonymousaActorUserSiganeture) {
+            console.error("Actor is not initialized.");
+            return;
+        }
         try {
-            const hasSignature = await AnonymousaActorUserSiganeture.has_signature(address);
+            const hasSignature = await actorUserSiganeture.has_signature(address);
             return hasSignature;
         } catch (err) {
             console.error(err)

@@ -9,30 +9,38 @@ import NFTFunding from "./NFTFunding/NFTFunding.jsx";
 import Categories from "./NFTFunding/Categories.jsx";
 import { UserProvider } from './context/userContext';
 import { DfinityProvider } from "./context/IdentityContext.jsx";
+import Footer from "./landing/Footer.jsx";
+import NFTSteps from "./landing/NFTSteps.jsx";
+import Carousel from "./landing/BrowseCategory.jsx";
+
 function App() {
   return (
     <div className="App">
 
-        <UserProvider>
-          <DfinityProvider>
-      <Routes>
-        <Route path="/" element={
-          <>
-            <Navbar />
-            <Body />
-            <Card />
-          </>
-        } />
-        <Route path="/Nfts" element={
-          <>
-            <NFTFunding/>
-       
-          </>
-        } />
-      </Routes>
-      </DfinityProvider>
+      <UserProvider>
+        <DfinityProvider>
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Navbar />
+                <Body />
+                <Card />
+                <Carousel />
+                <NFTSteps />
+                <Footer />
+              </>
+            } />
+            <Route path="/Nfts" element={
+              <>
+                <NFTFunding />
+                <Footer />
+
+              </>
+            } />
+          </Routes>
+        </DfinityProvider>
       </UserProvider>
-    
+
     </div>
   );
 }

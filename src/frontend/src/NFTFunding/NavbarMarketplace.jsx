@@ -91,8 +91,8 @@ const Navbar = () => {
 
       const result = await signMessage("Accept the terms and conditions");
       if (result && result.signature) {
-        const response = await addUserSignature(result.signature);
 
+        const response = await addUserSignature(result.signature);
         if (response) {
           setTermsAccepted(true);
         } else {
