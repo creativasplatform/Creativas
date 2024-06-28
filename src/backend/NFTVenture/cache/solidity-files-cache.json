@@ -1456,8 +1456,8 @@
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/contracts/Assets.sol": {
-      "lastModificationDate": 1719414455483,
-      "contentHash": "87fbaa65d8999cb7944cbda8b9625daa",
+      "lastModificationDate": 1719522758887,
+      "contentHash": "ce2c2473e1d28c7c673790ea43877f04",
       "sourceName": "contracts/Assets.sol",
       "solcConfig": {
         "version": "0.8.19",

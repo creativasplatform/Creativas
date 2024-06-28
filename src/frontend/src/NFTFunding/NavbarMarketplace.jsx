@@ -249,13 +249,13 @@ const Navbar = () => {
         <div className="hidden w-full md:block md:w-auto mr-12 mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>
-              <a href="#" className="block px-2 text-sm text-[#9398A7] rounded md:bg-transparent hover:text-white">Funding</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Funding</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-sm text-[#9398A7] rounded md:bg-transparent hover:text-white">Portfolio</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Portfolio</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-sm text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Marketplace</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Marketplace</a>
             </li>
           </ul>
         </div>

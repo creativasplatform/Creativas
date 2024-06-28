@@ -21,7 +21,7 @@ const Carousel = () => {
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const cardsToShow = 4; // Número de tarjetas a mostrar a la vez
+    const cardsToShow = 4; 
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
