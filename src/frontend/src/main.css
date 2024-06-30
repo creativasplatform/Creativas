@@ -1,0 +1,34 @@
+
+@-webkit-keyframes home-view_float__6T5pF {
+  0% {
+      transform: translateY(0);
+  }
+
+  50% {
+      transform: translateY(calc(var(--baseline) * 3));
+  }
+
+  100% {
+      transform: translateY(0);
+  }
+}
+
+@keyframes home-view_float__6T5pF {
+  0% {
+      transform: translateY(0);
+  }
+
+  50% {
+      transform: translateY(calc(var(--baseline) * 3));
+  }
+
+  100% {
+      transform: translateY(0);
+  }
+}
+ 
+.picture {
+  transform: translateY(0);
+  -webkit-animation: home-view_float__6T5pF 6s ease-in-out infinite;
+  animation: home-view_float__6T5pF 6s ease-in-out infinite;
+}

@@ -71,20 +71,27 @@ const NFTFunding = () => {
 
     const handleLoginWallet = async () => {
         try {
+            setOpenModal(null);
             setOpenLoginModal(false);
             await loginWallet();
         } catch (error) {
             console.error("Error logging in with wallet:", error);
+        } finally {
+            setOpenModal('verification-modal');
         }
+        
     };
 
     const handleLoginWeb3Auth = async () => {
         try {
+            setOpenModal(null);
             setOpenLoginModal(false);
             await loginWeb3Auth();
 
         } catch (error) {
             console.error("Error logging in with Web3Auth:", error);
+        } finally {
+            setOpenModal('verification-modal');
         }
     };
 
@@ -154,6 +161,7 @@ const NFTFunding = () => {
         setFundingObjective('');
         setEndDate(today(getLocalTimeZone()).add({ days: 1 }));
         setImages([])
+        setErrors([])
     };
 
     const handleCategorySelect = (categoryId) => {
@@ -313,6 +321,14 @@ const NFTFunding = () => {
             setErrors((prevErrors) => ({ ...prevErrors, projectPictures: 'At least one project picture is required.' }));
             return;
         }
+
+        console.log("Title:", formData.title);
+        console.log("Description:", formData.description);
+        console.log("Rewards:", hasRewards ? cards : "No rewards");
+        console.log("Images:", images.length > 0 ? images : "No images");
+        console.log("Funding Objective:", fundingObjective);
+        console.log("Project End Day:", endDate);
+        console.log("Category:", selectedCategory ? categories.find(cat => cat.id === selectedCategory).name : "No category selected");
 
         handleCloseModal();
     };
@@ -789,7 +805,7 @@ const NFTFunding = () => {
                         name="autor"
                         id="autor"
                         disabled={true}
-                        placeholder={address}
+                        placeholder={address ? address : "0x0000000000000000000000000000000000000000"}
                         className="mb-16 -mt-4 w-[600px] bg-[#202129] dark:bg-[#202129] text-white mt-1 block p-2 border border-[#34343F] dark:border-[#34343F] rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                 </div>

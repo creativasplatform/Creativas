@@ -386,7 +386,7 @@ const Navbar = () => {
       )}
 
       {openModalConditionals && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
+        <div className="fixed inset-0 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full" style={{ zIndex: '100' }} >
           <animated.div style={modalConditionalsAnimation} className="relative w-full max-w-md">
             <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
               <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700 ">

@@ -2,11 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@keyframes float {
+  0% {
+    transform: translatey(0);
+  }
+  50% {
+    transform: translatey(-10px);
+  }
+  100% {
+    transform: translatey(0);
+  }
+}
+
+.picture {
+  animation: float 3s ease-in-out infinite;
+}
+
+.bg-rgba-104-207-255 {
+  background: rgba(104, 207, 255, 0.8);
+}
+
+.blur-30 {
+  filter: blur(30px);
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+.bg-rgba-104-207-256 {
+  background: rgba(104, 207, 255, 0.8);
+}
+
+.blur-40 {
+  filter: blur(100px);
+}
+
+
+.opacity-100 {
+  opacity: 0.9;
+}
+
+.bg-rgba-104-207-257 {
+  background: rgba(104, 207, 255, 0.8);
+}
+
+.blur-50 {
+  filter: blur(100px);
+}
+
+
+.opacity-110 {
+  opacity: 0.30;
+}
+
+
+
 .icon-round {
   width: 32px; /* Ajusta el tamaño según tus necesidades */
   height: 32px; /* Ajusta el tamaño según tus necesidades */
   border-radius: 100%;
 }
+
 
 
 body {
@@ -20,6 +79,7 @@ img {
   display: block;
   margin: auto;
 }
+
 
 form {
   display: flex;

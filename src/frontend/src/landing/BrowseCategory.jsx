@@ -36,7 +36,8 @@ const Carousel = () => {
     };
 
     return (
-        <div className="relative w-full text-white  mx-auto bg-customblack overflow-hidden font-roboto py-16 px-8">
+     
+        <div className="relative w-full text-white  mx-auto bg-gradient-to-b from-primary to-customblack overflow-hidden font-roboto py-16 px-8">
             <div className='mb-16'>
                 <span className="text-3xl font-semibold mb-8 text-left font-raleway">
                     <span className="text-white">Browse    </span>

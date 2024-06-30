@@ -1,16 +1,30 @@
-import Creativas from '../assets/Creativas3.gif';
-
+import React from 'react';
+import cube from '../assets/cube.png';
+import Numbers from './Numbers.jsx'; // Importa tu archivo SVG aquí
+import touch from '../assets/touch.png'
 const Body = () => {
-    return (
-        <div className="relative bg-customblack flex justify-center items-center overflow-hidden">
-            <div className="absolute top-10 left-1/2 transform -translate-x-1/2 w-3/4 h-[0.5px] bg-gray-600"></div>
-            <img 
-                className="mt-32 flex shadow-[0_0_10px_10px_rgba(12,11,11,0.8)]" 
-                src={Creativas} 
-                alt="Planeta" 
-            />
-        </div>
-    );
+  return (
+    <div>
+    <div className="relative bg-gradient-to-r from-customblack to-primary flex justify-center items-center overflow-hidden py-20">
+      <div className="w-1/2 pr-8 -mt-40">
+        <h1 className="text-7xl font-raleway text-left font-extrabold text-white mb-4">Let's build a freer and more creative world</h1>
+        <p className="text-xl mb-6 text-gray-100">Bring a brilliant idea to life with the community and build it together with everyone's help.</p>
+      </div>
+      
+      <div className="relative">
+        <img className="rounded-lg relative z-10" src="https://brandconnector.io/images/touch.png" alt="Touch Image" />
+        <div className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-255 blur-30 opacity-90 w-64 h-64 rounded-lg"></div>
+      </div>
+
+
+  
+
+    </div>
+
+    <Numbers/>
+    
+    </div>
+  );
 }
 
 export default Body;
