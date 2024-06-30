@@ -27,7 +27,8 @@ export default {
         'secondary-ligth': '#8a9de8',
         green: '#b1e5e3',
         'green-ligth': '#effcf9',
-        warning: '#b1e5e3'
+        warning: '#b1e5e3',
+        
       },
       fontSize: {
         'rem-8.75': '8.75rem',
@@ -74,9 +75,9 @@ export default {
         'in-out': 'ease-in-out',
       },
       backgroundImage: {
-        'gradient-to-b-custom': 'linear-gradient(to bottom, #0c0b0b, #10142b, #10142b, #0c0b0b)',
+
         'gradient-to-c-custom': 'linear-gradient(to bottom, #171D2E, #171D2E, #171D2E, #050B1C)',
-        'gradient-custom': 'linear-gradient(to bottom, #171D2E, #0c0b0b)'
+
       },
       
     },

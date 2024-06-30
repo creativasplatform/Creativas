@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-customblack pt-8 relative">
+    <nav className="bg-gradient-to-r from-customblack to-primary pt-8 relative">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto mt-8">
         <a className="flex items-center space-x-3 rtl:space-x-reverse -mt-2.5">
           <img src={CreativasLogo} className="h-8" alt="Creativas Logo" />
@@ -33,7 +33,7 @@ const Navbar = () => {
             <button
               type="button"
               onClick={handleButtonClick}
-              className="text-secondary -mt-2.5 bg-primary hover:bg-primary-ligth focus:outline-none  font-medium rounded-full text-lg px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-secondary -mt-2.5 bg-primary hover:bg-primary-ligth focus:outline-none  font-medium rounded-full text-lg px-5 py-2.5 text-center me-2 mb-2 dark:bg-white dark:text-secondary dark:hover:bg-gray-200"
             >
               Get Started
             </button>

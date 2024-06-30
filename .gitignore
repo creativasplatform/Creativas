@@ -22,6 +22,4 @@ node_modules/
 dist/
 .svelte-kit/
 
-# environment variables
-.env.local
 .env

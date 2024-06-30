@@ -1,60 +1,91 @@
-import color1 from "../assets/color1.png";
-import color2 from "../assets/color2.png";
-import color3 from "../assets/color3.png";
+import React, { useState, useEffect } from 'react';
+import { useTransition, animated, config } from 'react-spring';
+import image1 from "../assets/color2.png";
+import image2 from "../assets/color1.png";
+import image3 from "../assets/color3.png";
+import { title } from 'process';
+
+
 
 const Card = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  // Define tus tarjetas y su estado inicial
+  const issues = [
+    { id: 1, title: "NFTVenture", image: image1, name: "Secure and transparent crowdfunding with NFTs.", description: "Our fund management system is run by a decentralized network of blockchain-secured smart contracts." },
+    { id: 2, title: "Marketplace", image: image2, name: "Rewards tied to each NFT of each project.", description: "Tokenized rewards allow backers to trade and monetize their stake, while founders earn long-term income." },
+    { id: 3, title: "Portfolio", image: image3, name: "AI-powered recommendations for new projects.", description: "We use AI to offer personalized project recommendations based on your tastes, capital, and the current market." },
+  ];
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const componentTop = document.getElementById('practica').offsetTop;
+
+      if (scrollTop + windowHeight > componentTop) {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+// Configura las transiciones
+const transitions = useTransition(isVisible ? issues : [], {
+  from: { opacity: 1, transform: 'translateY(100px)' },
+  enter: { opacity: 1, transform: 'translateY(0px)' },
+  config: config.molasses,
+});
+
+
   return (
-    <div className="flex flex-col items-center mb-0 bg-gradient-to-b-custom h-[450px]">
-      <div className="flex justify-center space-x-16 w-full mt-24">
-        <div className="relative">
-          <img
-            className="rounded-t-lg h-[350px] w-full transform transition duration-500 ease-in-out hover:scale-105"
-            src={color3}
-            alt=""
-          />
-          <button
-            type="button"
-            className="absolute bottom-[-20px] left-1/2 transform -translate-x-1/2 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none  font-medium rounded-full text-lg px-5 py-2.5 text-center mb-2 w-[150px] h-[60px] flex items-center justify-center"
-          >
-            <span className="leading-tight">
-              NFTs<br />Funding
-            </span>
-          </button>
-        </div>
+    <section className="w-full h-full mt-[-1px] pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px] flex justify-center items-center bg-gradient-to-b from-customblack to-primary">
+    <div className="container mx-auto">
+      <div className="w-[80vw] mx-auto flex justify-start flex-col items-start">
+        <h1 className="font-bold tracking-tight sm:text-4xl font-raleway text-start">
+        <span className="text-white text-5xl">Why use    </span>
+        <span className="text-secondary  text-5xl">Creativas?</span>
+        </h1>
 
-        <div className="relative">
-          <img
-            className="rounded-t-lg h-[350px] w-full transform transition duration-500 ease-in-out hover:scale-105"
-            src={color2}
-            alt=""
-          />
-          <button
-            type="button"
-            className="absolute bottom-[-20px] left-1/2 transform -translate-x-1/2 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none  font-medium rounded-full text-lg px-5 py-2.5 text-center mb-2 w-[150px] h-[60px] flex items-center justify-center"
-          >
-            <span className="leading-tight">
-              Investment<br />Portfolio
-            </span>
-          </button>
-        </div>
 
-        <div className="relative">
-          <img
-            className="rounded-t-lg h-[350px] w-full transform transition duration-500 ease-in-out hover:scale-105"
-            src={color1}
-            alt=""
-          />
-          <button
-            type="button"
-            className="absolute bottom-[-20px] left-1/2 transform -translate-x-1/2 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none  font-medium rounded-full text-lg px-5 py-2.5 text-center mb-2 w-[150px] h-[60px] flex items-center justify-center"
-          >
-            <span className="leading-tight">
-              Marketplace
-            </span>
-          </button>
-        </div>
+      </div>
+
+      <div id="practica" className="-mx-4 flex flex-wrap justify-center ">
+      {transitions((props, item) => (
+              <animated.div
+                key={item.id}
+                style={props}
+                className="m-6 flex flex-col relative z-10"
+              >
+                
+                <div className="w-full max-w-sm">
+                  <div className="flex flex-col items-start pb-10">
+                    <img
+                      className="w-48 h-48 mb-3 mt-12"
+                      src={item.image}
+                      alt={`${item.name} image`}
+                    />
+                        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+                     <div className="mb-8 flex items-center justify-center min-w-[100px] text-sm bg-white text-secondary font-raleway rounded-full px-4 py-1">
+                    {item.title}
+                  </div>
+                    <h5 className="mb-1 text-2xl font-semibold text-black dark:text-white font-raleway">{item.name}</h5>
+                    <span className="text-lg text-gray-800 text-start dark:text-gray-400 mb-4 font-roboto">{item.description}</span>
+                    <a className="inline-flex font-medium items-start text-sm text-secondary hover:underline">
+                    Read more!
+                    <svg className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
+                    </svg>
+                  </a>
+                  </div>
+                </div>
+              </animated.div>
+            ))}
       </div>
     </div>
+  </section>
   );
 }
 

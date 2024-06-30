@@ -14,6 +14,8 @@ import NFTSteps from "./landing/NFTSteps.jsx";
 import Carousel from "./landing/BrowseCategory.jsx";
 import NotableDrops from "./landing/NotableDrops.jsx";
 
+import Pathners from "./landing/Pathners.jsx";
+import NFTs from "./landing/NFTs..jsx";
 function App() {
   return (
     <div className="App">
@@ -25,10 +27,12 @@ function App() {
               <>
                 <Navbar />
                 <Body />
-                <Card />
                 <Carousel />
                 <NotableDrops/>
                 <NFTSteps />
+                <Pathners />
+                <Card />
+                <NFTs />
                 <Footer />
               </>
             } />
