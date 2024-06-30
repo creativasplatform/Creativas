@@ -12,6 +12,7 @@ import { DfinityProvider } from "./context/IdentityContext.jsx";
 import Footer from "./landing/Footer.jsx";
 import NFTSteps from "./landing/NFTSteps.jsx";
 import Carousel from "./landing/BrowseCategory.jsx";
+import NotableDrops from "./landing/NotableDrops.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Body />
                 <Card />
                 <Carousel />
+                <NotableDrops/>
                 <NFTSteps />
                 <Footer />
               </>
