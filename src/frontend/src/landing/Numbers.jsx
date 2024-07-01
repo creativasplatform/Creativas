@@ -36,9 +36,19 @@ const Numbers = () => {
       <img className="absolute top-24 right-32 picture z- opacity-80" src={check} alt="Cube Image" />     
     </div>  
     <img className="absolute top-2/4 -mt-10 left-24 picture z-1 opacity-80" src={cube} alt="Cube Image" /> 
+    <div className="absolute top-4/4 right-2/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+       
     <div className="absolute top-3/5 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
-
-
+    <div className="absolute top-4/4 right-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+       
+    <div className="absolute top-1/4 right-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+    <div className="absolute top-2/4 right-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+    <div className="absolute top-2/4 right-3/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+    <div className="absolute top-3/4 right-3/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+    <div className="absolute top-3/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+    <div className="absolute top-2/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+    <div className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+  
     </div>
   );
 }

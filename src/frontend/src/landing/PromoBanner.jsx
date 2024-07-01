@@ -7,7 +7,7 @@ const PromoBanner = () => {
     <div className="bg-gradient-to-r from-customblack to-primary flex justify-center py-8">
       <div className="bg-green text-black rounded-lg w-[80%] max-w-screen-xl shadow-lg flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold font-raleway mb-4 ml-3">Solana is in beta on OpenLake</h2>
+          <h2 className="text-2xl font-bold font-raleway mb-4 ml-3">Creativas is in beta on Roostock</h2>
           <div className="flex items-center space-x-4">
             <button className="bg-black text-white py-2 px-8 ml-3 rounded-lg  fond-semibold font-roboto text-[18px]">EXPLORE</button>
             <div className="flex space-x-2">

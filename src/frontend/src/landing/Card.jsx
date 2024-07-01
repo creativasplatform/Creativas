@@ -41,7 +41,7 @@ const transitions = useTransition(isVisible ? issues : [], {
 
 
   return (
-    <section className="w-full h-full mt-[-1px] pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px] flex justify-center items-center bg-gradient-to-b from-customblack to-primary">
+    <section className="w-full h-full mt-[-1px] pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px] flex justify-center items-center bg-gradient-to-b from-primary to-customblack">
     <div className="container mx-auto">
       <div className="w-[80vw] mx-auto flex justify-start flex-col items-start">
         <h1 className="font-bold tracking-tight sm:text-4xl font-raleway text-start">

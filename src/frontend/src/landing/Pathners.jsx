@@ -3,7 +3,7 @@ import React from 'react';
 
 const Pathners = () => {
     return (
-        <section className="w-full h-full mt-[-1px] pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px] flex justify-center items-center bg-customblack">
+        <section className="w-full h-full mt-[-1px] pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px] flex justify-center items-center  bg-gradient-to-b from-customblack to-primary">
             <div className="container mx-auto">
                 <div className="w-[80vw] mx-auto flex justify-center flex-col items-center -mt-16 mb-8">
                     <h1 className="font-roboto font-bold text-6xl tracking-tight text-white font-popping text-center mb-4">
