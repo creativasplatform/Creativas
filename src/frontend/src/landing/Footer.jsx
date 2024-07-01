@@ -9,7 +9,7 @@ const Footer = () => {
       <div class="mx-auto max-w-screen-xl space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-6">
           <div>
-            <a className="flex space-x-3 rtl:space-x-reverse mt-4 mb-8 ">
+            <a className="flex space-x-3 rtl:space-x-reverse mt-4 mb-8   ">
               <img src={Creativas} className="h-8" alt="Creativas Logo" />
             </a>
             <div className="flex items-center  fond-semibold font-roboto text-[18px]">
