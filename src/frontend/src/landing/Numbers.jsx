@@ -2,7 +2,7 @@ import React from 'react';
 import cube from '../assets/cube.png';
 import check from '../assets/check.svg';
 
-const NUmbers = () => {
+const Numbers = () => {
   return (
     <div>             
     <div className="relative bg-gradient-to-r from-customblack to-primary flex justify-center items-center overflow-hidden py-20">
@@ -11,22 +11,22 @@ const NUmbers = () => {
         <div className="w-full">
           <div className="flex justify-between mb-6">
             <div>
-            <p className="text-center text-5xl font-raleway mb-4">522</p>
+            <p className="text-center text-5xl font-raleway mb-4">12</p>
               <h2 className="text-lg font-semibold font-roboto text-gray-400 text-center">Projects Fully Funded</h2>
              
             </div>
             <div>
-            <p className="text-center text-5xl font-raleway mb-4">$470B+</p>
+            <p className="text-center text-5xl font-raleway mb-4">$110B+</p>
               <h2 className="text-lg font-semibold font-roboto text-gray-400 text-center">Total Raised</h2>
           
             </div>
             <div>
-            <p className="text-center text-5xl font-raleway mb-4">14.7M+</p>
+            <p className="text-center text-5xl font-raleway mb-4">10.7M+</p>
               <h2 className="text-lg text-gray-400 font-roboto font-semibold text-center">Contributions Made</h2>
              
             </div>
             <div>
-            <p className="text-center text-5xl font-raleway mb-4">86.4M+</p>
+            <p className="text-center text-5xl font-raleway mb-4">20.4M+</p>
               <h2 className="text-lg font-semibold font-roboto text-gray-400 text-center">Total Rewards trades</h2>
 
             </div>            
@@ -43,4 +43,4 @@ const NUmbers = () => {
   );
 }
 
-export default NUmbers;
+export default Numbers;

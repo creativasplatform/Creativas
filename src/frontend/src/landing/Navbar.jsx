@@ -39,7 +39,9 @@ const Navbar = () => {
             </button>
           </ul>
         </div>
+        
       </div>
+      
     </nav>
   );
 }

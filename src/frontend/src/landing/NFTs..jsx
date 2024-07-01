@@ -10,7 +10,7 @@ const NFTs = () => {
     return (
         <div className="bg-primary">
             <div className="overflow-hidden pt-32 sm:pt-14">
-                <div className="bg-gradient-to-tr from-customblack to-primary">
+                <div className="bg-primary">
                     <div className="mx-auto max-w-5xl px-8 sm:px-0">
                         <div className="relative pt-48 pb-16 sm:pb-24">
                             <div className='-ml-56'>
@@ -22,8 +22,8 @@ const NFTs = () => {
                                         Explorer our marketplace<span aria-hidden="true"> →</span>
                                     </a>
                                 </div>
-                                <div className="absolute top-4/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
-
+                    
+  
                             </div>
                             <div className="absolute -top-32 left-1/2 -translate-x-1/2 transform sm:top-6 sm:translate-x-0">
                                 <div className="ml-24 flex min-w-max space-x-6 sm:ml-3 lg:space-x-8">
@@ -56,7 +56,11 @@ const NFTs = () => {
                         </div>
                     </div>
                 </div>
+                <div className="absolute top-4/4 right-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+       
             </div>
+            <div className="absolute top-4/4 left-2/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
+         
         </div>
     );
 }

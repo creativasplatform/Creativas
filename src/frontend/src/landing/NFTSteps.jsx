@@ -7,7 +7,7 @@ import Paso4 from '../assets/paso4.png';
 
 const NFTSteps = () => {
   return (
-    <div className="relative bg-customblack text-white py-32 px-8 overflow-hidden font-roboto">
+    <div className="relative bg-gradient-to-b from-customblack to-primary text-white py-32 px-8 overflow-hidden font-roboto">
       <div className="mb-24">
         <span className="text-3xl font-semibold mb-8 text-left font-raleway">
           <span className="text-white">Create and finance </span>

@@ -67,8 +67,7 @@ const transitions = useTransition(isVisible ? issues : [], {
                       src={item.image}
                       alt={`${item.name} image`}
                     />
-                        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
-                     <div className="mb-8 flex items-center justify-center min-w-[100px] text-sm bg-white text-secondary font-raleway rounded-full px-4 py-1">
+                            <div className="mb-8 flex items-center justify-center min-w-[100px] text-sm bg-white text-secondary font-raleway rounded-full px-4 py-1">
                     {item.title}
                   </div>
                     <h5 className="mb-1 text-2xl font-semibold text-black dark:text-white font-raleway">{item.name}</h5>
