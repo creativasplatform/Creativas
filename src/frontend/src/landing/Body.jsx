@@ -2,6 +2,7 @@ import React from 'react';
 import cube from '../assets/cube.png';
 import Numbers from './Numbers.jsx'; // Importa tu archivo SVG aquí
 import touch from '../assets/touch.png'
+import NUmbers from './Numbers.jsx';
 const Body = () => {
   return (
     <div>
@@ -21,7 +22,7 @@ const Body = () => {
 
     </div>
 
-    <Numbers/>
+
     
     </div>
   );

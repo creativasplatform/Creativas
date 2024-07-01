@@ -5,23 +5,23 @@ import Creativas from '../assets/CreativasLogo2.png'
 const Footer = () => {
   return (
 
-    <footer class="bg-customblack"> 
+    <footer class="bg-customblack">
       <div class="mx-auto max-w-screen-xl space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-6">
           <div>
-            <a className="flex  space-x-3 rtl:space-x-reverse mt-2.5 ">
+            <a className="flex space-x-3 rtl:space-x-reverse mt-4 mb-8 ">
               <img src={Creativas} className="h-8" alt="Creativas Logo" />
             </a>
-            <div className="flex items-center">
-      <input
-        type="email"
-        placeholder="Enter email address"
-        className="p-2 bg-gray-800 text-white border-none rounded-l-md focus:outline-none"
-      />
-      <button className="p-2 bg-yellow-500 text-black rounded-r-md">
-        SEND
-      </button>
-    </div>
+            <div className="flex items-center  fond-semibold font-roboto text-[18px]">
+              <input
+                type="email"
+                placeholder="Enter email address"
+                className="p-2 bg-gray-800 text-white border-none rounded-l-md focus:outline-none"
+              />
+              <button className="p-2 bg-secondary text-white rounded-r-md ">
+                SEND
+              </button>
+            </div>
 
             <p class="mt-4 max-w-xs text-gray-500">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non cupiditate quae nam
