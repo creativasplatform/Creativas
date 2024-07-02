@@ -21,13 +21,19 @@ import { Spinner } from '@nextui-org/react';
 import { useSpring, useTransition, animated } from '@react-spring/web';
 import walleticon from "../assets/wallet.png";
 import googleicon from "../assets/google.png";
+import useAssets from '../hooks/Nftventure/useAssets';
+import useRewards from '../hooks/Nftventure/useRewards';
+import errorpicture from "../assets/error.png"
+import aceptarpicture from "../assets/aceptar.png"
+import { Category } from '../helpers/AssetsHelpers.js';
+import { NFTVenture, rpcURL } from "../utils/constans.js"
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({ title: '', description: '' });
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const { address, isLoggedIn, loginWallet, loginWeb3Auth, } = useUser();
+    const { address, isLoggedIn, loginWallet, loginWeb3Auth, authType, Provider} = useUser();
     const [hasRewards, setHasRewards] = useState(false);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [errors, setErrors] = useState({});
@@ -47,13 +53,17 @@ const NFTFunding = () => {
         { id: 2, name: 'Gaming', image: categoriaone },
         { id: 3, name: 'Music', image: categoriathree },
         { id: 4, name: 'Movies', image: categoriatwo },
+        { id: 5, name: 'Art', image: categoriatwo },
     ];
     const [images, setImages] = useState([]);
     const inputFileRef = useRef(null);
     const { uploadFile, fetchImage, error, uploadJsonToPinata } = usePinata();
     const [loading, setLoading] = useState(false);
     const [openLoginModal, setOpenLoginModal] = useState(false);
-
+    const [ loadingMessage, setLoadingMessage] = useState(null)
+    const { createAsset } = useAssets()
+    const { createRewards } = useRewards()
+    
 
     const modalLoginAnimation = useSpring({
         opacity: openLoginModal ? 1 : 0,
@@ -79,7 +89,7 @@ const NFTFunding = () => {
         } finally {
             setOpenModal('verification-modal');
         }
-        
+
     };
 
     const handleLoginWeb3Auth = async () => {
@@ -315,29 +325,65 @@ const NFTFunding = () => {
         }
     };
 
-
-    const handleCreateAsset = () => {
+    const handleCreateAsset = async () => {
         if (images.length === 0) {
             setErrors((prevErrors) => ({ ...prevErrors, projectPictures: 'At least one project picture is required.' }));
             return;
         }
-
-        console.log("Title:", formData.title);
-        console.log("Description:", formData.description);
-        console.log("Rewards:", hasRewards ? cards : "No rewards");
-        console.log("Images:", images.length > 0 ? images : "No images");
-        console.log("Funding Objective:", fundingObjective);
-        console.log("Project End Day:", endDate);
-        console.log("Category:", selectedCategory ? categories.find(cat => cat.id === selectedCategory).name : "No category selected");
-
+    
+        // Cierra el modal actual
         handleCloseModal();
+    
+        // Abre el modal de carga
+        setOpenModal('loading-modal');
+        setLoadingMessage('Creating Asset...');
+    
+        const endDateUnix = new Date(
+            endDate.year,
+            endDate.month - 1,
+            endDate.day
+        ).getTime() / 1000;
+    
+        try {
+            const mainImage = images[0].url;
+            const ipfsHash = await uploadJsonToPinata(formData.title, mainImage, formData.description);
+            const tokenURI = `https://green-capable-vole-518.mypinata.cloud/ipfs/${ipfsHash}`;
+    
+            const category = categories.find(cat => cat.id === selectedCategory).name;
+    
+            // Llamada a createAsset
+            await createAsset(
+                fundingObjective,
+                address,
+                formData.title,
+                formData.description,
+                endDateUnix,
+                address,
+                tokenURI,
+                mainImage,
+                images.slice(1),
+                Category[category]
+            );
+    
+            setLoadingMessage('Creating Rewards...');
+    
+            // Llamada a createRewards
+            if (hasRewards) {
+                await createRewards(assetId, cards);
+            }
+    
+            setLoadingMessage('Asset Added Successfully!');
+            setTimeout(() => {
+                setOpenModal(null);
+            }, 2000);
+    
+        } catch (error) {
+            console.error("Error creating asset or rewards:", error);
+            setErrors((prevErrors) => ({ ...prevErrors, general: 'Failed to create asset or rewards.' }));
+            setLoadingMessage('Failed to create asset or rewards.');
+        }
     };
-
-
-
-
-
-
+    
     const renderModalContent = () => {
         switch (currentStep) {
             case 1:
@@ -870,13 +916,18 @@ const NFTFunding = () => {
                 <button
                     onClick={() => setOpenModal('extralarge-modal')}
                     className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800"
-                >
+                    disabled={loading}
+               >
                     Edit
                 </button>
                 <button
+                    disabled={loading}
                     onClick={isLoggedIn && address ? handleCreateAsset : handleOpenLoginModal}
+                   
                     className={`text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left ${isLoggedIn && address ? 'dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' : ''
-                        }`}
+                   
+                }`}
+               
                 >
                     {isLoggedIn && address ? 'Complete' : 'Connect'}
                 </button>
@@ -979,6 +1030,25 @@ const NFTFunding = () => {
                     </div>
                 </div>
             )}
+           {openModal === 'loading-modal' && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
+        <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
+            <div className="p-6 space-y-6 bg-gray-800 rounded-xl">
+                {loadingMessage === 'Failed to create asset or rewards.' ? (
+                    <>
+                        <p className="text-center text-lg text-white font-thin">{loadingMessage}</p>
+                        <img src={errorpicture} alt="Error" className="mx-auto" />
+                    </>
+                ) : (
+                    <>
+                        <Spinner label={loadingMessage} color={loadingMessage.includes('Successfully') ? 'success' : 'warning'} labelColor="warning" />
+                    </>
+                )}
+            </div>
+        </div>
+    </div>
+)}
+
 
             {openLoginModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
@@ -1040,6 +1110,7 @@ const NFTFunding = () => {
                 </div>
 
             )}
+
 
         </>
 

@@ -20,7 +20,7 @@ const aliases = {
   _stream_readable: "empty-module",
   _stream_writable: "empty-module",
   _stream_transform: "empty-module",
-  // Agrega más alias si es necesario
+
 };
 
 export default defineConfig({

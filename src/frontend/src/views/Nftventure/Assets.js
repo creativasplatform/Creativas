@@ -47,18 +47,26 @@ export async function getAssetsOfOwner(ownerAddress) {
   }
 }
 
-export async function addAsset(price, author, title, description, projectEndDate, to, tokenURI, mainPhoto, secondaryPhotos) {
+export async function addAsset(price, author, title, description, projectEndDate, to, tokenURI, mainPhoto, secondaryPhotos, category) {
   const contract = getAssetsContract(wallet);
 
   try {
-    const tx = await contract.addAsset(price, author, title, description, projectEndDate, to, tokenURI, mainPhoto, secondaryPhotos);
-    await tx.wait();
-    return tx;
+    const tx = await contract.addAsset(price, author, title, description, projectEndDate, to, tokenURI, mainPhoto, secondaryPhotos, category);
+    const receipt = await tx.wait();
+
+    const event = receipt.events.find(event => event.event === 'AssetCreated');
+    const assetId = event.args.assetId;
+    return {
+      transactionHash: tx.hash,
+      assetId: assetId.toString()
+    };
   } catch (error) {
     console.error("Error adding asset:", error);
     throw error;
   }
 }
+
+
 
 export async function updateAsset(signer, assetId, mainPhoto, secondaryPhotos, description) {
   const contract = getAssetsContract(signer);

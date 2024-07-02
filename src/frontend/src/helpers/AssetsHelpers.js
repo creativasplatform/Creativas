@@ -6,4 +6,11 @@ export const ProjectStatus = {
   };
 
 
-  
+  // Asegúrate de que estos valores coinciden con los del contrato
+export const Category = {
+  Technology: 0,
+  Gaming: 1,
+  Music: 2,
+  Movies: 3,
+  Art: 4
+};

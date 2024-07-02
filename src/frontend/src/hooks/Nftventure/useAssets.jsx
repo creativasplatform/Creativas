@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAssets, getAssetById, getAssetsOfOwner, addAsset, updateAsset } from '../../views/Nftventure/Assets.js';
-import { ProjectStatus } from '../../helpers/AssetsHelpers.js/index.js';
+import { ProjectStatus } from '../../helpers/AssetsHelpers.js';
 import { useUserContext } from '../../context/userContext.jsx';
 
 export default function useAssets() {
@@ -31,7 +31,7 @@ export default function useAssets() {
     });
     const [asset, setAsset] = useState(null);
 
-    const { signer, address } = useUserContext(); 
+    const { signer, address } = useUserContext();
 
     useEffect(() => {
         const fetchAssets = async (status, setAssets, loadingKey, errorKey) => {
@@ -62,12 +62,13 @@ export default function useAssets() {
         to,
         tokenURI,
         mainPhoto,
-        secondaryPhotos
+        secondaryPhotos,
+        category
     ) => {
         setLoading(prevLoading => ({ ...prevLoading, adding: true }));
         setError(prevError => ({ ...prevError, adding: null }));
         try {
-            const tx = await addAsset(
+            const result = await addAsset(
                 price,
                 author,
                 title,
@@ -76,9 +77,28 @@ export default function useAssets() {
                 to,
                 tokenURI,
                 mainPhoto,
-                secondaryPhotos
+                secondaryPhotos,
+                category
             );
-            return tx;
+
+            // Actualizar startedAssets con el nuevo asset
+            const newAsset = {
+                assetId: result.assetId,
+                price,
+                author,
+                title,
+                description,
+                projectEndDate,
+                to,
+                tokenURI,
+                mainPhoto,
+                secondaryPhotos,
+                category,
+                status: ProjectStatus.Started
+            };
+            setStartedAssets(prevAssets => [...prevAssets, newAsset]);
+
+            return result;
         } catch (err) {
             setError(prevError => ({ ...prevError, adding: err }));
             throw err;
