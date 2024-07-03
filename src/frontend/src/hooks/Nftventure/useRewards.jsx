@@ -17,8 +17,8 @@ export default function useRewards() {
         setLoading(prevLoading => ({ ...prevLoading, adding: true }));
         setError(prevError => ({ ...prevError, adding: null }));
         try {
-            const tx = await addRewards(assetId, rewardsList);
-            return tx;
+            const result = await addRewards(assetId, rewardsList);
+            return result;
         } catch (err) {
             setError(prevError => ({ ...prevError, adding: err }));
             throw err;

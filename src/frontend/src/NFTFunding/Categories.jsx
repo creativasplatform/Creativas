@@ -2,8 +2,9 @@ import React from 'react';
 import Card from './CardNFT';
 import CategoriesBar from './CategoriesBar';
 import masicon from "../assets/mas.png"; // Importa el icono aquí
-
+import useAssets from '../hooks/Nftventure/useAssets';
 const Categories = ({onOpenModal}) => {
+  const { startedAssets } = useAssets()
   const collections = [
     {
       title: 'Tecate Comuna',

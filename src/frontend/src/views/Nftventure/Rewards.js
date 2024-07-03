@@ -14,13 +14,25 @@ export const addRewards = async (assetId, rewards) => {
     const contract = getRewardsContract(wallet);
     try {
         const tx = await contract.addRewards(assetId, rewards);
-        await tx.wait();
-        return tx;
+        const receipt = await tx.wait();
+        const event = receipt.events.find(event => event.event === 'RewardsAdded');
+        if (event) {
+            const { assetId, rewardsCount, rewardTokenAddress } = event.args;
+            return {
+                transactionHash: tx.hash,
+                assetId: assetId.toString(),
+                rewardsCount: rewardsCount.toNumber(),
+                rewardTokenAddress: rewardTokenAddress
+            };
+        } else {
+            throw new Error("RewardsAdded event not found");
+        }
     } catch (error) {
         console.error("Error adding rewards:", error);
         throw error;
     }
 };
+
 
 export const getRewardsForAsset = async (assetId) => {
     const contract = getRewardsContract(provider);

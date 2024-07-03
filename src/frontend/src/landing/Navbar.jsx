@@ -13,7 +13,7 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-customblack to-primary pt-8 relative">
       
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto mt-8">
-        <a className="flex items-center space-x-3 rtl:space-x-reverse -mt-2.5">
+        <a className="flex items-center space-x-3 rtl:space-x-reverse -mt-2.5 lg:ml-32">
           <img src={CreativasLogo} className="h-8" alt="Creativas Logo" />
         </a>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">

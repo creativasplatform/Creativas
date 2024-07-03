@@ -1,7 +1,7 @@
 
   export const rpcURL = "https://public-node.testnet.rsk.co";
-  export const Assets = "0x0b8e7a77e5Fb4a3e0085De7AA84eea9CA5Fc8844";
-  export const Rewards = "0x375Beb4A182293b81B065351b0Eb59B99C698a15";
+  export const Assets = "0xb6ffECB39F51a826328BD62354DDc41179110789";
+  export const Rewards = "0x12Cb0C7D178D178e5a3838C3000332FdC20EDbca";
   export const NFTVenture = "0x0D5eBe294F3711Efa2952170a3a2118F360f68A3";
   export const BatchPayment = "0xEE6DcE53C501e9df01504b8f8Cc883551026312F";
   export const UserFunds = "0xeBE33DCd32E013e9BB55591fb7e870663fCa8843";

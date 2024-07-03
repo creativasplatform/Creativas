@@ -43,8 +43,8 @@
       "artifacts": []
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/contracts/Rewards.sol": {
-      "lastModificationDate": 1719414455483,
-      "contentHash": "022c2e40f6afccd1e41bacd15751769f",
+      "lastModificationDate": 1720024283060,
+      "contentHash": "43e7ac1adfa623e6f6bd62c72adfc703",
       "sourceName": "contracts/Rewards.sol",
       "solcConfig": {
         "version": "0.8.19",
@@ -91,8 +91,8 @@
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/contracts/FCTVToken.sol": {
-      "lastModificationDate": 1719414455483,
-      "contentHash": "948b742137928c50949d9d107cebbc33",
+      "lastModificationDate": 1720024094181,
+      "contentHash": "4f863dc0fa139a141dff4d6cdae9d5ee",
       "sourceName": "contracts/FCTVToken.sol",
       "solcConfig": {
         "version": "0.8.19",
@@ -959,6 +959,49 @@
         "Strings"
       ]
     },
+    "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+      "lastModificationDate": 1719417916495,
+      "contentHash": "e6d69a0b5b95ac1112eb4746a2d66f3e",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721Receiver"
+      ]
+    },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
       "lastModificationDate": 1719417916467,
       "contentHash": "93a5aa8a276e028a4f46f22b5d8f7bd3",
@@ -1002,49 +1045,6 @@
       ],
       "artifacts": [
         "IERC721"
-      ]
-    },
-    "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
-      "lastModificationDate": 1719417916495,
-      "contentHash": "e6d69a0b5b95ac1112eb4746a2d66f3e",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC721Receiver"
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
@@ -1456,8 +1456,8 @@
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/contracts/Assets.sol": {
-      "lastModificationDate": 1719522758887,
-      "contentHash": "ce2c2473e1d28c7c673790ea43877f04",
+      "lastModificationDate": 1719523138176,
+      "contentHash": "87fbaa65d8999cb7944cbda8b9625daa",
       "sourceName": "contracts/Assets.sol",
       "solcConfig": {
         "version": "0.8.19",
