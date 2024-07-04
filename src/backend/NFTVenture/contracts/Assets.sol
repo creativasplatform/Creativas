@@ -85,7 +85,7 @@ contract Assets {
 
     function getAllAssets(
         ProjectStatus status
-    ) public view returns (Asset[] memory) {
+    ) public view returns (Asset[] memory, uint256[] memory, uint256[] memory) {
         uint256[] memory assetIds;
 
         if (status == ProjectStatus.Started) {
@@ -102,12 +102,16 @@ contract Assets {
 
         uint256 assetCount = assetIds.length;
         Asset[] memory assets = new Asset[](assetCount);
+        uint256[] memory investmentAmounts = new uint256[](assetCount);
+        uint256[] memory investorCounts = new uint256[](assetCount);
 
         for (uint256 i = 0; i < assetCount; i++) {
             assets[i] = nftContract.getAsset(assetIds[i]);
+            investmentAmounts[i] = nftContract.getTotalInvestment(assetIds[i]);
+            investorCounts[i] = nftContract.getTotalInvestors(assetIds[i]);
         }
 
-        return assets;
+        return (assets, investmentAmounts, investorCounts);
     }
 
     function getAllAssetsByCategory(
@@ -128,7 +132,9 @@ contract Assets {
             revert("Invalid status");
         }
 
-        uint256[] memory categoryAssetIds = nftContract.getAssetsByCategory(category);
+        uint256[] memory categoryAssetIds = nftContract.getAssetsByCategory(
+            category
+        );
         uint256[] memory assetIds = new uint256[](categoryAssetIds.length);
         uint256 count = 0;
 
@@ -140,7 +146,9 @@ contract Assets {
         for (uint256 i = 0; i < categoryAssetIds.length; i++) {
             for (uint256 j = 0; j < assetIds.length; j++) {
                 if (categoryAssetIds[i] == assetIds[j]) {
-                    filteredAssets[count] = nftContract.getAsset(categoryAssetIds[i]);
+                    filteredAssets[count] = nftContract.getAsset(
+                        categoryAssetIds[i]
+                    );
                     count++;
                     break;
                 }

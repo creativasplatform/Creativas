@@ -1,13 +1,26 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAssets, getAssetById, getAssetsOfOwner, addAsset, updateAsset } from '../../views/Nftventure/Assets.js';
-import { ProjectStatus } from '../../helpers/AssetsHelpers.js/index.js';
+import { ProjectStatus } from '../../helpers/AssetsHelpers.js';
 import { useUserContext } from '../../context/userContext.jsx';
 
 export default function useAssets() {
     const [startedAssets, setStartedAssets] = useState([]);
+    const [startedInvestmentAmounts, setStartedInvestmentAmounts] = useState([]);
+    const [startedInvestorCounts, setStartedInvestorCounts] = useState([]);
+    
     const [fundedAssets, setFundedAssets] = useState([]);
+    const [fundedInvestmentAmounts, setFundedInvestmentAmounts] = useState([]);
+    const [fundedInvestorCounts, setFundedInvestorCounts] = useState([]);
+    
     const [failedAssets, setFailedAssets] = useState([]);
+    const [failedInvestmentAmounts, setFailedInvestmentAmounts] = useState([]);
+    const [failedInvestorCounts, setFailedInvestorCounts] = useState([]);
+    
     const [completedAssets, setCompletedAssets] = useState([]);
+    const [completedInvestmentAmounts, setCompletedInvestmentAmounts] = useState([]);
+    const [completedInvestorCounts, setCompletedInvestorCounts] = useState([]);
+
+
     const [ownerAssets, setOwnerAssets] = useState([]);
     const [loading, setLoading] = useState({
         started: true,
@@ -31,26 +44,32 @@ export default function useAssets() {
     });
     const [asset, setAsset] = useState(null);
 
-    const { signer, address } = useUserContext(); 
+    const { signer, address } = useUserContext();
+
 
     useEffect(() => {
-        const fetchAssets = async (status, setAssets, loadingKey, errorKey) => {
+        const fetchAssets = async (status, setAssets, setInvestmentAmounts, setInvestorCounts, loadingKey, errorKey) => {
             setLoading(prevLoading => ({ ...prevLoading, [loadingKey]: true }));
             setError(prevError => ({ ...prevError, [errorKey]: null }));
             try {
-                const data = await getAssets(status);
-                setAssets(data);
+                const { assets, investmentAmounts, investorCounts } = await getAssets(status);
+            
+                setAssets(assets);
+                setInvestmentAmounts(investmentAmounts);
+                setInvestorCounts(investorCounts);
+
             } catch (err) {
+               
                 setError(prevError => ({ ...prevError, [errorKey]: err }));
             } finally {
                 setLoading(prevLoading => ({ ...prevLoading, [loadingKey]: false }));
             }
         };
 
-        fetchAssets(ProjectStatus.Started, setStartedAssets, 'started', 'started');
-        fetchAssets(ProjectStatus.Funded, setFundedAssets, 'funded', 'funded');
-        fetchAssets(ProjectStatus.Failed, setFailedAssets, 'failed', 'failed');
-        fetchAssets(ProjectStatus.Completed, setCompletedAssets, 'completed', 'completed');
+        fetchAssets(ProjectStatus.Started, setStartedAssets, setStartedInvestmentAmounts, setStartedInvestorCounts, 'started', 'started');
+        fetchAssets(ProjectStatus.Funded, setFundedAssets, setFundedInvestmentAmounts, setFundedInvestorCounts, 'funded', 'funded');
+        fetchAssets(ProjectStatus.Failed, setFailedAssets, setFailedInvestmentAmounts, setFailedInvestorCounts, 'failed', 'failed');
+        fetchAssets(ProjectStatus.Completed, setCompletedAssets, setCompletedInvestmentAmounts, setCompletedInvestorCounts, 'completed', 'completed');
     }, []);
 
     const createAsset = async (
@@ -62,12 +81,13 @@ export default function useAssets() {
         to,
         tokenURI,
         mainPhoto,
-        secondaryPhotos
+        secondaryPhotos,
+        category
     ) => {
         setLoading(prevLoading => ({ ...prevLoading, adding: true }));
         setError(prevError => ({ ...prevError, adding: null }));
         try {
-            const tx = await addAsset(
+            const result = await addAsset(
                 price,
                 author,
                 title,
@@ -76,9 +96,11 @@ export default function useAssets() {
                 to,
                 tokenURI,
                 mainPhoto,
-                secondaryPhotos
+                secondaryPhotos,
+                category
             );
-            return tx;
+    
+            return result;
         } catch (err) {
             setError(prevError => ({ ...prevError, adding: err }));
             throw err;
@@ -86,13 +108,14 @@ export default function useAssets() {
             setLoading(prevLoading => ({ ...prevLoading, adding: false }));
         }
     };
+    
 
     const updateAssetDetails = async (assetId, mainPhoto, secondaryPhotos, description) => {
         setLoading(prevLoading => ({ ...prevLoading, updating: true }));
         setError(prevError => ({ ...prevError, updating: null }));
         try {
             const tx = await updateAsset(signer, assetId, mainPhoto, secondaryPhotos, description);
-            await tx.wait();
+
 
             const updatedAsset = await getAssetById(assetId);
 
@@ -165,10 +188,10 @@ export default function useAssets() {
     }, [address, fetchAssetsOfOwner]);
 
     return { 
-        startedAssets, loadingStarted: loading.started, errorStarted: error.started,
-        fundedAssets, loadingFunded: loading.funded, errorFunded: error.funded,
-        failedAssets, loadingFailed: loading.failed, errorFailed: error.failed,
-        completedAssets, loadingCompleted: loading.completed, errorCompleted: error.completed,
+        startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted: loading.started, errorStarted: error.started,
+        fundedAssets, fundedInvestmentAmounts, fundedInvestorCounts, loadingFunded: loading.funded, errorFunded: error.funded,
+        failedAssets, failedInvestmentAmounts, failedInvestorCounts, loadingFailed: loading.failed, errorFailed: error.failed,
+        completedAssets, completedInvestmentAmounts, completedInvestorCounts, loadingCompleted: loading.completed, errorCompleted: error.completed,
         ownerAssets, loadingOwnerAssets: loading.fetchingOwnerAssets, errorOwnerAssets: error.fetchingOwnerAssets,
         createAsset, loadingAdding: loading.adding, errorAdding: error.adding,
         updateAssetDetails, loadingUpdating: loading.updating, errorUpdating: error.updating,

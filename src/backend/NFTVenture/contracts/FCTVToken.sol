@@ -31,7 +31,7 @@ contract FCTVToken is ERC1155, ERC1155Burnable, Ownable {
         bytes memory data
     ) public onlyOwner {
         _mint(to, id, amount, data);
-        _tokenURIs[id] = tokenURI;
+        setURI(id, tokenURI);
     }
 
     function mintBatch(

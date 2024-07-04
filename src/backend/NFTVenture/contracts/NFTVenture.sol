@@ -45,8 +45,10 @@ contract NFTVenture is
     mapping(uint256 => bool) public isRefundingAllowed;
     mapping(uint256 => uint256) public investmentRefunded;
     mapping(uint256 => mapping(address => uint256)) public pendingReturns;
-    mapping(uint256 => mapping(address => mapping(uint256 => uint256))) public investorTokens;
-
+    mapping(uint256 => mapping(address => mapping(uint256 => uint256)))
+        public investorTokens;
+    mapping(uint256 => uint256) public totalInvestors;
+    mapping(uint256 => uint256) public totalInvestment;
     mapping(address => uint256[]) public investorAssets;
 
     // Constructor
@@ -205,7 +207,7 @@ contract NFTVenture is
         return ownerToAssets[owner];
     }
 
-     function updateAssetReward(
+    function updateAssetReward(
         uint256 assetId,
         uint256 rewardIndex,
         uint256 newAvailableTokens
@@ -254,6 +256,25 @@ contract NFTVenture is
     ) external {
         investmentAmountOf[assetId][investor] += amount;
         investmentReceived[assetId] += amount;
+        totalInvestment[assetId] += amount;
+        if (investmentAmountOf[assetId][investor] == amount) {
+            assetInvestors[assetId].push(investor);
+            investorAssets[investor].push(assetId);
+
+            totalInvestors[assetId]++;
+        }
+    }
+
+    function getTotalInvestment(
+        uint256 assetId
+    ) external view returns (uint256) {
+        return totalInvestment[assetId];
+    }
+
+    function getTotalInvestors(
+        uint256 assetId
+    ) external view returns (uint256) {
+        return totalInvestors[assetId];
     }
 
     function addInvestor(uint256 assetId, address investor) external {
@@ -272,27 +293,38 @@ contract NFTVenture is
     ) external view returns (uint256[] memory) {
         return investorAssets[investor];
     }
- function getInvestorTokens(uint256 assetId, address investor) public view returns (uint256[] memory, uint256[] memory) {
-    Asset memory asset = assetMap[assetId];
-    uint256 rewardCount = asset.rewards.length;
+    function getInvestorTokens(
+        uint256 assetId,
+        address investor
+    ) public view returns (uint256[] memory, uint256[] memory) {
+        Asset memory asset = assetMap[assetId];
+        uint256 rewardCount = asset.rewards.length;
 
-    uint256[] memory tokenIds = new uint256[](rewardCount);
-    uint256[] memory tokenAmounts = new uint256[](rewardCount);
+        uint256[] memory tokenIds = new uint256[](rewardCount);
+        uint256[] memory tokenAmounts = new uint256[](rewardCount);
 
-    for (uint256 i = 0; i < rewardCount; i++) {
-        uint256 tokenId = asset.rewards[i].rewardTokenId;
-        tokenIds[i] = tokenId;
-        tokenAmounts[i] = investorTokens[assetId][investor][tokenId];
+        for (uint256 i = 0; i < rewardCount; i++) {
+            uint256 tokenId = asset.rewards[i].rewardTokenId;
+            tokenIds[i] = tokenId;
+            tokenAmounts[i] = investorTokens[assetId][investor][tokenId];
+        }
+
+        return (tokenIds, tokenAmounts);
     }
 
-    return (tokenIds, tokenAmounts);
-}
-
-    function getInvestmentAmount(uint256 assetId, address investor) public view returns (uint256) {
+    function getInvestmentAmount(
+        uint256 assetId,
+        address investor
+    ) public view returns (uint256) {
         return investmentAmountOf[assetId][investor];
     }
 
-    function updateInvestorTokens(uint256 assetId, address investor, uint256 tokenId, uint256 tokenAmount) external {
+    function updateInvestorTokens(
+        uint256 assetId,
+        address investor,
+        uint256 tokenId,
+        uint256 tokenAmount
+    ) external {
         investorTokens[assetId][investor][tokenId] = tokenAmount;
     }
 
@@ -304,11 +336,18 @@ contract NFTVenture is
         isRefundingAllowed[assetId] = allowed;
     }
 
-    function updatePendingReturns(uint256 assetId, address investor, uint256 amount) external {
+    function updatePendingReturns(
+        uint256 assetId,
+        address investor,
+        uint256 amount
+    ) external {
         pendingReturns[assetId][investor] = amount;
     }
 
-    function updateInvestmentRefunded(uint256 assetId, uint256 amount) external {
+    function updateInvestmentRefunded(
+        uint256 assetId,
+        uint256 amount
+    ) external {
         investmentRefunded[assetId] = amount;
     }
 
@@ -328,7 +367,9 @@ contract NFTVenture is
         return completedAssets;
     }
 
-    function getAssetsByCategory(Category category) external view returns (uint256[] memory) {
+    function getAssetsByCategory(
+        Category category
+    ) external view returns (uint256[] memory) {
         return categoryAssets[category];
     }
 }

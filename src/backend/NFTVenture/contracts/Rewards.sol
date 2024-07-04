@@ -6,12 +6,12 @@ import "./NFTVenture.sol";
 import "./AssetStruct.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 
-contract Rewards is ERC1155Holder  {
-     NFTVenture private nftContract;
+contract Rewards is ERC1155Holder {
+    NFTVenture private nftContract;
     address public supervisor;
 
-    //Events
-    event RewardsAdded(uint256 indexed assetId, uint256 rewardsCount);
+    // Events
+    event RewardsAdded(uint256 indexed assetId, uint256 rewardsCount, address rewardTokenAddress);
 
     // Constructor
     constructor(address nftAddress) {
@@ -51,15 +51,13 @@ contract Rewards is ERC1155Holder  {
             );
 
             nftContract.handleRewardAddedToAsset(assetId, rewards[i].title, rewards[i].description, rewards[i].tokenAmount, rewards[i].individualPrice, rewardId);
-        }
 
-        emit RewardsAdded(assetId, rewards.length);
+            emit RewardsAdded(assetId, rewards.length, asset.rewardTokenAddress);
+        }
     }
 
     function getRewardsForAsset(uint256 assetId) public view returns (Reward[] memory) {
         Asset memory asset = nftContract.getAsset(assetId);
         return asset.rewards;
     }
-
 }
-
