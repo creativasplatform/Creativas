@@ -138,8 +138,8 @@
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/contracts/NFTVenture.sol": {
-      "lastModificationDate": 1719414455483,
-      "contentHash": "87df60667020d3ecf834888fe859afe8",
+      "lastModificationDate": 1720044253783,
+      "contentHash": "bf9d37f81abd40a6cf7a905c6128063e",
       "sourceName": "contracts/NFTVenture.sol",
       "solcConfig": {
         "version": "0.8.19",
@@ -779,52 +779,6 @@
         "ERC721"
       ]
     },
-    "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol": {
-      "lastModificationDate": 1719417915983,
-      "contentHash": "11629722b0e3c53cb55733af5176cd33",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../ERC721.sol",
-        "./IERC721Enumerable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ERC721Enumerable"
-      ]
-    },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
       "lastModificationDate": 1719417916215,
       "contentHash": "2b16122c5f36625084a7f90f0780937b",
@@ -914,6 +868,52 @@
       ],
       "artifacts": [
         "ERC721Burnable"
+      ]
+    },
+    "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol": {
+      "lastModificationDate": 1719417915983,
+      "contentHash": "11629722b0e3c53cb55733af5176cd33",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../ERC721.sol",
+        "./IERC721Enumerable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721Enumerable"
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
@@ -1456,8 +1456,8 @@
       ]
     },
     "/home/alfredo/Documentos/Creativas/src/backend/NFTVenture/contracts/Assets.sol": {
-      "lastModificationDate": 1719523138176,
-      "contentHash": "87fbaa65d8999cb7944cbda8b9625daa",
+      "lastModificationDate": 1720044054621,
+      "contentHash": "08c7b15ad686f2065fa02c46e5434e3c",
       "sourceName": "contracts/Assets.sol",
       "solcConfig": {
         "version": "0.8.19",

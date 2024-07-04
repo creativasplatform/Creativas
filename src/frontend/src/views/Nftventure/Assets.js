@@ -15,11 +15,11 @@ export async function getAssets(status) {
   const contract = getAssetsContract(provider);
 
   try {
-    const assets = await contract.getAllAssets(status);
-    return assets;
+    const [assets, investmentAmounts, investorCounts] = await contract.getAllAssets(status);
+    return { assets, investmentAmounts, investorCounts };
   } catch (error) {
     console.error("Error getting assets:", error);
-    return [];
+    return { assets: [], investmentAmounts: [], investorCounts: [] };
   }
 }
 
