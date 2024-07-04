@@ -25,6 +25,9 @@ const CardNFT = ({ id, assetName, imageSrc, objective, investmentAmount, classNa
     ? id.toString()
     : id;
 
+
+    console.log("Holaa", assetName)
+
   
   return (
     <div className={`bg-gradient-to-c-custom text-white rounded-xl shadow-lg w-80 h-72 mb-4 ${className}`} style={style}>

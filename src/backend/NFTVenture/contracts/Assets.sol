@@ -115,48 +115,51 @@ contract Assets {
     }
 
     function getAllAssetsByCategory(
-        ProjectStatus status,
-        Category category
-    ) public view returns (Asset[] memory) {
-        uint256[] memory allAssetIds;
+    ProjectStatus status,
+    Category category
+) public view returns (Asset[] memory) {
+    uint256[] memory allAssetIds;
 
-        if (status == ProjectStatus.Started) {
-            allAssetIds = nftContract.getActiveAssets();
-        } else if (status == ProjectStatus.Funded) {
-            allAssetIds = nftContract.getFundedAssets();
-        } else if (status == ProjectStatus.Failed) {
-            allAssetIds = nftContract.getFailedAssets();
-        } else if (status == ProjectStatus.Completed) {
-            allAssetIds = nftContract.getCompletedAssets();
-        } else {
-            revert("Invalid status");
-        }
+    if (status == ProjectStatus.Started) {
+        allAssetIds = nftContract.getActiveAssets();
+    } else if (status == ProjectStatus.Funded) {
+        allAssetIds = nftContract.getFundedAssets();
+    } else if (status == ProjectStatus.Failed) {
+        allAssetIds = nftContract.getFailedAssets();
+    } else if (status == ProjectStatus.Completed) {
+        allAssetIds = nftContract.getCompletedAssets();
+    } else {
+        revert("Invalid status");
+    }
 
-        uint256[] memory categoryAssetIds = nftContract.getAssetsByCategory(
-            category
-        );
-        uint256[] memory assetIds = new uint256[](categoryAssetIds.length);
-        uint256 count = 0;
+    uint256[] memory categoryAssetIds = nftContract.getAssetsByCategory(category);
+    uint256 categoryAssetCount = categoryAssetIds.length;
+    Asset[] memory categoryAssets = new Asset[](categoryAssetCount);
 
-        for (uint256 i = 0; i < allAssetIds.length; i++) {
-            assetIds[i] = allAssetIds[i];
-        }
-
-        Asset[] memory filteredAssets = new Asset[](categoryAssetIds.length);
-        for (uint256 i = 0; i < categoryAssetIds.length; i++) {
-            for (uint256 j = 0; j < assetIds.length; j++) {
-                if (categoryAssetIds[i] == assetIds[j]) {
-                    filteredAssets[count] = nftContract.getAsset(
-                        categoryAssetIds[i]
-                    );
-                    count++;
-                    break;
-                }
+    uint256 assetIndex = 0;
+    for (uint256 i = 0; i < categoryAssetCount; i++) {
+        uint256 assetId = categoryAssetIds[i];
+        bool existsInAllAssets = false;
+        for (uint256 j = 0; j < allAssetIds.length; j++) {
+            if (allAssetIds[j] == assetId) {
+                existsInAllAssets = true;
+                break;
             }
         }
 
-        return filteredAssets;
+        if (existsInAllAssets) {
+            categoryAssets[assetIndex] = nftContract.getAsset(assetId);
+            assetIndex++;
+        }
     }
+
+    assembly {
+        mstore(categoryAssets, assetIndex)
+    }
+
+    return categoryAssets;
+}
+
 
     function getAssetById(uint256 assetId) public view returns (Asset memory) {
         return nftContract.getAsset(assetId);

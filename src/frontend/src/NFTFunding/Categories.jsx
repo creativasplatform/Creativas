@@ -1,26 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CardNFT from './CardNFT';
 import CategoriesBar from './CategoriesBar';
-import masicon from "../assets/mas.png"; // Importa el icono aquí
+import masicon from "../assets/mas.png";
 import useAssets from '../hooks/Nftventure/useAssets';
 import { Card, Skeleton } from "@nextui-org/react";
+import { ProjectStatus } from '../helpers/AssetsHelpers.js';
 
+import { getAllAssetsByCategory } from '../views/Nftventure/Assets';
+import { Category } from '../helpers/AssetsHelpers.js';
 const Categories = ({ onOpenModal }) => {
   const { startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted, errorStarted } = useAssets();
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredAssets, setFilteredAssets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [collections, setColetions] = useState([]);
 
-  const collections = startedAssets
-    .filter(asset => asset.assetId && asset.title && asset.price && asset.mainPhoto) 
-    .slice()
-    .reverse()
-    .map((asset, index) => ({
-      id: asset.assetId,
-      title: asset.title,
-      objective: `${asset.price} USD`,
-      image: asset.mainPhoto,
-      investmentAmount: startedInvestmentAmounts[index],
-      investorCount: startedInvestorCounts[index],
-    }));
+  useEffect(() => {
+    const fetchAssets = async () => {
+      setLoading(true);
+      try {
+        console.log(selectedCategory)
+        const assets = await getAllAssetsByCategory(ProjectStatus.Started, Category[selectedCategory]);
+        setFilteredAssets(assets);
+        setError(null);
+      } catch (err) {
+        setError('Error loading projects');
+        setFilteredAssets([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    if (selectedCategory === 'All') {
+      setFilteredAssets(startedAssets);
+      setLoading(false);
+    } else {
+      fetchAssets();
+    }
+  }, [selectedCategory, startedAssets]);
+
+  useEffect(() => {
+    const collections = (selectedCategory === 'All' ? startedAssets : filteredAssets)
+      .filter(asset => asset.assetId && asset.title && asset.price && asset.mainPhoto)
+      .slice()
+      .reverse()
+      .map((asset, index) => ({
+        id: asset.assetId,
+        title: asset.title,
+        objective: `${asset.price} USD`,
+        image: asset.mainPhoto,
+        investmentAmount: startedInvestmentAmounts[index],
+        investorCount: startedInvestorCounts[index],
+      }));
+  
+    setColetions(collections); 
+  
+  }, [selectedCategory, filteredAssets, startedAssets, startedInvestmentAmounts, startedInvestorCounts]); 
+  
+  
   return (
     <div className="bg-[#0b0c0c] text-white p-4">
       <div className="flex items-center justify-between">
@@ -31,15 +69,15 @@ const Categories = ({ onOpenModal }) => {
             type="button"
             className="mr-28 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:bg-secondary-ligth dark:focus:ring-blue-800 flex items-center"
           >
-            <img src={masicon} className="h-4 w-4 mr-2" alt="Add Icon" /> 
+            <img src={masicon} className="h-4 w-4 mr-2" alt="Add Icon" />
             Create a Project
           </button>
         </div>
       </div>
-      
-      <CategoriesBar />
-
-      {loadingStarted ? (
+  
+      <CategoriesBar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+  
+      {loading || loadingStarted ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
           {Array.from({ length: 24 }).map((_, index) => (
             <Card key={index} className="w-[300px] h-[250px] space-y-5 p-4" radius="lg">
@@ -53,16 +91,16 @@ const Categories = ({ onOpenModal }) => {
                 <Skeleton className="w-4/5 rounded-lg">
                   <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
                 </Skeleton>
-                <Skeleton className="w-2/5 rounded-lg">  
+                <Skeleton className="w-2/5 rounded-lg">
                   <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
                 </Skeleton>
               </div>
             </Card>
           ))}
         </div>
-      ) : errorStarted ? (
-        <p>Error loading projects</p>
-      ) : collections.length === 0 ? (
+      ) : error ? (
+        <p>{error}</p>
+      ) :  collections.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-screen">
           <div className="text-gray-400 mb-2">
             <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,6 +131,7 @@ const Categories = ({ onOpenModal }) => {
       )}
     </div>
   );
+  
 };
 
 export default Categories;

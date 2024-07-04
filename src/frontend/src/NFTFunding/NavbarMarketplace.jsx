@@ -252,10 +252,10 @@ const Navbar = () => {
               <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Funding</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Portfolio</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Marketplace</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Marketplace</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Portofolio</a>
             </li>
           </ul>
         </div>
