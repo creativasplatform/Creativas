@@ -59,6 +59,10 @@ const transitions = useTransition(isVisible ? issues : [], {
                 style={props}
                 className="m-6 flex flex-col relative z-10"
               >
+                    <div className="absolute mt-32 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+      <div className="absolute mt-80 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+  
+
                 
                 <div className="w-full max-w-sm">
                   <div className="flex flex-col items-start pb-10">
@@ -67,6 +71,7 @@ const transitions = useTransition(isVisible ? issues : [], {
                       src={item.image}
                       alt={`${item.name} image`}
                     />
+                    
                             <div className="mb-8 flex items-center justify-center min-w-[100px] text-sm bg-white text-secondary font-raleway rounded-full px-4 py-1">
                     {item.title}
                   </div>
@@ -80,14 +85,11 @@ const transitions = useTransition(isVisible ? issues : [], {
                   </a>
                   </div>
                   
+                  
                 </div>
               </animated.div>
             ))}
             
-      <div className="absolute mt-64 left-3/3 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
-      <div className="absolute mt-80 mr-96 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
-  
-  <div className="absolute mt-80 right-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
   
       </div>
 

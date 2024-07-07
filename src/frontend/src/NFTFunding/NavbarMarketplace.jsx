@@ -13,17 +13,19 @@ import Chain from './SetChain.jsx';
 import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
 import { useSpring, useTransition, animated } from '@react-spring/web';
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
 
 import alert from "../assets/alert.png"
 const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false); // Nuevo estado
+  const [termsAccepted, setTermsAccepted] = useState(false); 
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
-  const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false); // Nuevo estado para controlar la carga
+  const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false); 
+  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
   const {
     isLoggedIn,
@@ -89,7 +91,7 @@ const Navbar = () => {
 
   const handleAcceptTerms = useCallback(async () => {
     try {
-      setLoadingAcceptTerms(true); // Activar el estado de carga
+      setLoadingAcceptTerms(true); 
 
       const result = await signMessage("Accept the terms and conditions");
       if (result && result.signature) {
@@ -169,6 +171,14 @@ const Navbar = () => {
     setOpenLoginModal(false);
   };
 
+  const handleOpenDropdown = () => {
+    setOpenDropdown(true);
+  };
+
+  const handleCloseDropdown = () => {
+    setOpenDropdown(false);
+  };
+
   const handleOpenConditionsModal = () => {
     setOpenModalConditionals(true);
   };
@@ -224,14 +234,75 @@ const Navbar = () => {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
         <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4">
           <img src={CreativasLogo} className="h-10 w-200" alt="Creativas Logo" />
-          <button
-            type="button"
-            className="text-white bg-secondary hover:bg-secondary-ligth dark:bg-secondary dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
-            onClick={handleOpenLoginModal}
+          <Dropdown
+      
+      showArrow
+      radius="sm"
+      classNames={{
+        base: "before:bg-default-200", 
+        content: "p-0 border-small border-divider bg-primary",
+    
+      }}
+    >
+      <DropdownTrigger>
+      <Button 
+          variant='solid' 
+          color='success'
+          className='text-white'
+          radius="full"
+        >
+          Explorer
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Custom item styles"
+        className="p-3"
+        itemClasses={{
+          base: [
+            "rounded-md",
+            "text-white",
+            "transition-opacity",
+            "data-[hover=true]:text-foreground",
+            "data-[hover=true]:bg-default-100",
+            "dark:data-[hover=true]:bg-default-50",
+            "data-[selectable=true]:focus:bg-default-50",
+            "data-[pressed=true]:opacity-70",
+            "data-[focus-visible=true]:ring-default-500",
+          ],
+        }}
+      >
+        <DropdownSection aria-label="Actions" showDivider classNames={{
+          divider: "bg-white"
+        }}>
+          <DropdownItem key="dashboard">
+            Dashboard
+          </DropdownItem>
+          <DropdownItem key="settings">Settings</DropdownItem>
+          <DropdownItem
+            key="new_project"
+    
           >
-            <img src={explorerIcon} className="h-4 w-4 mr-2" alt="Explorer Icon" />
-            <span>Explorer</span>
-          </button>
+            New Project
+          </DropdownItem>
+        </DropdownSection>
+
+        <DropdownSection aria-label="Preferences" showDivider classNames={{
+          divider: "bg-white"
+        }}>
+          <DropdownItem key="quick_search">
+            Quick search
+          </DropdownItem>
+          
+        </DropdownSection>  
+
+        <DropdownSection aria-label="Help & Feedback">
+          <DropdownItem key="help_and_feedback">
+            Help & Feedback
+          </DropdownItem>
+          <DropdownItem key="logout">Log Out</DropdownItem>
+        </DropdownSection> 
+      </DropdownMenu>
+    </Dropdown>
         </a>
 
         <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
