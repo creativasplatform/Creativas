@@ -9,7 +9,6 @@ const Body = () => {
       
       
     <div className="relative bg-gradient-to-r from-customblack to-primary flex justify-center items-center overflow-hidden py-20">
-      
       <div className="w-1/2 pr-8 -mt-40">
      
         <h1 className="text-7xl font-raleway text-left font-extrabold text-white mb-4">Let's build a freer and more creative world</h1>
