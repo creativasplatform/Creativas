@@ -28,6 +28,7 @@ export default {
         green: '#b1e5e3',
         'green-ligth': '#effcf9',
         warning: '#b1e5e3',
+        success: '#6377db'
         
       },
       fontSize: {

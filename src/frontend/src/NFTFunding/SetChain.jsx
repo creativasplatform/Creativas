@@ -95,8 +95,7 @@ export default function Chain() {
       startContent={<img src={etherumicon} className="w-6 h-6 text-xl text-white pointer-events-none flex-shrink-0 rounded-full  -ml-4 mr-2" />}
     >
      <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-18' : 'mr-16'}` }>Ethereum</p> 
-    </DropdownItem> Aca que puede suceder con los estilos por que al renderizarce el icon check en alguno de las 2 opciones se me daña los estilos de la otra de esta forma. La forma se puede ver en la imagen se daña la otra opcion
-
+    </DropdownItem> 
       </DropdownMenu>
     </Dropdown>
   );

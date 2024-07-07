@@ -79,10 +79,19 @@ const transitions = useTransition(isVisible ? issues : [], {
                     </svg>
                   </a>
                   </div>
+                  
                 </div>
               </animated.div>
             ))}
+            
+      <div className="absolute mt-64 left-3/3 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-259 blur-70 opacity-130 w-64 h-64 rounded-lg"></div>
+      <div className="absolute mt-80 mr-96 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+  
+  <div className="absolute mt-80 right-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-110 w-64 h-64 rounded-lg"></div>
+  
       </div>
+
+   
     </div>
   </section>
   );

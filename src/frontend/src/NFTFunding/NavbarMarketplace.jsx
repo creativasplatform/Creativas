@@ -13,6 +13,8 @@ import Chain from './SetChain.jsx';
 import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
 import { useSpring, useTransition, animated } from '@react-spring/web';
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn} from "@nextui-org/react";
+
 import alert from "../assets/alert.png"
 const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);

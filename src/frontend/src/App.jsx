@@ -16,8 +16,7 @@ import NotableDrops from "./landing/NotableDrops.jsx";
 import HeroSection from "./landing/HeroSection.jsx";
 import PromoBanner from "./landing/PromoBanner.jsx";
 import Numbers from "./landing/Numbers.jsx";
-
-import Pathners from "./landing/Pathners.jsx";
+import Patherns from "./landing/Pathners.jsx";
 import NFTs from "./landing/NFTs..jsx";
 import Contact from "./landing/Contact.jsx";
 import Video from "./landing/Video.jsx";
@@ -42,7 +41,7 @@ function App() {
              
                 <NFTSteps />
                 <Video/>
-                <Pathners />
+                <Patherns />
                 <Card />
                
                

@@ -64,6 +64,14 @@ const NFTFunding = () => {
     const { createAsset } = useAssets()
     const { createRewards } = useRewards()
     const [assetId, setAssetId] = useState(null)
+    const [loadingAddNFT, setLoadingAddNFT] = useState(false);
+
+
+    const modalAnimation = useSpring({
+        opacity: openModal ? 1 : 0,
+        transform: openModal ? 'scale(1)' : 'scale(0.9)',
+        config: { duration: 300 },
+      });
 
     const modalLoginAnimation = useSpring({
         opacity: openLoginModal ? 1 : 0,
@@ -340,8 +348,6 @@ const NFTFunding = () => {
     };
 
     const handleCreateAsset = async () => {
-        console.log("Auth type", authType)
-        console.log("Es metamask?", Provider.provider.isMetaMask)
         if (images.length === 0) {
             setErrors((prevErrors) => ({ ...prevErrors, projectPictures: 'At least one project picture is required.' }));
             return;
@@ -415,7 +421,7 @@ const NFTFunding = () => {
 
 
     const handleAddNFT = async () => {
-        
+        setLoadingAddNFT(true);
         try {
            const wasAdded = await Provider.provider 
               .request({
@@ -434,12 +440,15 @@ const NFTFunding = () => {
                 setLoadingMessage('');
                 window.location.reload();
                 setAssetId(null)
+                setLoadingAddNFT(false);
             } else {
-              alert("User did not add the token.")
+              console.error("User did not add the token.")
+              setLoadingAddNFT(false);
             }
           } catch (error) {
-            alert("User did not add the token.")
-            console.log(error);
+
+            console.error(error);
+            setLoadingAddNFT(false);
           }
 
           
@@ -1002,11 +1011,12 @@ const NFTFunding = () => {
             <NavbarMarketplace />
             <Categories onOpenModal={() => handleOpenModal('extralarge-modal')} />
             {openModal === 'extralarge-modal' && (
-                <div
+             <animated.div style={modalAnimation}
                     id="extralarge-modal"
                     tabIndex="-1"
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full"
                 >
+                 
                     <div className="relative w-full max-w-4xl max-h-[100vh] min-w-[40vw]">
                         <div className="relative bg-black rounded-lg shadow dark:bg-gray-800 h-full" >
                             <div className="flex flex-col h-full">
@@ -1047,7 +1057,8 @@ const NFTFunding = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                    </animated.div>
+           
             )}
 
             {openModal === 'verification-modal' && (
@@ -1120,12 +1131,22 @@ const NFTFunding = () => {
                                                 <p className="text-center text-xl text-white font-roboto" dangerouslySetInnerHTML={{ __html: loadingMessage }}></p>
                                                 <div className="flex justify-end mt-4 space-x-4">
                                                     {authType === 'wallet' && Provider.provider.isMetaMask && (
-                                                        <button
-                                                            className="mt-4 bg-white text-secondary font-roboto text-lg px-4 py-2 rounded-lg"
-                                                            onClick={handleAddNFT}
-                                                        >
-                                                            Add NFT
-                                                        </button>
+                                                             <button
+                                                             className="mt-4 bg-white text-secondary font-roboto text-lg px-4 py-2 rounded-lg flex items-center justify-center w-28"
+                                                             onClick={handleAddNFT}
+                                                             disabled={loadingAddNFT} // Deshabilitar el botón mientras está cargando
+                                                           >
+                                                             {loadingAddNFT ? (
+                                                               <Spinner
+                                                                 size='md'
+                                                            
+                                                                 color='success'
+                                                                 labelColor='foreground'
+                                                               />
+                                                             ) : (
+                                                               "Add NFT"
+                                                             )}
+                                                           </button>
                                                     )}
 
                                                     <button

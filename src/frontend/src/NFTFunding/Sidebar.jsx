@@ -1,14 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import imagen from '../assets/imagen.png'
 import Tarjeta from '../assets/Tarjeta.png'
 import useUser from '../hooks/user/useuser.jsx';
 import { useSpring, useTransition, animated } from '@react-spring/web';
+import { Card, Skeleton } from "@nextui-org/react";
+import { ethers } from 'ethers';
+import copiaricon from "../assets/copiar-alt.png"
+import useAssets from '../hooks/Nftventure/useAssets';
+import derecha from '../assets/derecha.png'
+
+const truncateAssetName = (name) => {
+  if (name.length > 14) {
+    return `${name.substring(0, 14)}...`;
+  }
+  return name;
+};
+ 
+
 const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState('NFT');
+  const [copySuccess, setCopySuccess] = useState(false);
+
   const {
     address,
     logout
   } = useUser();
+  const {
+    ownerAssets,
+    loadingOwnerAssets,
+    errorOwnerAssets,
+    fetchAssetsOfOwner
+  } = useAssets();
+
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(address)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 3000);
+      })
+      .catch(err => {
+        console.error('Error al copiar al portapapeles: ', err);
+      });
+  };
+
+  console.log(ownerAssets)
+  useEffect(() => {
+    if (address) {
+      fetchAssetsOfOwner(address);
+    }
+  }, [address, fetchAssetsOfOwner]);
 
   const handlelogout = async () => {
     await logout();
@@ -19,30 +60,80 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
   const transitions = useSpring({
     transform: isSidebarOpen ? 'translateX(0)' : 'translateX(100%)',
     opacity: isSidebarOpen ? 1 : 0,
-    config: { duration: 300 }, 
+    config: { duration: 300 },
     from: {
       transform: 'translateX(100%)',
       opacity: 0,
     },
   });
+
+
+  const renderNFTContent = () => {
+    if (loadingOwnerAssets) {
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Card key={index} className="w-[150px] h-[200px] space-y-5 p-4" radius="lg">
+              <Skeleton className="rounded-lg">
+                <div className="h-24 rounded-lg bg-default-300"></div>
+              </Skeleton>
+              <div className="space-y-3">
+                <Skeleton className="w-3/5 rounded-lg">
+                  <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+                <Skeleton className="w-4/5 rounded-lg">
+                  <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+                <Skeleton className="w-2/5 rounded-lg">
+                  <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                </Skeleton>
+              </div>
+            </Card>
+          ))}
+        </div>
+      );
+    } else if (ownerAssets && ownerAssets.length > 0) {
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24">
+              {ownerAssets.slice().reverse().map(asset => (
+            <div className={`bg-gradient-to-c-custom text-white rounded-xl shadow-lg w-40 h-46`} key={asset.assetId.toString()}>
+              <img src={asset.mainPhoto} alt={asset.title} className="w-[150px] mt-2 h-36 object-cover rounded-xl" />
+              <div className="p-4">
+                <p className="text-lg font-semibold text-white -mt-3 flex items-start justify-start">
+                {truncateAssetName(asset.title)}  
+                  <div className="right-3 text-white -mt-1 px-2 py-1 rounded justify-end items-end ml-16">
+                    #{asset.assetId.toString()}
+                  </div>
+                </p>
+                <div className="text-sm text-gray-400">
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
   
+      );
+    } else {
+      return (
+        <div className="flex flex-col items-center mb-6">
+          <div className="text-gray-400 mb-2">
+            <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M106.673 12.4027C110.616 13.5333 112.895 17.6462 111.765 21.5891L97.7533 70.4529C96.8931 73.4525 94.307 75.4896 91.3828 75.7948C91.4046 75.5034 91.4157 75.2091 91.4157 74.9121V27.1674C91.4157 20.7217 86.1904 15.4965 79.7447 15.4965H56.1167L58.7303 6.38172C59.8609 2.43883 63.9738 0.159015 67.9167 1.28962L106.673 12.4027Z" fill="#D2D9EE"></path>
+              <path fillRule="evenodd" clipRule="evenodd" d="M32 27.7402C32 23.322 35.5817 19.7402 40 19.7402H79.1717C83.59 19.7402 87.1717 23.322 87.1717 27.7402V74.3389C87.1717 78.7572 83.59 82.3389 79.1717 82.3389H40C35.5817 82.3389 32 78.7572 32 74.3389V27.7402ZM57.1717 42.7402C57.1717 46.6062 53.8138 49.7402 49.6717 49.7402C45.5296 49.7402 42.1717 46.6062 42.1717 42.7402C42.1717 38.8742 45.5296 35.7402 49.6717 35.7402C53.8138 35.7402 57.1717 38.8742 57.1717 42.7402ZM36.1717 60.8153C37.2808 58.3975 40.7688 54.8201 45.7381 54.3677C51.977 53.7997 55.3044 57.8295 56.5522 60.0094C59.8797 55.4423 67.0336 46.8724 72.3575 45.9053C77.6814 44.9381 81.7853 48.4574 83.1717 50.338V72.6975C83.1717 75.4825 80.914 77.7402 78.1289 77.7402H41.2144C38.4294 77.7402 36.1717 75.4825 36.1717 72.6975V60.8153Z" fill="#D2D9EE"></path>
+            </svg>
+          </div>
+          <p className="text-gray-500">No NFTs yet</p>
+          <p className="text-gray-400 text-sm mb-4 text-center">Start a new project with this wallet to get started.</p>
+          <button className="bg-secondary-bright text-white text-sm p-2 rounded-lg">Start Project</button>
+        </div>
+      );
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'NFT':
-        return (
-          <div>
-            {/* Contenido de NFT */}
-            <div className="flex flex-col items-center mb-6">
-              <div className="text-gray-400 mb-2">
-                <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M106.673 12.4027C110.616 13.5333 112.895 17.6462 111.765 21.5891L97.7533 70.4529C96.8931 73.4525 94.307 75.4896 91.3828 75.7948C91.4046 75.5034 91.4157 75.2091 91.4157 74.9121V27.1674C91.4157 20.7217 86.1904 15.4965 79.7447 15.4965H56.1167L58.7303 6.38172C59.8609 2.43883 63.9738 0.159015 67.9167 1.28962L106.673 12.4027Z" fill="#D2D9EE"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M32 27.7402C32 23.322 35.5817 19.7402 40 19.7402H79.1717C83.59 19.7402 87.1717 23.322 87.1717 27.7402V74.3389C87.1717 78.7572 83.59 82.3389 79.1717 82.3389H40C35.5817 82.3389 32 78.7572 32 74.3389V27.7402ZM57.1717 42.7402C57.1717 46.6062 53.8138 49.7402 49.6717 49.7402C45.5296 49.7402 42.1717 46.6062 42.1717 42.7402C42.1717 38.8742 45.5296 35.7402 49.6717 35.7402C53.8138 35.7402 57.1717 38.8742 57.1717 42.7402ZM36.1717 60.8153C37.2808 58.3975 40.7688 54.8201 45.7381 54.3677C51.977 53.7997 55.3044 57.8295 56.5522 60.0094C59.8797 55.4423 67.0336 46.8724 72.3575 45.9053C77.6814 44.9381 81.7853 48.4574 83.1717 50.338V72.6975C83.1717 75.4825 80.914 77.7402 78.1289 77.7402H41.2144C38.4294 77.7402 36.1717 75.4825 36.1717 72.6975V60.8153Z" fill="#D2D9EE"></path></svg>
-              </div>
-              <p className="text-gray-500">No NFTs yet</p>
-              <p className="text-gray-400 text-sm mb-4 text-center">Start a new project with this wallet to get started.</p>
-              <button className="bg-secondary-bright text-white text-sm p-2 rounded-lg">Start Project</button>
-            </div>
-          </div>
-        );
+        return renderNFTContent();
       case 'Rewards':
         return (
           <div>
@@ -73,10 +164,20 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
   };
 
   return (
+    <div>
+      <div className='mr-96'>
+         <button
+        onClick={onClose}
+        className="mt-6 flex mr-12 relativehover:bg-gray-600 rounded-lg"
+      >
+        <img src={derecha} alt="Cerrar" className="w-6 h-6" />
+      </button>
+      </div>
         <animated.div
           style={transitions}
-          className="w-[400px] bg-customblack shadow-lg p-4 h-full fixed right-0 top-0 transition-transform"
+          className="w-[400px] bg-customblack shadow-lg p-4 h-full fixed right-0 top-0 transition-transform overflow-auto overflow-y-auto"
         >
+        
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
           <div className="bg-green-500 p-2 rounded-full text-white">
@@ -101,9 +202,21 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
             <p className="truncate text-sm font-medium text-white">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</p>
 
           </div>
+          <button
+        onClick={handleCopy}
+        className="ml-2 text-white p-2 rounded-lg hover:bg-gray-800 transition-all"
+      >
+        {copySuccess ? (
+          <svg className="w-5 h-5 text-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+       <img src={copiaricon} alt='copiar icon' className='w-4 h-4'></img>
+        )}
+      </button>
         </div>
         <div className="flex items-center ">
-          <button onClick={onClose} className="ml-40 hover:bg-gray-600 rounded-lg">
+          <button className="ml-32 hover:bg-gray-600 rounded-lg">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" size="24"><path d="M20.83 14.6C19.9 14.06 19.33 13.07 19.33 12C19.33 10.93 19.9 9.93999 20.83 9.39999C20.99 9.29999 21.05 9.1 20.95 8.94L19.28 6.06C19.22 5.95 19.11 5.89001 19 5.89001C18.94 5.89001 18.88 5.91 18.83 5.94C18.37 6.2 17.85 6.34 17.33 6.34C16.8 6.34 16.28 6.19999 15.81 5.92999C14.88 5.38999 14.31 4.41 14.31 3.34C14.31 3.15 14.16 3 13.98 3H10.02C9.83999 3 9.69 3.15 9.69 3.34C9.69 4.41 9.12 5.38999 8.19 5.92999C7.72 6.19999 7.20001 6.34 6.67001 6.34C6.15001 6.34 5.63001 6.2 5.17001 5.94C5.01001 5.84 4.81 5.9 4.72 6.06L3.04001 8.94C3.01001 8.99 3 9.05001 3 9.10001C3 9.22001 3.06001 9.32999 3.17001 9.39999C4.10001 9.93999 4.67001 10.92 4.67001 11.99C4.67001 13.07 4.09999 14.06 3.17999 14.6H3.17001C3.01001 14.7 2.94999 14.9 3.04999 15.06L4.72 17.94C4.78 18.05 4.89 18.11 5 18.11C5.06 18.11 5.12001 18.09 5.17001 18.06C6.11001 17.53 7.26 17.53 8.19 18.07C9.11 18.61 9.67999 19.59 9.67999 20.66C9.67999 20.85 9.82999 21 10.02 21H13.98C14.16 21 14.31 20.85 14.31 20.66C14.31 19.59 14.88 18.61 15.81 18.07C16.28 17.8 16.8 17.66 17.33 17.66C17.85 17.66 18.37 17.8 18.83 18.06C18.99 18.16 19.19 18.1 19.28 17.94L20.96 15.06C20.99 15.01 21 14.95 21 14.9C21 14.78 20.94 14.67 20.83 14.6ZM12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12C15 13.66 13.66 15 12 15Z" fill="#9398A7"></path></svg>
           </button>
         </div>
@@ -153,6 +266,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
       {renderContent()}
       
       </animated.div>
+      </div>
 )
 };
 

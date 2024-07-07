@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import Game from '../assets/Game.png'
-import Art from '../assets/Art.png'
-import Collectibles from '../assets/Collectibles.png'
-import Sport from '../assets/Sport.png'
-import Movies from '../assets/Movies.png'
-import Music from '../assets/Music.jpg'
-import Technology from '../assets/Technology.png'
+import Project7 from '../assets/FOTO1.png'
+import Project2 from '../assets/FOTO4.png'
+import Project3 from '../assets/FOTO5.png'
+import Project4 from '../assets/FOTO6.png'
+import Project5 from '../assets/FOTO7.png'
+import Project6 from '../assets/FOTO9.png'
+import Project1 from '../assets/FOTO10.png'
 import LiveIcon from '../assets/LiveIcon.png'; // Asegúrate de cambiar la ruta según tu estructura de proyecto
+
 
 
 
 const NotableDrops = () => {
     const images = [
-        { src: Game, title: 'GAME', price: 0.5 },
-        { src: Art, title: 'ART', price: 0.51 },
-        { src: Collectibles, title: 'COLLECTIBLES', price: 0.43 },
-        { src: Sport, title: 'SPORT', price: 1.54 },
-        { src: Movies, title: 'MOVIES', price: 1.0 },
-        { src: Music, title: 'MUSIC', price: 0.75 },
-        { src: Technology, title: 'TECHNOLOGY', price: 0.9 },
+        { src: Project1, title: 'GAME', price: 0.5 },
+        { src: Project2, title: 'ART', price: 0.51 },
+        { src: Project3, title: 'COLLECTIBLES', price: 0.43 },
+        { src: Project4, title: 'SPORT', price: 1.54 },
+        { src: Project5, title: 'MOVIES', price: 1.0 },
+        { src: Project6, title: 'MUSIC', price: 0.75 },
+        { src: Project7, title: 'TECHNOLOGY', price: 0.9 },
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
