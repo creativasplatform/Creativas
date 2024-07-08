@@ -2,7 +2,8 @@
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
 import Body from "./landing/Body.jsx";
-import Navbar from "./landing/Navbar.jsx";
+import NavbarLanding from "./landing/Navbar.jsx";
+import BodyMain from "./landing/BodyMain.jsx"
 import Card from "./landing/Card.jsx";
 import NavbarMarketplace from "./NFTFunding/NavbarMarketplace.jsx";
 import NFTFunding from "./NFTFunding/NFTFunding.jsx";
@@ -29,8 +30,7 @@ function App() {
           <Routes>
             <Route path="/" element={
               <>
-                <Navbar />
-                <Body />
+                <BodyMain />
                 <HeroSection/>
                 <PromoBanner/>
                 <Numbers/>

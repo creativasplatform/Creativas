@@ -11,10 +11,18 @@ const PromoBanner = () => {
           <div className="flex items-center space-x-4 lg:ml-16">
             <button className="bg-black text-white py-1 px-4 ml-3 rounded-lg  fond-semibold font-roboto text-[8px] md:text-[16px] lg:text-[20px] xl:text-[24px]">EXPLORE</button>
             <div className="flex space-x-2">
-              <a href="#" className="text-black hover:text-gray-600"><FaTelegramPlane size={24} /></a>
-              <a href="#" className="text-black hover:text-gray-600"><FaDiscord size={24} /></a>
-              <a href="#" className="text-black hover:text-gray-600"><FaTwitter size={24} /></a>
-              <a href="#" className="text-black hover:text-gray-600"><FaInstagram size={24} /></a>
+              <a href="#" className="text-black hover:text-gray-600">
+                <FaTelegramPlane className="text-xs md:text-base lg:text-lg xl:text-xl" />
+              </a>
+              <a href="#" className="text-black hover:text-gray-600">
+                <FaDiscord className="text-xs md:text-base lg:text-lg xl:text-xl" />
+              </a>
+              <a href="#" className="text-black hover:text-gray-600">
+                <FaTwitter className="text-xs md:text-base lg:text-lg xl:text-xl" />
+              </a>
+              <a href="#" className="text-black hover:text-gray-600">
+                <FaInstagram className="text-xs md:text-base lg:text-xl xl:text-xl" />
+              </a>
             </div>
           </div>
         </div>
@@ -22,9 +30,8 @@ const PromoBanner = () => {
           <img src={Banner} alt="NFT" className="h-52 p-0 z-0 lg:mr-16" />
         </div>
       </div>
-      
     </div>
   );
 };
 
-export default PromoBanner ;
+export default PromoBanner;

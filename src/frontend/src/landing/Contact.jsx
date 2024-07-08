@@ -10,32 +10,32 @@ const Contact = () => {
                     Join us
                     </h1>
                 </div>
-                <div className="flex items-center flex-wrap justify-center gap-32">
+                <div className="flex items-center flex-wrap justify-center gap-36">
                     <div className="flex flex-col items-center w-11">
-                        <div className="relative w-20 h-20">
+                    <div className="relative w-10 h-10 lg:w-20 lg:h-20">
                             <img alt="eth" fetchpriority="high" decoding="async" data-nimg="fill" style={{ position: 'absolute', height: '100%', width: '100%', left: 0, top: 0, right: 0, bottom: 0, color: 'transparent' }} src={instagram} />
                          
                         </div>
                         <p className="text-white mt-6 text-opacity-60 text-base font-roboto leading-7 mb-4">Instagram</p>
                     </div>
                     <div className="flex flex-col items-center w-11">
-                        <div className="relative w-20 h-20">
+                    <div className="relative w-10 h-10 lg:w-20 lg:h-20">
                             <img alt="eth" fetchpriority="high" decoding="async" data-nimg="fill" style={{ position: 'absolute', height: '150%', width: '150%', left: 0, top: 0, right: 0, bottom: 0, color: 'transparent' }} src="https://static.vecteezy.com/system/resources/previews/031/737/215/non_2x/twitter-new-logo-twitter-icons-new-twitter-logo-x-2023-x-social-media-icon-free-png.png" />
                         </div>
-                        <p className="text-white ml-10 mt-6 text-opacity-60 text-base font-roboto leading-7 mb-4">Twitter</p>
+                        <p className="text-white mt-6 ml-6 lg:ml-8 text-opacity-60 text-base font-roboto leading-7 mb-4">Twitter</p>
                     </div>
                     <div className="flex flex-col items-center w-11">
-                        <div className="relative w-20 h-20">
+                    <div className="relative w-10 h-10 lg:w-20 lg:h-20">
                             <img alt="eth" fetchpriority="high" decoding="async" data-nimg="fill" style={{ position: 'absolute', height: '150%', width: '150%', left: 0, top: 0, right: 0, bottom: 0, color: 'transparent' }} src="https://static.vecteezy.com/system/resources/previews/018/930/698/original/facebook-logo-facebook-icon-transparent-free-png.png" />
                         </div>
-                        <p className="text-white mt-6 ml-10 text-opacity-60 text-base font-roboto leading-7 mb-4">Facebook</p>
+                        <p className="text-white mt-6 ml-6 lg:ml-8  text-opacity-60 text-base font-roboto leading-7 mb-4">Facebook</p>
                     </div>
 
                     <div className="flex flex-col items-center w-11">
-                        <div className="relative w-20 h-20">
+                        <div className="relative w-10 h-10 lg:w-20 lg:h-20">
                             <img alt="eth" fetchpriority="high" decoding="async" data-nimg="fill" style={{ position: 'absolute', height: '100%', width: '100%', left: 0, top: 0, right: 0, bottom: 0, color: 'transparent' }} src={telegram} />
                         </div>
-                        <p className="text-white mt-6 text-opacity-60 text-base font-roboto leading-7 mb-4">Telegram</p>
+                        <p className="text-white mt-6  text-opacity-60 text-base font-roboto leading-7 mb-4">Telegram</p>
                     </div>
                 </div>
             </div>

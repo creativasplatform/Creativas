@@ -13,7 +13,7 @@ const NFTs = () => {
                 <div className="bg-primary">
                     <div className="mx-auto max-w-5xl px-8 sm:px-0">
                         <div className="relative pt-48 pb-16 sm:pb-24">
-                            <div className='ml-2 xs:ml-12 sm:ml-20 md:ml-2 lg:-ml-56 xl:-ml-56'>
+                            <div className='ml-2 xs:ml-12 sm:ml-20 md:ml-8 lg:-ml-56 xl:-ml-56'>
                                 <h2 id="sale-heading" className="text-2xl xs:text-4xl sm:text-3xl md:text-3xl lg:text-5xl xl:text-5xl font-bold tracking-tight text-white">
                                 Now you can buy rewards<br />from other participants<br /> and obtain unique benefits.
                                 </h2>
