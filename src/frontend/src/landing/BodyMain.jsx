@@ -25,7 +25,7 @@ const BodyMain = () => {
   return (
     <div>
       <NavbarLanding isMobile={isMobile} />
-      <Body showButton={isMobile} handleButtonClick={handleButtonClick} />
+      <Body isMobile={isMobile} showButton={isMobile} handleButtonClick={handleButtonClick} />
     </div>
   );
 };

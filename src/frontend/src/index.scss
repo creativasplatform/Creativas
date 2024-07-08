@@ -93,8 +93,8 @@ body {
 }
 
 img {
-  max-width: 50vw;
-  max-height: 25vw;
+  max-width: 100vw;
+  max-height: 105vw;
   display: block;
   margin: auto;
 }
@@ -144,6 +144,22 @@ button[type="submit"] {
     transform: rotate(50deg);
   }
 }
+
+
+
+.snap {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap::-webkit-scrollbar {
+  display: none;
+}
+
+.snap > img {
+  scroll-snap-align: center;
+}
+
 
 
 /* Para Chrome, Brave, Safari y otros navegadores basados en Webkit */

@@ -66,7 +66,7 @@ const transitions = useTransition(isVisible ? issues : [], {
                 <div className="w-full max-w-sm">
                   <div className="flex flex-col items-start pb-10">
                     <img
-                      className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 sm mb-3 -mt-8 sm:-mt-8 md:-mt-8 lg:-mt-8"
+                      className="w-36 h-36 md:w-40 md:h-40 lg:w-48 lg:h-48 sm mb-3 -mt-8 sm:-mt-8 md:-mt-8 lg:-mt-8"
                       src={item.image}
                       alt={`${item.name} image`}
                     />

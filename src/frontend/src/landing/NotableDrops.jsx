@@ -36,11 +36,13 @@ const NotableDrops = () => {
     }, []);
 
     useEffect(() => {
-        if (windowWidth > 1300) {
+        if (windowWidth > 1500) {
             setCardsToShow(5);
-        } else if (windowWidth > 800) {
+        } else if (windowWidth > 1300) {
+            setCardsToShow(4);
+        } else if (windowWidth > 1000) {
             setCardsToShow(3);
-        } else if (windowWidth > 500) {
+        } else if (windowWidth > 700)   {
             setCardsToShow(2);
         } else {
             setCardsToShow(1);
@@ -79,11 +81,11 @@ const NotableDrops = () => {
                             style={{ width: `${100 / cardsToShow}%` }}
                         >
                             <div className="relative bg-gradient-to-c-custom text-white rounded-xl p-[6px] shadow-lg w-72 h-[24rem]">
-                                <div className="relative">
+                                <div className="relative h-72">
                                     <img
                                         src={image.src}
                                         alt={image.title}
-                                        className="w-[250px] mt-2 h-72 object-cover rounded-t-xl"
+                                      className="z-10 w-64 h-72  object-cover aspect-content rounded-md" style={{ zIndex: '100' }}
                                     />
                                     <div className="absolute top-2 right-4 flex items-center bg-black/70 text-secondary px-2 py-1 rounded-lg text-xs font-bold">
                                         <img src={LiveIcon} alt="Live" className="w-4 h-4 mr-1" />
