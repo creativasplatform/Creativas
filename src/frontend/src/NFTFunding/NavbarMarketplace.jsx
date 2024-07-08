@@ -16,9 +16,8 @@ import { useSpring, useTransition, animated } from '@react-spring/web';
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
 
 import alert from "../assets/alert.png"
-const Navbar = () => {
+const Navbar = ({ onSearch, searchTerm }) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false); 
@@ -50,6 +49,12 @@ const Navbar = () => {
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
+
+  const handleSearchChange = (event) => {
+  
+    onSearch(event.target.value); 
+  };
+
 
   const { Provider } = useUserContext();
   const [loading, setLoading] = useState(true);
@@ -171,13 +176,6 @@ const Navbar = () => {
     setOpenLoginModal(false);
   };
 
-  const handleOpenDropdown = () => {
-    setOpenDropdown(true);
-  };
-
-  const handleCloseDropdown = () => {
-    setOpenDropdown(false);
-  };
 
   const handleOpenConditionsModal = () => {
     setOpenModalConditionals(true);
@@ -305,20 +303,24 @@ const Navbar = () => {
     </Dropdown>
         </a>
 
-        <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-          <Input color='default' variant='bordered'
-            classNames={{
-              base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
-              mainWrapper: "h-full",
-              input: "text-small outline-none ",
-              inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg ",
-            }}
-            placeholder="  Search projects..."
-            size="sm"
-            startContent={<SearchIcon size={18} />}
-            type="search"
-          />
-        </div>
+        <div className="flex-grow flex items-center justify-center ml-12 mt-4">
+      <Input
+        color='default'
+        variant='bordered'
+        classNames={{
+          base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
+          mainWrapper: "h-full",
+          input: "text-small outline-none",
+          inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg",
+        }}
+        placeholder="Search by project name"
+        size="sm"
+        startContent={<SearchIcon size={18} />}
+        type="search"
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+    </div>
         <div className="hidden w-full md:block md:w-auto mr-12 mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>

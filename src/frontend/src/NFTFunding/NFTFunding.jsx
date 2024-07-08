@@ -1008,7 +1008,7 @@ const NFTFunding = () => {
 
     return (
         <>
-            <NavbarMarketplace />
+
             <Categories onOpenModal={() => handleOpenModal('extralarge-modal')} />
             {openModal === 'extralarge-modal' && (
              <animated.div style={modalAnimation}

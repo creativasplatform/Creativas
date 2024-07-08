@@ -40,9 +40,9 @@ const NotableDrops = () => {
             setCardsToShow(5);
         } else if (windowWidth > 1300) {
             setCardsToShow(4);
-        } else if (windowWidth > 1000) {
+        } else if (windowWidth > 900) {
             setCardsToShow(3);
-        } else if (windowWidth > 700)   {
+        } else if (windowWidth > 600)   {
             setCardsToShow(2);
         } else {
             setCardsToShow(1);

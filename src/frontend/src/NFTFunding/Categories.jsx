@@ -5,22 +5,23 @@ import masicon from "../assets/mas.png";
 import useAssets from '../hooks/Nftventure/useAssets';
 import { Card, Skeleton } from "@nextui-org/react";
 import { ProjectStatus } from '../helpers/AssetsHelpers.js';
-
+import Navbar from './NavbarMarketplace.jsx';
 import { getAllAssetsByCategory } from '../views/Nftventure/Assets';
 import { Category } from '../helpers/AssetsHelpers.js';
+
 const Categories = ({ onOpenModal }) => {
   const { startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted, errorStarted } = useAssets();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [collections, setColetions] = useState([]);
+  const [collections, setCollections] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchAssets = async () => {
       setLoading(true);
       try {
-        console.log(selectedCategory)
         const assets = await getAllAssetsByCategory(ProjectStatus.Started, Category[selectedCategory]);
         setFilteredAssets(assets);
         setError(null);
@@ -41,7 +42,15 @@ const Categories = ({ onOpenModal }) => {
   }, [selectedCategory, startedAssets]);
 
   useEffect(() => {
-    const collections = (selectedCategory === 'All' ? startedAssets : filteredAssets)
+    let currentAssets = selectedCategory === 'All' ? startedAssets : filteredAssets;
+    
+    if (searchTerm) {
+      currentAssets = currentAssets.filter(asset =>
+        asset.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    const collections = currentAssets
       .filter(asset => asset.assetId && asset.title && asset.price && asset.mainPhoto)
       .slice()
       .reverse()
@@ -53,30 +62,33 @@ const Categories = ({ onOpenModal }) => {
         investmentAmount: startedInvestmentAmounts[index],
         investorCount: startedInvestorCounts[index],
       }));
-  
-    setColetions(collections); 
-  
-  }, [selectedCategory, filteredAssets, startedAssets, startedInvestmentAmounts, startedInvestorCounts]); 
-  
-  
+
+    setCollections(collections);
+  }, [selectedCategory, filteredAssets, startedAssets, startedInvestmentAmounts, startedInvestorCounts, searchTerm]);
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
     <div className="bg-[#0b0c0c] text-white p-4">
+      <Navbar onSearch={handleSearch} Search={searchTerm} />
       <div className="flex items-center justify-between">
         <h2 className="text-5xl font-semibold mb-4 mt-8 ml-8">Explore Projects</h2>
         <div className="flex items-center">
           <button
             onClick={onOpenModal}
             type="button"
-            className="mr-28 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:bg-secondary-ligth dark:focus:ring-blue-800 flex items-center"
+            className="mr-28 text-white bg-secondary hover:bg-secondary-light focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:bg-secondary-light dark:focus:ring-blue-800 flex items-center"
           >
             <img src={masicon} className="h-4 w-4 mr-2" alt="Add Icon" />
             Create a Project
           </button>
         </div>
       </div>
-  
+
       <CategoriesBar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-  
+
       {loading || loadingStarted ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
           {Array.from({ length: 24 }).map((_, index) => (
@@ -100,7 +112,7 @@ const Categories = ({ onOpenModal }) => {
         </div>
       ) : error ? (
         <p>{error}</p>
-      ) :  collections.length === 0 ? (
+      ) : collections.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-screen">
           <div className="text-gray-400 mb-2">
             <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,7 +143,6 @@ const Categories = ({ onOpenModal }) => {
       )}
     </div>
   );
-  
 };
 
 export default Categories;
