@@ -72,14 +72,14 @@ const Categories = ({ onOpenModal }) => {
 
   return (
     <div className="bg-[#0b0c0c] text-white p-4">
-      <Navbar onSearch={handleSearch} Search={searchTerm} />
+      <Navbar onSearch={handleSearch} Search={searchTerm} onOpenModal={onOpenModal}/>
       <div className="flex items-center justify-between">
         <h2 className="text-5xl font-semibold mb-4 mt-8 ml-8">Explore Projects</h2>
         <div className="flex items-center">
           <button
             onClick={onOpenModal}
             type="button"
-            className="mr-28 text-white bg-secondary hover:bg-secondary-light focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:bg-secondary-light dark:focus:ring-blue-800 flex items-center"
+            className="mr-28 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:hover:bg-secondary-ligth dark:focus:ring-blue-800 flex items-center"
           >
             <img src={masicon} className="h-4 w-4 mr-2" alt="Add Icon" />
             Create a Project

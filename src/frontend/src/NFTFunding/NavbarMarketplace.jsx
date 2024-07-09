@@ -16,7 +16,7 @@ import { useSpring, useTransition, animated } from '@react-spring/web';
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
 
 import alert from "../assets/alert.png"
-const Navbar = ({ onSearch, searchTerm }) => {
+const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
@@ -45,6 +45,10 @@ const Navbar = ({ onSearch, searchTerm }) => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const handlelogout = async () => {
+    await logout();
+  } 
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
@@ -246,8 +250,11 @@ const Navbar = ({ onSearch, searchTerm }) => {
       <Button 
           variant='solid' 
           color='success'
-          className='text-white'
+          className='text-white hover:bg-secondary-ligth'
           radius="full"
+          startContent={
+            <img src={explorerIcon} alt='explorer' className='w-4 h-4'></img>
+          }
         >
           Explorer
         </Button>
@@ -273,12 +280,12 @@ const Navbar = ({ onSearch, searchTerm }) => {
           divider: "bg-white"
         }}>
           <DropdownItem key="dashboard">
-            Dashboard
+           All projects
           </DropdownItem>
-          <DropdownItem key="settings">Settings</DropdownItem>
+          <DropdownItem key="settings">Marketplace</DropdownItem>
           <DropdownItem
             key="new_project"
-    
+            onClick={onOpenModal}
           >
             New Project
           </DropdownItem>
@@ -297,7 +304,7 @@ const Navbar = ({ onSearch, searchTerm }) => {
           <DropdownItem key="help_and_feedback">
             Help & Feedback
           </DropdownItem>
-          <DropdownItem key="logout">Log Out</DropdownItem>
+          <DropdownItem onClick={handlelogout} key="logout">Log Out</DropdownItem>
         </DropdownSection> 
       </DropdownMenu>
     </Dropdown>

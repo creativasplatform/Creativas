@@ -1172,7 +1172,7 @@ const NFTFunding = () => {
             {openLoginModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full">
                     <animated.div style={modalLoginAnimation} className="relative w-full max-w-md">
-                        <div className="relative bg-gray-800 shadow-md dark:bg-gray-800 rounded-xl">
+                        <div className="relative bg-gray-800 shadow-md dark:bg-[#19191E] rounded-xl">
                             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700 ">
                                 <p className="text-lg text-white font-thin">Welcome again</p>
                                 <button
@@ -1198,11 +1198,11 @@ const NFTFunding = () => {
                                     <span className="sr-only">Close modal</span>
                                 </button>
                             </div>
-                            <div className="p-6 space-y-6 bg-gray-800 rounded-xl">
+                            <div className="p-6 space-y-6 bg-[#19191E] rounded-xl">
                                 <p className="text-center text-lg text-white font-thin">Log in</p>
                                 <div className="space-y-4">
                                     <button
-                                        className="w-full px-4 py-2 text-sm font-thin text-black bg-[#19191E] rounded-lg hover:bg-gray-700 dark:[#19191E] dark:text-white dark:hover:bg-gray-700"
+                                        className="w-full px-4 py-2 text-sm font-thin text-black bg-gray-800 rounded-lg hover:bg-gray-700 dark:[#19191E] dark:text-white dark:hover:bg-gray-700"
                                         onClick={handleLoginWallet}
                                     >
                                         <img src={walleticon} className="inline-block w-4 h-4 mr-2" alt="Wallet Icon" />
@@ -1216,7 +1216,7 @@ const NFTFunding = () => {
                                     </div>
 
                                     <button
-                                        className="w-full px-4 py-2 text-sm font-thin text-black bg-[#19191E] rounded-lg hover:bg-gray-700 dark:[#19191E] dark:text-white dark:hover:bg-gray-700"
+                                        className="w-full px-4 py-2 text-sm font-thin text-black bg-gray-800 rounded-lg hover:bg-gray-700 dark:[#19191E] dark:text-white dark:hover:bg-gray-700"
                                         onClick={handleLoginWeb3Auth}
                                     >
                                         <img src={googleicon} className="inline-block w-4 h-4 mr-2" alt="Google Icon" />

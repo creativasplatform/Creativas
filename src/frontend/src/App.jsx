@@ -1,13 +1,9 @@
 // src/App.jsx
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
-import Body from "./landing/Body.jsx";
-import NavbarLanding from "./landing/Navbar.jsx";
 import BodyMain from "./landing/BodyMain.jsx"
 import Card from "./landing/Card.jsx";
-import NavbarMarketplace from "./NFTFunding/NavbarMarketplace.jsx";
 import NFTFunding from "./NFTFunding/NFTFunding.jsx";
-import Categories from "./NFTFunding/Categories.jsx";
 import { UserProvider } from './context/userContext';
 import { DfinityProvider } from "./context/IdentityContext.jsx";
 import Footer from "./landing/Footer.jsx";
