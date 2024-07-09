@@ -14,8 +14,11 @@ import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
 import { useSpring, useTransition, animated } from '@react-spring/web';
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
-
+import masicon from "../assets/mas2.png";
+import nfts from "../assets/nfts.png";
+import cubo from "../assets/cubo.png";
 import alert from "../assets/alert.png"
+
 const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
@@ -279,13 +282,24 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
         <DropdownSection aria-label="Actions" showDivider classNames={{
           divider: "bg-white"
         }}>
-          <DropdownItem key="dashboard">
+          <DropdownItem key="dashboard"
+              startContent={
+                <img src={cubo} className='h-4 w-4' alt='cubo'></img>
+              }
+          >
            All projects
           </DropdownItem>
-          <DropdownItem key="settings">Marketplace</DropdownItem>
+          <DropdownItem key="settings"
+           startContent={
+            <img src={nfts} className='h-4 w-4' alt='nfts'></img>
+          }
+          >Marketplace</DropdownItem>
           <DropdownItem
             key="new_project"
             onClick={onOpenModal}
+            startContent={
+              <img src={masicon} className='h-4 w-4' alt='masicon'></img>
+            }
           >
             New Project
           </DropdownItem>
@@ -304,7 +318,6 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
           <DropdownItem key="help_and_feedback">
             Help & Feedback
           </DropdownItem>
-          <DropdownItem onClick={handlelogout} key="logout">Log Out</DropdownItem>
         </DropdownSection> 
       </DropdownMenu>
     </Dropdown>
@@ -314,11 +327,12 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
       <Input
         color='default'
         variant='bordered'
+        radius='md'
         classNames={{
           base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
           mainWrapper: "h-full",
           input: "text-small outline-none",
-          inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg",
+          inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack rounded-lg",
         }}
         placeholder="Search by project name"
         size="sm"

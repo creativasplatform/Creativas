@@ -48,6 +48,8 @@ const NFTFunding = () => {
     const [rewardErrors, setRewardErrors] = useState({});
     const [unsavedChanges, setUnsavedChanges] = useState(false);
     const [ConfirmationButtons, setConfirmationButtons] = useState(false);
+
+
     const categories = [
         { id: 1, name: 'Technology', image: categoriatwo },
         { id: 2, name: 'Gaming', image: categoriaone },

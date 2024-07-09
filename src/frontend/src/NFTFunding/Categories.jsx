@@ -10,19 +10,21 @@ import { getAllAssetsByCategory } from '../views/Nftventure/Assets';
 import { Category } from '../helpers/AssetsHelpers.js';
 
 const Categories = ({ onOpenModal }) => {
-  const { startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted, errorStarted } = useAssets();
+  const { startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted, errorStarted,fundedAssets, fundedInvestmentAmounts, fundedInvestorCounts, loadingFunded, errorFunded, failedAssets, failedInvestmentAmounts, failedInvestorCounts, loadingFailed, errorFailed,  } = useAssets();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [collections, setCollections] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProjectType, setSelectedProjectType] = useState('Started');
 
-  useEffect(() => {
+
+   useEffect(() => {
     const fetchAssets = async () => {
       setLoading(true);
       try {
-        const assets = await getAllAssetsByCategory(ProjectStatus.Started, Category[selectedCategory]);
+        const assets = await getAllAssetsByCategory(ProjectStatus[selectedProjectType], Category[selectedCategory]);
         setFilteredAssets(assets);
         setError(null);
       } catch (err) {
@@ -34,15 +36,22 @@ const Categories = ({ onOpenModal }) => {
     };
 
     if (selectedCategory === 'All') {
-      setFilteredAssets(startedAssets);
+      const assets = selectedProjectType === 'Started' ? startedAssets 
+                : selectedProjectType === 'Funded' ? fundedAssets 
+                : failedAssets;
+      setFilteredAssets(assets);
       setLoading(false);
     } else {
       fetchAssets();
     }
-  }, [selectedCategory, startedAssets]);
+  }, [selectedCategory, selectedProjectType, startedAssets, fundedAssets, failedAssets]);
 
   useEffect(() => {
-    let currentAssets = selectedCategory === 'All' ? startedAssets : filteredAssets;
+    let currentAssets = selectedCategory === 'All' ? (
+      selectedProjectType === 'Started' ? startedAssets :
+      selectedProjectType === 'Funded' ? fundedAssets :
+      failedAssets
+    ) : filteredAssets;
     
     if (searchTerm) {
       currentAssets = currentAssets.filter(asset =>
@@ -59,12 +68,16 @@ const Categories = ({ onOpenModal }) => {
         title: asset.title,
         objective: `${asset.price} USD`,
         image: asset.mainPhoto,
-        investmentAmount: startedInvestmentAmounts[index],
-        investorCount: startedInvestorCounts[index],
+        investmentAmount: selectedProjectType === 'Started' ? startedInvestmentAmounts[index] :
+                          selectedProjectType === 'Funded' ? fundedInvestmentAmounts[index] :
+                          failedInvestmentAmounts[index],
+        investorCount: selectedProjectType === 'Started' ? startedInvestorCounts[index] :
+                       selectedProjectType === 'Funded' ? fundedInvestorCounts[index] :
+                       failedInvestorCounts[index],
       }));
 
     setCollections(collections);
-  }, [selectedCategory, filteredAssets, startedAssets, startedInvestmentAmounts, startedInvestorCounts, searchTerm]);
+  }, [selectedCategory, selectedProjectType, filteredAssets, startedAssets, fundedAssets, failedAssets, startedInvestmentAmounts, fundedInvestmentAmounts, failedInvestmentAmounts, startedInvestorCounts, fundedInvestorCounts, failedInvestorCounts, searchTerm]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -87,11 +100,15 @@ const Categories = ({ onOpenModal }) => {
         </div>
       </div>
 
-      <CategoriesBar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+      <CategoriesBar
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        setSelectedProjectType={setSelectedProjectType}
+      />
 
       {loading || loadingStarted ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
-          {Array.from({ length: 24 }).map((_, index) => (
+          {Array.from({ length: 8 }).map((_, index) => (
             <Card key={index} className="w-[300px] h-[250px] space-y-5 p-4" radius="lg">
               <Skeleton className="rounded-lg">
                 <div className="h-24 rounded-lg bg-default-300"></div>
