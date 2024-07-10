@@ -1,6 +1,5 @@
 // src/NFTFunding/BodyMarketplace.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import NavbarMarketplace from './NavbarMarketplace';
 import StepProgress from './StepProgress';
 import Categories from './Categories';
 import categoriaone from "../assets/categories/categoria1.png"
@@ -27,13 +26,16 @@ import errorpicture from "../assets/error.png"
 import aceptarpicture from "../assets/aceptar.png"
 import { Category } from '../helpers/AssetsHelpers.js';
 import { NFTVenture, rpcURL } from "../utils/constans.js"
+import { NETWORKS } from "../helpers/ChainsConfig.js"
+import { useUserContext } from "../context/userContext.jsx";
 
 const NFTFunding = () => {
     const [openModal, setOpenModal] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({ title: '', description: '' });
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const { address, isLoggedIn, loginWallet, loginWeb3Auth, authType, Provider } = useUser();
+    const { address, isLoggedIn, loginWallet, loginWeb3Auth, authType, Provider, IsValidChain, ChainUser, changeNetworkWallet, changeNetworkWeb3auth } = useUser();
+    const { network, setNetwork } = useUserContext();
     const [hasRewards, setHasRewards] = useState(false);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [errors, setErrors] = useState({});
@@ -68,6 +70,32 @@ const NFTFunding = () => {
     const [assetId, setAssetId] = useState(null)
     const [loadingAddNFT, setLoadingAddNFT] = useState(false);
 
+
+    const handleChangeNetwork = async () => {
+        try {
+          if (authType === 'wallet') {
+            await changeNetworkWallet(network);
+          } else if (authType === 'web3auth') {
+            await changeNetworkWeb3auth(network);
+          }
+          setNetwork(network); 
+          localStorage.setItem('selectedNetwork', ); 
+        } catch (error) {
+          console.error("Error switching network:", error);
+        }
+      };
+
+      const parseNetworkName = (network) => {
+        switch (network) {
+          case 'RSK_TESTNET':
+            return 'RSK';
+          case 'SEPOLIA_TESTNET':
+            return 'Ethereum';
+          default:
+            return 'Unknown Network';
+        }
+      };
+    
 
     const modalAnimation = useSpring({
         opacity: openModal ? 1 : 0,
@@ -987,23 +1015,28 @@ const NFTFunding = () => {
             <div className="flex justify-end mt-4">
                 <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                 <button
-                    onClick={() => setOpenModal('extralarge-modal')}
-                    className="mr-4 text-white bg-[#444553] dark:bg-[#444553] hover:bg-gray-600 dark:hover:bg-gray-600 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800"
-                    disabled={loading}
-                >
-                    Edit
-                </button>
-                <button
-                    disabled={loading}
-                    onClick={isLoggedIn && address ? handleCreateAsset : handleOpenLoginModal}
-
-                    className={`text-white bg-secondary dark:bg-secondary hover:bg-secondary-ligth dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left ${isLoggedIn && address ? 'dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' : ''
-
-                        }`}
-
-                >
-                    {isLoggedIn && address ? 'Complete' : 'Connect'}
-                </button>
+        disabled={loading}
+        onClick={
+          isLoggedIn && address
+            ? IsValidChain
+              ? handleCreateAsset
+              : handleChangeNetwork
+            : handleOpenLoginModal
+        }
+        className={`font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left focus:outline-none ${
+          isLoggedIn && address
+            ? IsValidChain
+              ? 'text-white bg-secondary hover:bg-secondary-ligth'
+              : 'bg-white hover:border-gray-200 text-secondary'
+            : 'bg-white hover:border-gray-200 text-secondary'
+        }`}
+      >
+        {isLoggedIn && address
+          ? IsValidChain
+            ? 'Complete'
+            : `Connect to ${parseNetworkName(network)}`
+          : 'Login'}
+      </button>
             </div>
         </>
     );

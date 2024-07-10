@@ -15,9 +15,9 @@ const truncateAssetName = (name) => {
   }
   return name;
 };
- 
 
-const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
+
+const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal }) => {
   const [activeTab, setActiveTab] = useState('NFT');
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -33,6 +33,11 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
   } = useAssets();
 
 
+  const handleOpenModal = () => {
+    onOpenModal()
+    setIsSidebarOpen(false)
+
+  }
   const handleCopy = () => {
     navigator.clipboard.writeText(address)
       .then(() => {
@@ -55,7 +60,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
     await logout();
     setIsSidebarOpen(false)
     onClose;
-  } 
+  }
 
   const transitions = useSpring({
     transform: isSidebarOpen ? 'translateX(0)' : 'translateX(100%)',
@@ -95,12 +100,12 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
     } else if (ownerAssets && ownerAssets.length > 0) {
       return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24">
-              {ownerAssets.slice().reverse().map(asset => (
+          {ownerAssets.slice().reverse().map(asset => (
             <div className={`bg-gradient-to-c-custom text-white rounded-xl shadow-lg w-40 h-46`} key={asset.assetId.toString()}>
               <img src={asset.mainPhoto} alt={asset.title} className="w-[150px] mt-2 h-36 object-cover rounded-xl" />
               <div className="p-4">
                 <p className="text-lg font-semibold text-white -mt-3 flex items-start justify-start">
-                {truncateAssetName(asset.title)}  
+                  {truncateAssetName(asset.title)}
                   <div className="right-3 text-white -mt-1 px-2 py-1 rounded justify-end items-end ml-16">
                     #{asset.assetId.toString()}
                   </div>
@@ -111,7 +116,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
             </div>
           ))}
         </div>
-  
+
       );
     } else {
       return (
@@ -124,7 +129,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
           </div>
           <p className="text-gray-500">No NFTs yet</p>
           <p className="text-gray-400 text-sm mb-4 text-center">Start a new project with this wallet to get started.</p>
-          <button className="bg-secondary-bright text-white text-sm p-2 rounded-lg">Start Project</button>
+          <button onClick={handleOpenModal} className="bg-secondary-bright text-white text-sm p-2 rounded-lg">Start Project</button>
         </div>
       );
     }
@@ -166,108 +171,113 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen }) => {
   return (
     <div>
       <div className='mr-96'>
-         <button
-        onClick={onClose}
-        className="mt-6 flex mr-12 relativehover:bg-gray-600 rounded-lg"
-      >
-        <img src={derecha} alt="Cerrar" className="w-6 h-6" />
-      </button>
-      </div>
-        <animated.div
-          style={transitions}
-          className="w-[400px] bg-customblack shadow-lg p-4 h-full fixed right-0 top-0 transition-transform overflow-auto overflow-y-auto"
+        <button
+          onClick={onClose}
+          className="mt-6 flex mr-12 relativehover:bg-gray-600 rounded-lg"
         >
-        
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center">
-          <div className="bg-green-500 p-2 rounded-full text-white">
-            <svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg">
-              <g style={{ transformOrigin: "center center" }}>
-                <circle cx="20" cy="20" fill="#B1E5E329" r="20"></circle>
-                <g transform="translate(6.666666666666666, 6.666666666666666) scale(0.5555555555555556)">
-                  <path clipRule="evenodd" d="M21 6C21 4.34315 22.3431 3 24 3C25.6569 3 27 4.34315 27 6V15C27 16.6569 25.6569 18 24 18C22.3431 18 21 16.6569 21 15V6Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M21 33C21 31.3431 22.3431 30 24 30C25.6569 30 27 31.3431 27 33V42C27 43.6569 25.6569 45 24 45C22.3431 45 21 43.6569 21 42V33Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M42 21C43.6569 21 45 22.3431 45 24C45 25.6569 43.6569 27 42 27H33C31.3431 27 30 25.6569 30 24C30 22.3431 31.3431 21 33 21H42Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M15 21C16.6569 21 18 22.3431 18 24C18 25.6569 16.6569 27 15 27H6C4.34315 27 3 25.6569 3 24C3 22.3431 4.34315 21 6 21H15Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M34.6066 9.15076C35.7782 7.97918 37.6777 7.97918 38.8492 9.15076C40.0208 10.3223 40.0208 12.2218 38.8492 13.3934L36.7279 15.5147C35.5563 16.6863 33.6569 16.6863 32.4853 15.5147C31.3137 14.3431 31.3137 12.4437 32.4853 11.2721L34.6066 9.15076Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M11.2721 32.4853C12.4437 31.3137 14.3431 31.3137 15.5147 32.4853C16.6863 33.6569 16.6863 35.5563 15.5147 36.7279L13.3934 38.8492C12.2218 40.0208 10.3223 40.0208 9.15076 38.8492C7.97919 37.6777 7.97919 35.7782 9.15076 34.6066L11.2721 32.4853Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M38.8492 34.6066C40.0208 35.7782 40.0208 37.6777 38.8492 38.8492C37.6777 40.0208 35.7782 40.0208 34.6066 38.8492L32.4853 36.7279C31.3137 35.5563 31.3137 33.6569 32.4853 32.4853C33.6569 31.3137 35.5563 31.3137 36.7279 32.4853L38.8492 34.6066Z" fill="#B1E5E3" fillRule="evenodd"></path>
-                  <path clipRule="evenodd" d="M15.5147 11.2721C16.6863 12.4437 16.6863 14.3431 15.5147 15.5147C14.3431 16.6863 12.4437 16.6863 11.2721 15.5147L9.15076 13.3934C7.97918 12.2218 7.97919 10.3223 9.15076 9.15076C10.3223 7.97918 12.2218 7.97918 13.3934 9.15076L15.5147 11.2721Z" fill="#B1E5E3" fillRule="evenodd"></path>
+          <img src={derecha} alt="Cerrar" className="w-6 h-6" />
+        </button>
+      </div>
+      <animated.div
+        style={transitions}
+        className="w-[400px] bg-customblack shadow-lg p-4 h-full fixed right-0 top-0 transition-transform overflow-auto overflow-y-auto"
+      >
+
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center">
+            <div className="bg-green-500 p-2 rounded-full text-white">
+              <svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg">
+                <g style={{ transformOrigin: "center center" }}>
+                  <circle cx="20" cy="20" fill="#B1E5E329" r="20"></circle>
+                  <g transform="translate(6.666666666666666, 6.666666666666666) scale(0.5555555555555556)">
+                    <path clipRule="evenodd" d="M21 6C21 4.34315 22.3431 3 24 3C25.6569 3 27 4.34315 27 6V15C27 16.6569 25.6569 18 24 18C22.3431 18 21 16.6569 21 15V6Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M21 33C21 31.3431 22.3431 30 24 30C25.6569 30 27 31.3431 27 33V42C27 43.6569 25.6569 45 24 45C22.3431 45 21 43.6569 21 42V33Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M42 21C43.6569 21 45 22.3431 45 24C45 25.6569 43.6569 27 42 27H33C31.3431 27 30 25.6569 30 24C30 22.3431 31.3431 21 33 21H42Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M15 21C16.6569 21 18 22.3431 18 24C18 25.6569 16.6569 27 15 27H6C4.34315 27 3 25.6569 3 24C3 22.3431 4.34315 21 6 21H15Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M34.6066 9.15076C35.7782 7.97918 37.6777 7.97918 38.8492 9.15076C40.0208 10.3223 40.0208 12.2218 38.8492 13.3934L36.7279 15.5147C35.5563 16.6863 33.6569 16.6863 32.4853 15.5147C31.3137 14.3431 31.3137 12.4437 32.4853 11.2721L34.6066 9.15076Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M11.2721 32.4853C12.4437 31.3137 14.3431 31.3137 15.5147 32.4853C16.6863 33.6569 16.6863 35.5563 15.5147 36.7279L13.3934 38.8492C12.2218 40.0208 10.3223 40.0208 9.15076 38.8492C7.97919 37.6777 7.97919 35.7782 9.15076 34.6066L11.2721 32.4853Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M38.8492 34.6066C40.0208 35.7782 40.0208 37.6777 38.8492 38.8492C37.6777 40.0208 35.7782 40.0208 34.6066 38.8492L32.4853 36.7279C31.3137 35.5563 31.3137 33.6569 32.4853 32.4853C33.6569 31.3137 35.5563 31.3137 36.7279 32.4853L38.8492 34.6066Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                    <path clipRule="evenodd" d="M15.5147 11.2721C16.6863 12.4437 16.6863 14.3431 15.5147 15.5147C14.3431 16.6863 12.4437 16.6863 11.2721 15.5147L9.15076 13.3934C7.97918 12.2218 7.97919 10.3223 9.15076 9.15076C10.3223 7.97918 12.2218 7.97918 13.3934 9.15076L15.5147 11.2721Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                  </g>
                 </g>
-              </g>
-            </svg>
-          </div>
+              </svg>
+            </div>
 
-          <div className="ml-0">
-            <p className="truncate text-sm font-medium text-white">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</p>
+            <div className="ml-0">
+              <p className="truncate text-sm font-medium text-white">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</p>
 
+            </div>
+            <button
+              onClick={handleCopy}
+              className="ml-2 text-white p-2 rounded-lg hover:bg-gray-800 transition-all"
+            >
+              {copySuccess ? (
+                <svg className="w-5 h-5 text-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <img src={copiaricon} alt='copiar icon' className='w-4 h-4'></img>
+              )}
+            </button>
           </div>
+          <div className="flex items-center ">
+            <button className="ml-32 hover:bg-gray-600 rounded-lg">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" size="24"><path d="M20.83 14.6C19.9 14.06 19.33 13.07 19.33 12C19.33 10.93 19.9 9.93999 20.83 9.39999C20.99 9.29999 21.05 9.1 20.95 8.94L19.28 6.06C19.22 5.95 19.11 5.89001 19 5.89001C18.94 5.89001 18.88 5.91 18.83 5.94C18.37 6.2 17.85 6.34 17.33 6.34C16.8 6.34 16.28 6.19999 15.81 5.92999C14.88 5.38999 14.31 4.41 14.31 3.34C14.31 3.15 14.16 3 13.98 3H10.02C9.83999 3 9.69 3.15 9.69 3.34C9.69 4.41 9.12 5.38999 8.19 5.92999C7.72 6.19999 7.20001 6.34 6.67001 6.34C6.15001 6.34 5.63001 6.2 5.17001 5.94C5.01001 5.84 4.81 5.9 4.72 6.06L3.04001 8.94C3.01001 8.99 3 9.05001 3 9.10001C3 9.22001 3.06001 9.32999 3.17001 9.39999C4.10001 9.93999 4.67001 10.92 4.67001 11.99C4.67001 13.07 4.09999 14.06 3.17999 14.6H3.17001C3.01001 14.7 2.94999 14.9 3.04999 15.06L4.72 17.94C4.78 18.05 4.89 18.11 5 18.11C5.06 18.11 5.12001 18.09 5.17001 18.06C6.11001 17.53 7.26 17.53 8.19 18.07C9.11 18.61 9.67999 19.59 9.67999 20.66C9.67999 20.85 9.82999 21 10.02 21H13.98C14.16 21 14.31 20.85 14.31 20.66C14.31 19.59 14.88 18.61 15.81 18.07C16.28 17.8 16.8 17.66 17.33 17.66C17.85 17.66 18.37 17.8 18.83 18.06C18.99 18.16 19.19 18.1 19.28 17.94L20.96 15.06C20.99 15.01 21 14.95 21 14.9C21 14.78 20.94 14.67 20.83 14.6ZM12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12C15 13.66 13.66 15 12 15Z" fill="#9398A7"></path></svg>
+            </button>
+          </div>
+          <div className="flex items-center hover:bg-gray-600 rounded-lg">
+            <button onClick={handlelogout} >
+              <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 7.3335C7.63133 7.3335 7.33333 7.03483 7.33333 6.66683V2.00016C7.33333 1.63216 7.63133 1.3335 8 1.3335C8.36867 1.3335 8.66667 1.63216 8.66667 2.00016V6.66683C8.66667 7.03483 8.36867 7.3335 8 7.3335ZM14 8.66683C14 6.5375 12.8506 4.5462 11.002 3.47087C10.6833 3.28553 10.2753 3.39343 10.0907 3.71143C9.90532 4.03009 10.0134 4.43822 10.3314 4.62288C11.772 5.46088 12.6667 7.01083 12.6667 8.66683C12.6667 11.2402 10.5727 13.3335 8 13.3335C5.42733 13.3335 3.33333 11.2402 3.33333 8.66683C3.33333 7.01083 4.22795 5.46088 5.66862 4.62288C5.98729 4.43822 6.09534 4.02943 5.90934 3.71143C5.72334 3.39343 5.31538 3.2842 4.99805 3.47087C3.14938 4.54687 2 6.5375 2 8.66683C2 11.9748 4.69133 14.6668 8 14.6668C11.3087 14.6668 14 11.9748 14 8.66683Z" fill="#9398A7"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <p className="text-4xl font-semibold text-white">0,00 $</p>
+        </div>
+
+        <div className="grid grid-cols-2  gap-2 mb-6">
           <button
-        onClick={handleCopy}
-        className="ml-2 text-white p-2 rounded-lg hover:bg-gray-800 transition-all"
-      >
-        {copySuccess ? (
-          <svg className="w-5 h-5 text-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-          </svg>
-        ) : (
-       <img src={copiaricon} alt='copiar icon' className='w-4 h-4'></img>
-        )}
-      </button>
-        </div>
-        <div className="flex items-center ">
-          <button className="ml-32 hover:bg-gray-600 rounded-lg">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" size="24"><path d="M20.83 14.6C19.9 14.06 19.33 13.07 19.33 12C19.33 10.93 19.9 9.93999 20.83 9.39999C20.99 9.29999 21.05 9.1 20.95 8.94L19.28 6.06C19.22 5.95 19.11 5.89001 19 5.89001C18.94 5.89001 18.88 5.91 18.83 5.94C18.37 6.2 17.85 6.34 17.33 6.34C16.8 6.34 16.28 6.19999 15.81 5.92999C14.88 5.38999 14.31 4.41 14.31 3.34C14.31 3.15 14.16 3 13.98 3H10.02C9.83999 3 9.69 3.15 9.69 3.34C9.69 4.41 9.12 5.38999 8.19 5.92999C7.72 6.19999 7.20001 6.34 6.67001 6.34C6.15001 6.34 5.63001 6.2 5.17001 5.94C5.01001 5.84 4.81 5.9 4.72 6.06L3.04001 8.94C3.01001 8.99 3 9.05001 3 9.10001C3 9.22001 3.06001 9.32999 3.17001 9.39999C4.10001 9.93999 4.67001 10.92 4.67001 11.99C4.67001 13.07 4.09999 14.06 3.17999 14.6H3.17001C3.01001 14.7 2.94999 14.9 3.04999 15.06L4.72 17.94C4.78 18.05 4.89 18.11 5 18.11C5.06 18.11 5.12001 18.09 5.17001 18.06C6.11001 17.53 7.26 17.53 8.19 18.07C9.11 18.61 9.67999 19.59 9.67999 20.66C9.67999 20.85 9.82999 21 10.02 21H13.98C14.16 21 14.31 20.85 14.31 20.66C14.31 19.59 14.88 18.61 15.81 18.07C16.28 17.8 16.8 17.66 17.33 17.66C17.85 17.66 18.37 17.8 18.83 18.06C18.99 18.16 19.19 18.1 19.28 17.94L20.96 15.06C20.99 15.01 21 14.95 21 14.9C21 14.78 20.94 14.67 20.83 14.6ZM12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12C15 13.66 13.66 15 12 15Z" fill="#9398A7"></path></svg>
+            className="bg-secondary/40 p-4 hover:bg-secondary/60 rounded-[20px] flex flex-col items-center"
+            onClick={() => window.open('https://www.mtpelerin.com/es/comprar-rbtc-smart-bitcoin', '_blank')}
+          >
+            <img role="img" aria-label="buy" className="ml-0" src={Tarjeta} alt="Buy" />
+            <p className="text-secondary mt-2 -ml-8 text-[16px] mr-[85px] font-bold">Buy</p>
+          </button>
+
+
+          <button className="bg-secondary/40 hover:bg-secondary/60 p-4 rounded-[20px] flex flex-col items-center">
+            <img role="img" aria-label="buy" className="ml-0" src={imagen}></img>
+            <p className="text-secondary mt-2 -ml-2.5 text-[16px] mr-[70px] font-bold">See NFTs</p>
           </button>
         </div>
-        <div className="flex items-center hover:bg-gray-600 rounded-lg">
-          <button onClick={handlelogout} >
-            <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 7.3335C7.63133 7.3335 7.33333 7.03483 7.33333 6.66683V2.00016C7.33333 1.63216 7.63133 1.3335 8 1.3335C8.36867 1.3335 8.66667 1.63216 8.66667 2.00016V6.66683C8.66667 7.03483 8.36867 7.3335 8 7.3335ZM14 8.66683C14 6.5375 12.8506 4.5462 11.002 3.47087C10.6833 3.28553 10.2753 3.39343 10.0907 3.71143C9.90532 4.03009 10.0134 4.43822 10.3314 4.62288C11.772 5.46088 12.6667 7.01083 12.6667 8.66683C12.6667 11.2402 10.5727 13.3335 8 13.3335C5.42733 13.3335 3.33333 11.2402 3.33333 8.66683C3.33333 7.01083 4.22795 5.46088 5.66862 4.62288C5.98729 4.43822 6.09534 4.02943 5.90934 3.71143C5.72334 3.39343 5.31538 3.2842 4.99805 3.47087C3.14938 4.54687 2 6.5375 2 8.66683C2 11.9748 4.69133 14.6668 8 14.6668C11.3087 14.6668 14 11.9748 14 8.66683Z" fill="#9398A7"></path></svg>
+
+        <div className="flex justify-around text-gray-500 mb-[130px] text-[16px]  " >
+          <button
+            className={` ${activeTab === 'NFT' ? 'text-white font-bold ' : 'text-gray-500'}`}
+            onClick={() => setActiveTab('NFT')}
+          >
+            NFTs
+          </button>
+          <button
+            className={`${activeTab === 'Rewards' ? 'text-white font-bold' : 'text-gray-500'}`}
+            onClick={() => setActiveTab('Rewards')}
+          >
+            Rewards
+          </button>
+          <button
+            className={`${activeTab === 'Activity' ? 'text-white font-bold' : 'text-gray-500'}`}
+            onClick={() => setActiveTab('Activity')}
+          >
+            Activity
           </button>
         </div>
-      </div>
 
-      <div className="mb-6">
-        <p className="text-4xl font-semibold text-white">0,00 $</p>
-      </div>
+        {renderContent()}
 
-      <div className="grid grid-cols-2  gap-2 mb-6">
-        <button className="bg-secondary/40 p-4 hover:bg-secondary/60 rounded-[20px] flex flex-col items-center ">
-          <img role="img" aria-label="buy" className="ml-0" src={Tarjeta}></img>
-          <p className="text-secondary mt-2 -ml-8 text-[16px] mr-[85px] font-bold">Buy</p>
-        </button>
-        <button className="bg-secondary/40 hover:bg-secondary/60 p-4 rounded-[20px] flex flex-col items-center">
-          <img role="img" aria-label="buy" className="ml-0" src={imagen}></img>
-          <p className="text-secondary mt-2 -ml-2.5 text-[16px] mr-[70px] font-bold">See NFTs</p>
-        </button>
-      </div>
-
-      <div className="flex justify-around text-gray-500 mb-[130px] text-[16px]  " >
-        <button
-          className={` ${activeTab === 'NFT' ? 'text-white font-bold ' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('NFT')}
-        >
-          NFTs
-        </button>
-        <button
-          className={`${activeTab === 'Rewards' ? 'text-white font-bold' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('Rewards')}
-        >
-          Rewards
-        </button>
-        <button
-          className={`${activeTab === 'Activity' ? 'text-white font-bold' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('Activity')}
-        >
-          Activity
-        </button>
-      </div>
-
-      {renderContent()}
-      
       </animated.div>
-      </div>
-)
+    </div>
+  )
 };
 
 export default Sidebar;

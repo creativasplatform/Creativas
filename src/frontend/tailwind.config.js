@@ -30,7 +30,7 @@ export default {
         warning: '#b1e5e3',
         success: '#6377db',
         danger: '#FFFFFF',
-        default: '#9398A7'
+        default: '#9398A7',
       },
       fontSize: {
         'rem-8.75': '8.75rem',

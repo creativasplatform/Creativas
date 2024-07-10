@@ -12,7 +12,7 @@ import googleicon from "../assets/google.png";
 import Chain from './SetChain.jsx';
 import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
-import { useSpring, useTransition, animated } from '@react-spring/web';
+import { useSpring, animated } from '@react-spring/web';
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
 import masicon from "../assets/mas2.png";
 import nfts from "../assets/nfts.png";
@@ -27,7 +27,7 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
   const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false); 
-  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
+
 
   const {
     isLoggedIn,
@@ -49,9 +49,6 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handlelogout = async () => {
-    await logout();
-  } 
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
@@ -298,7 +295,7 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
             key="new_project"
             onClick={onOpenModal}
             startContent={
-              <img src={masicon} className='h-4 w-4' alt='masicon'></img>
+              <img src={masicon} className='h-4 w-4 ' alt='masicon'></img>
             }
           >
             New Project
@@ -398,7 +395,7 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
                   {isSidebarOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end">
                       <div className="relative">
-                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
+                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} onOpenModal={onOpenModal}/>
                       </div>
                     </div>
                   )}
