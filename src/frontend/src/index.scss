@@ -54,6 +54,13 @@
 }
 
 
+.scrollable-content {
+  max-height: 80vh; /* Ajusta la altura máxima según sea necesario */
+  overflow-y: auto; /* Habilita la barra de desplazamiento vertical */
+}
+
+
+
 .opacity-110 {
   opacity: 0.30;
 }
@@ -86,8 +93,8 @@ body {
 }
 
 img {
-  max-width: 50vw;
-  max-height: 25vw;
+  max-width: 100vw;
+  max-height: 105vw;
   display: block;
   margin: auto;
 }
@@ -138,3 +145,53 @@ button[type="submit"] {
   }
 }
 
+
+
+.snap {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap::-webkit-scrollbar {
+  display: none;
+}
+
+.snap > img {
+  scroll-snap-align: center;
+}
+
+
+
+/* Para Chrome, Brave, Safari y otros navegadores basados en Webkit */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  /* Scrollbar container */
+  ::-webkit-scrollbar {
+    width: 12px; /* Ancho de la scrollbar */
+    background: #0c0b0b; 
+  }
+
+  /* Scrollbar track */
+  ::-webkit-scrollbar-track {
+    background: #0c0b0b; /* Color del track (pista) */
+    border-radius: 10px;
+  }
+
+  /* Scrollbar handle */
+  ::-webkit-scrollbar-thumb {
+    background:  #1f2937; /* Color del handle (control deslizante) */
+    border-radius: 10px;
+  }
+
+  /* Scrollbar handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color del handle cuando se pasa el mouse sobre él */
+  }
+}
+
+/* Para Firefox */
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: thin; /* Tamaño de la scrollbar */
+    scrollbar-color: #1f2937 #0c0b0b; /* Color del handle y del track */
+  }
+}

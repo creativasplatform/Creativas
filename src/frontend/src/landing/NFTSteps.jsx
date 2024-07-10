@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Linea from '../assets/Linea2.png';
 import wallet1 from '../assets/paso1.png';
 import Paso2 from '../assets/paso2.png';
@@ -6,6 +6,25 @@ import Paso3 from '../assets/paso3.png';
 import Paso4 from '../assets/paso4.png';
 
 const NFTSteps = () => {
+  const [Image, setImage] = useState(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1701) {
+        setImage(Linea);
+      } else {
+        setImage(null);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div className="relative bg-gradient-to-b from-customblack to-primary text-white py-32 px-8 overflow-hidden font-roboto">
       <div className="mb-24">
@@ -16,7 +35,7 @@ const NFTSteps = () => {
       </div>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 relative z-10">
         <div className="">
-          <img src={wallet1} className="ml-0 w-[99px] -mt-8 picture" alt="Step 1" />
+          <img src={wallet1} className="-ml-6 w-[99px] -mt-8 picture" alt="Step 1" />
           <div className="mb-0">
             <div className="w-16 h-16 flex ml-28 -mt-24 mx-auto mb-24">
               <span className="text-[50px] font-ligth font-roboto">
@@ -42,7 +61,7 @@ const NFTSteps = () => {
           </div>
         </div>
         <div className="">
-          <img src={Paso3} className="-ml-10 w-[97px] -mt-6 picture" alt="Step 3" />
+          <img src={Paso3} className="-ml-6 w-[97px] -mt-6 picture" alt="Step 3" />
           <div className="mb-4">
             <div className="w-16 h-16 flex ml-24 -mt-24 mx-auto mb-24">
               <span className="text-[50px] font-ligth font-roboto">
@@ -68,11 +87,13 @@ const NFTSteps = () => {
           </div>
         </div>
       </div>
-      <img
-        className="absolute left-16 -mt-52 object-cover z-0 max-w-[73vw] max-h-[25vw] mx-auto"
-        src={Linea}
-        alt="Linea"
-      />
+      {Image && (
+        <img
+          className="absolute left-16 -mt-52 object-cover z-0 max-w-[73vw] max-h-[25vw] mx-auto"
+          src={Image}
+          alt="Linea"
+        />
+      )}
     </div>
   );
 };

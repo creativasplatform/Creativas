@@ -11,8 +11,8 @@ const Video = () => {
                 </div>
                 <div className="flex flex-col lg:flex-row justify-center items-center mb-32 mt-24 gap-8 px-4">
                     <iframe
-                        className="h-[20rem] md:h-[25rem] lg:h-[40rem] max-w-full lg:w-[800px] xl:w-[1200px] border border-gray-200 rounded-lg dark:border-gray-700"
-                        src="https://www.youtube.com/embed/GvBeyPaa8SY"  // Reemplaza {VIDEO_ID} con el ID del video de YouTube
+                        className="w-[20rem] h-[15rem] xs:w-[25rem] xs:h-[20rem] sm:w-[40rem] sm:h-[20rem] md:w-[55rem] md:h-[30rem] lg:w-[60rem] lg:h-[40rem]  xl:w-[70rem] xl:h-[40rem] max-w-fullborder border-gray-200 rounded-lg dark:border-gray-700"
+                        src="https://www.youtube.com/embed/pUObZLpTiIk"  // Reemplaza {VIDEO_ID} con el ID del video de YouTube
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen

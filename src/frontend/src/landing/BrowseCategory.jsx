@@ -1,13 +1,11 @@
-// src/components/Carousel.js
-import React, { useState } from 'react';
-import Game from '../assets/Game.png'
-import Art from '../assets/Art.png'
-import Collectibles from '../assets/Collectibles.png'
-import Sport from '../assets/Sport.png'
-import Movies from '../assets/Movies.png'
-import Music from '../assets/Music.jpg'
-import Technology from '../assets/Technology.png'
-
+import React, { useState, useEffect } from 'react';
+import Game from '../assets/Game.png';
+import Art from '../assets/Art.png';
+import Collectibles from '../assets/Collectibles.png';
+import Sport from '../assets/Sport.png';
+import Movies from '../assets/Movies.png';
+import Music from '../assets/Music.jpg';
+import Technology from '../assets/Technology.png';
 
 const Carousel = () => {
     const images = [
@@ -21,7 +19,32 @@ const Carousel = () => {
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const cardsToShow = 4; 
+    const [cardsToShow, setCardsToShow] = useState(4);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (windowWidth > 1300) {
+            setCardsToShow(4);
+        } else if (windowWidth > 800) {
+            setCardsToShow(3);
+        } else if (windowWidth > 500) {
+            setCardsToShow(2);
+        } else {
+            setCardsToShow(1);
+        }
+    }, [windowWidth]);
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
@@ -36,11 +59,10 @@ const Carousel = () => {
     };
 
     return (
-     
-        <div className="relative w-full text-white  mx-auto bg-gradient-to-b from-customblack to-primary overflow-hidden font-roboto py-16 px-8">
+        <div className="relative w-full text-white mx-auto bg-gradient-to-b from-customblack to-primary overflow-hidden font-roboto py-16 px-8">
             <div className='mb-16'>
                 <span className="text-3xl font-semibold mb-8 text-left font-raleway">
-                    <span className="text-white">Browse    </span>
+                    <span className="text-white">Browse </span>
                     <span className="text-secondary">by Category</span>
                 </span>
             </div>
@@ -59,7 +81,7 @@ const Carousel = () => {
                                 <img
                                     src={image.src}
                                     alt={image.title}
-                                    className="w-[360px] mt-2 h-56 object-cover rounded-t-xl "
+                                    className="w-[360px] mt-2 h-56 object-cover rounded-t-xl"
                                 />
                                 <div className="p-2 flex justify-center items-center mt-2">
                                     <h3 className="text-[18px] font-semibold mb-2 font-raleway text-center">{image.title}</h3>
@@ -70,7 +92,7 @@ const Carousel = () => {
                 </div>
             </div>
 
-            <div className="absolute top-2 right-8 flex space-x-2 mt-16 mr-2">
+            <div className="absolute top-12 right-8 flex space-x-2 mt-16 mr-2">
                 <button
                     onClick={prevSlide}
                     className="bg-[#1C2533] text-white p-2 rounded-[8px] shadow-lg"

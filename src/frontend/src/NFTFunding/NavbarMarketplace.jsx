@@ -13,15 +13,21 @@ import Chain from './SetChain.jsx';
 import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
 import { useSpring, useTransition, animated } from '@react-spring/web';
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
+import masicon from "../assets/mas2.png";
+import nfts from "../assets/nfts.png";
+import cubo from "../assets/cubo.png";
 import alert from "../assets/alert.png"
-const Navbar = () => {
+
+const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false); // Nuevo estado
+  const [termsAccepted, setTermsAccepted] = useState(false); 
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
-  const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false); // Nuevo estado para controlar la carga
+  const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false); 
+  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
   const {
     isLoggedIn,
@@ -43,9 +49,19 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handlelogout = async () => {
+    await logout();
+  } 
+
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
+
+  const handleSearchChange = (event) => {
+  
+    onSearch(event.target.value); 
+  };
+
 
   const { Provider } = useUserContext();
   const [loading, setLoading] = useState(true);
@@ -87,7 +103,7 @@ const Navbar = () => {
 
   const handleAcceptTerms = useCallback(async () => {
     try {
-      setLoadingAcceptTerms(true); // Activar el estado de carga
+      setLoadingAcceptTerms(true); 
 
       const result = await signMessage("Accept the terms and conditions");
       if (result && result.signature) {
@@ -167,6 +183,7 @@ const Navbar = () => {
     setOpenLoginModal(false);
   };
 
+
   const handleOpenConditionsModal = () => {
     setOpenModalConditionals(true);
   };
@@ -222,40 +239,119 @@ const Navbar = () => {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
         <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4">
           <img src={CreativasLogo} className="h-10 w-200" alt="Creativas Logo" />
-          <button
-            type="button"
-            className="text-white bg-secondary hover:bg-secondary-ligth dark:bg-secondary dark:hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center"
-            onClick={handleOpenLoginModal}
+          <Dropdown
+      
+      showArrow
+      radius="sm"
+      classNames={{
+        base: "before:bg-default-200", 
+        content: "p-0 border-small border-divider bg-primary",
+    
+      }}
+    >
+      <DropdownTrigger>
+      <Button 
+          variant='solid' 
+          color='success'
+          className='text-white hover:bg-secondary-ligth'
+          radius="full"
+          startContent={
+            <img src={explorerIcon} alt='explorer' className='w-4 h-4'></img>
+          }
+        >
+          Explorer
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Custom item styles"
+        className="p-3"
+        itemClasses={{
+          base: [
+            "rounded-md",
+            "text-white",
+            "transition-opacity",
+            "data-[hover=true]:text-foreground",
+            "data-[hover=true]:bg-default-100",
+            "dark:data-[hover=true]:bg-default-50",
+            "data-[selectable=true]:focus:bg-default-50",
+            "data-[pressed=true]:opacity-70",
+            "data-[focus-visible=true]:ring-default-500",
+          ],
+        }}
+      >
+        <DropdownSection aria-label="Actions" showDivider classNames={{
+          divider: "bg-white"
+        }}>
+          <DropdownItem key="dashboard"
+              startContent={
+                <img src={cubo} className='h-4 w-4' alt='cubo'></img>
+              }
           >
-            <img src={explorerIcon} className="h-4 w-4 mr-2" alt="Explorer Icon" />
-            <span>Explorer</span>
-          </button>
+           All projects
+          </DropdownItem>
+          <DropdownItem key="settings"
+           startContent={
+            <img src={nfts} className='h-4 w-4' alt='nfts'></img>
+          }
+          >Marketplace</DropdownItem>
+          <DropdownItem
+            key="new_project"
+            onClick={onOpenModal}
+            startContent={
+              <img src={masicon} className='h-4 w-4' alt='masicon'></img>
+            }
+          >
+            New Project
+          </DropdownItem>
+        </DropdownSection>
+
+        <DropdownSection aria-label="Preferences" showDivider classNames={{
+          divider: "bg-white"
+        }}>
+          <DropdownItem key="quick_search">
+            Quick search
+          </DropdownItem>
+          
+        </DropdownSection>  
+
+        <DropdownSection aria-label="Help & Feedback">
+          <DropdownItem key="help_and_feedback">
+            Help & Feedback
+          </DropdownItem>
+        </DropdownSection> 
+      </DropdownMenu>
+    </Dropdown>
         </a>
 
-        <div className="flex-grow flex items-center justify-center ml-12 mt-4 ">
-          <Input color='default' variant='bordered'
-            classNames={{
-              base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
-              mainWrapper: "h-full",
-              input: "text-small outline-none ",
-              inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack border border-white rounded-lg ",
-            }}
-            placeholder="  Search projects..."
-            size="sm"
-            startContent={<SearchIcon size={18} />}
-            type="search"
-          />
-        </div>
+        <div className="flex-grow flex items-center justify-center ml-12 mt-4">
+      <Input
+        color='default'
+        variant='bordered'
+        radius='md'
+        classNames={{
+          base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
+          mainWrapper: "h-full",
+          input: "text-small outline-none",
+          inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack rounded-lg",
+        }}
+        placeholder="Search by project name"
+        size="sm"
+        startContent={<SearchIcon size={18} />}
+        type="search"
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+    </div>
         <div className="hidden w-full md:block md:w-auto mr-12 mt-4" id="navbar-default">
           <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>
               <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Funding</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Portfolio</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Marketplace</a>
             </li>
             <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Marketplace</a>
+              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Portofolio</a>
             </li>
           </ul>
         </div>

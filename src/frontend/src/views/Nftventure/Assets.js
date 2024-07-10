@@ -6,12 +6,12 @@ const Private_Key = import.meta.env.VITE_PRIVATE_KEY;
 const provider = new ethers.providers.JsonRpcProvider(rpcURL);
 const wallet = new ethers.Wallet(Private_Key, provider);
 
-
 const getAssetsContract = (signerOrProvider) => {
   return new ethers.Contract(assetsAddress, AssetsAbi, signerOrProvider);
 };
 
 export async function getAssets(status) {
+  console.log(status)
   const contract = getAssetsContract(provider);
 
   try {
@@ -66,8 +66,6 @@ export async function addAsset(price, author, title, description, projectEndDate
   }
 }
 
-
-
 export async function updateAsset(signer, assetId, mainPhoto, secondaryPhotos, description) {
   const contract = getAssetsContract(signer);
 
@@ -78,5 +76,18 @@ export async function updateAsset(signer, assetId, mainPhoto, secondaryPhotos, d
   } catch (error) {
     console.error("Error updating asset:", error);
     throw error;
+  }
+}
+
+
+export async function getAllAssetsByCategory(status, category) {
+  const contract = getAssetsContract(wallet);
+
+  try {
+    const assets = await contract.getAllAssetsByCategory(status, category);
+    return assets;
+  } catch (error) {
+    console.error("Error getting assets by category:", error);
+    return [];
   }
 }

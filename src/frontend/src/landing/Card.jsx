@@ -52,21 +52,25 @@ const transitions = useTransition(isVisible ? issues : [], {
 
       </div>
 
-      <div id="practica" className="-mx-4 flex flex-wrap justify-center ">
+      <div id="practica" className="flex flex-wrap justify-center ">
       {transitions((props, item) => (
               <animated.div
                 key={item.id}
                 style={props}
-                className="m-6 flex flex-col relative z-10"
+                className="m-6 flex flex-col relative z-10 mt-20"
               >
+      <div className="absolute mt-32 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-257 blur-50 opacity-40 w-64 h-64 rounded-lg"></div>
+  
+
                 
                 <div className="w-full max-w-sm">
                   <div className="flex flex-col items-start pb-10">
                     <img
-                      className="w-48 h-48 mb-3 mt-12"
+                      className="w-36 h-36 md:w-40 md:h-40 lg:w-48 lg:h-48 sm mb-3 -mt-8 sm:-mt-8 md:-mt-8 lg:-mt-8"
                       src={item.image}
                       alt={`${item.name} image`}
                     />
+                    
                             <div className="mb-8 flex items-center justify-center min-w-[100px] text-sm bg-white text-secondary font-raleway rounded-full px-4 py-1">
                     {item.title}
                   </div>
@@ -79,10 +83,16 @@ const transitions = useTransition(isVisible ? issues : [], {
                     </svg>
                   </a>
                   </div>
+                  
+                  
                 </div>
               </animated.div>
             ))}
+            
+  
       </div>
+
+   
     </div>
   </section>
   );
