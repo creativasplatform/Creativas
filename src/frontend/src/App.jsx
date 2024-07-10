@@ -32,25 +32,25 @@ function App() {
               <>
                 <Navbar />
                 <Body />
-                <HeroSection/>
-                <PromoBanner/>
-                <Numbers/>
-      <div className="absolute top-4/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
+                <HeroSection />
+                <PromoBanner />
+                <Numbers />
+                <div className="absolute top-4/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
 
-                <NotableDrops/>
-              
-             
+                <NotableDrops />
+
+
                 <NFTSteps />
-                <Video/>
+                <Video />
                 <Pathners />
                 <Card />
-               
-               
-      
-             
+
+
+
+
                 <Carousel />
                 <NFTs />
-                <Contact/>
+                <Contact />
                 <Footer />
               </>
             } />
