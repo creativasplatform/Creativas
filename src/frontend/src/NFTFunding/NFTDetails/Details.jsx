@@ -1,4 +1,3 @@
-// src/components/NFTDetail.jsx
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Collectibles from '../../assets/Collectibles.png'
@@ -7,7 +6,7 @@ const NFTDetail = () => {
   const { id } = useParams();
 
   return (
-    <div className="flex justify-center space-x-4 p-4 bg-gradient-to-b from-primary to-customblack">
+    <div className="flex justify-center space-x-4 p-4 bg-gradient-to-l from-primary to-customblack">
     <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white p-4">
       <img className="w-full" src={Collectibles} alt="Card 1" />
      
