@@ -10,7 +10,7 @@ import { getAllAssetsByCategory } from '../views/Nftventure/Assets';
 import { Category } from '../helpers/AssetsHelpers.js';
 
 const Categories = ({ onOpenModal }) => {
-  const { startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted, errorStarted,fundedAssets, fundedInvestmentAmounts, fundedInvestorCounts, loadingFunded, errorFunded, failedAssets, failedInvestmentAmounts, failedInvestorCounts, loadingFailed, errorFailed,  } = useAssets();
+  const { startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted, errorStarted, fundedAssets, fundedInvestmentAmounts, fundedInvestorCounts, loadingFunded, errorFunded, failedAssets, failedInvestmentAmounts, failedInvestorCounts, loadingFailed, errorFailed, } = useAssets();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,9 +18,10 @@ const Categories = ({ onOpenModal }) => {
   const [collections, setCollections] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProjectType, setSelectedProjectType] = useState('Started');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchAssets = async () => {
       setLoading(true);
       try {
@@ -36,9 +37,9 @@ const Categories = ({ onOpenModal }) => {
     };
 
     if (selectedCategory === 'All') {
-      const assets = selectedProjectType === 'Started' ? startedAssets 
-                : selectedProjectType === 'Funded' ? fundedAssets 
-                : failedAssets;
+      const assets = selectedProjectType === 'Started' ? startedAssets
+        : selectedProjectType === 'Funded' ? fundedAssets
+          : failedAssets;
       setFilteredAssets(assets);
       setLoading(false);
     } else {
@@ -49,10 +50,10 @@ const Categories = ({ onOpenModal }) => {
   useEffect(() => {
     let currentAssets = selectedCategory === 'All' ? (
       selectedProjectType === 'Started' ? startedAssets :
-      selectedProjectType === 'Funded' ? fundedAssets :
-      failedAssets
+        selectedProjectType === 'Funded' ? fundedAssets :
+          failedAssets
     ) : filteredAssets;
-    
+
     if (searchTerm) {
       currentAssets = currentAssets.filter(asset =>
         asset.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -69,11 +70,11 @@ const Categories = ({ onOpenModal }) => {
         objective: `${asset.price} USD`,
         image: asset.mainPhoto,
         investmentAmount: selectedProjectType === 'Started' ? startedInvestmentAmounts[index] :
-                          selectedProjectType === 'Funded' ? fundedInvestmentAmounts[index] :
-                          failedInvestmentAmounts[index],
+          selectedProjectType === 'Funded' ? fundedInvestmentAmounts[index] :
+            failedInvestmentAmounts[index],
         investorCount: selectedProjectType === 'Started' ? startedInvestorCounts[index] :
-                       selectedProjectType === 'Funded' ? fundedInvestorCounts[index] :
-                       failedInvestorCounts[index],
+          selectedProjectType === 'Funded' ? fundedInvestorCounts[index] :
+            failedInvestorCounts[index],
       }));
 
     setCollections(collections);
@@ -85,30 +86,34 @@ const Categories = ({ onOpenModal }) => {
 
   return (
     <div className="bg-[#0b0c0c] text-white p-4">
-      <Navbar onSearch={handleSearch} Search={searchTerm} onOpenModal={onOpenModal}/>
-      <div className="flex items-center justify-between">
-        <h2 className="text-5xl font-semibold mb-4 mt-8 ml-8">Explore Projects</h2>
-        <div className="flex items-center">
-          <button
-            onClick={onOpenModal}
-            type="button"
-            className="mr-28 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:hover:bg-secondary-ligth dark:focus:ring-blue-800 flex items-center"
-          >
-            <img src={masicon} className="h-4 w-4 mr-2" alt="Add Icon" />
-            Create a Project
-          </button>
-        </div>
-      </div>
+    <Navbar onSearch={handleSearch} Search={searchTerm} onOpenModal={onOpenModal} setIsSidebarOpen={setIsSidebarOpen} isSidebarOpen={isSidebarOpen}/>
+    <div className="flex items-center justify-between">
+    <h2 className="text-5xl font-semibold mb-4 mt-8 ml-4 lg:ml-8 xl:ml-8">Explore Projects</h2>
+    <div className="flex items-center mt-4 z-0">
+      {!isSidebarOpen && (
+        <button
+          onClick={onOpenModal}
+          type="button"
+          className="mr-4 z-0 text-white bg-secondary hover:bg-secondary-ligth focus:outline-none font-thin rounded-full text-lg px-5 py-2.5 text-center md:text-left dark:bg-secondary dark:hover:hover:bg-secondary-ligth dark:focus:ring-blue-800 flex items-center relative"
+          data-tooltip-target="tooltip-animation"
+        >
+          <img src={masicon} className="h-4 w-4 mr-0 md:mr-4 xl:mr-4" alt="Add Icon" />
+          <span className="hidden md:inline">Create a Project</span>
+        </button>
+      )}
+    </div>
+  </div>
 
       <CategoriesBar
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         setSelectedProjectType={setSelectedProjectType}
+        isSidebarOpen={isSidebarOpen}
       />
 
       {loading || loadingStarted ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
-          {Array.from({ length: 8 }).map((_, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mt-8 justify-items-center">
+      {Array.from({ length: 8 }).map((_, index) => (
             <Card key={index} className="w-[300px] h-[250px] space-y-5 p-4" radius="lg">
               <Skeleton className="rounded-lg">
                 <div className="h-24 rounded-lg bg-default-300"></div>
@@ -139,10 +144,10 @@ const Categories = ({ onOpenModal }) => {
           </div>
           <p className="text-gray-500">No Projects yet</p>
           <p className="text-gray-400 text-sm mb-4 text-center">Start a new project with this wallet to get started.</p>
-          <button className="bg-secondary-bright text-white text-sm p-2 rounded-lg">Start Project</button>
+          <button onClick={onOpenModal} className="bg-secondary-bright text-white text-sm p-2 rounded-lg">Start Project</button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mt-8 justify-items-center">
           {collections.map((collection) => (
             <CardNFT
               key={collection.id}
@@ -157,6 +162,7 @@ const Categories = ({ onOpenModal }) => {
             />
           ))}
         </div>
+
       )}
     </div>
   );

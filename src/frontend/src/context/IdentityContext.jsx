@@ -17,7 +17,7 @@ export const DfinityProvider = ({ children }) => {
 
             const privateKey = new Uint8Array(privateKeyString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
             const identity = Ed25519KeyIdentity.fromSecretKey(privateKey);
-            const agent = new HttpAgent({ identity, host: 'http://127.0.0.1:8000' });
+            const agent = new HttpAgent({ identity, host: 'https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io' });
             const newActor = createActor(canisterId, { agent });
             const newActorAnonymous = createActor(canisterId);
             setActorUserSiganeture(newActor);

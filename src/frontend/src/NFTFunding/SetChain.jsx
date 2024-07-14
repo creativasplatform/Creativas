@@ -4,13 +4,13 @@ import advertenciaicon from '../assets/advertencia.png';
 import etherumicon from "../assets/etherum.png";
 import rskicon from "../assets/RBTC-logo.png";
 import flechadown from "../assets/flechadown.png";
-import flechaup from "../assets/flechaup.png"
+import flechaup from "../assets/flechaup.png";
 import check from "../assets/check.png";
 import useUser from '../hooks/user/useuser.jsx';
-import { NETWORKS } from "../helpers/ChainsConfig.js"
+import { NETWORKS } from "../helpers/ChainsConfig.js";
 import { useUserContext } from "../context/userContext.jsx";
 
-export default function Chain() {
+export default function Chain({ isSmallScreen }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false); // Estado para mostrar el tooltip
   const [isHovered, setIsHovered] = useState(false); // Estado para controlar hover
@@ -22,12 +22,12 @@ export default function Chain() {
     if (savedNetwork) {
       setNetwork(savedNetwork);
     } else {
-      setNetwork('RSK_TESTNET'); 
+      setNetwork('RSK_TESTNET');
     }
   }, [setNetwork]);
 
   useEffect(() => {
-    // Lógica para mostrar el tooltip si la red es incorrecta
+
     if (!IsValidChain && isLoggedIn) {
       setShowTooltip(true);
     } else {
@@ -46,8 +46,8 @@ export default function Chain() {
       } else if (authType === 'web3auth') {
         await changeNetworkWeb3auth(chainId);
       }
-      setNetwork(chainId); 
-      localStorage.setItem('selectedNetwork', chainId); 
+      setNetwork(chainId);
+      localStorage.setItem('selectedNetwork', chainId);
       setIsOpen(false);
     } catch (error) {
       console.error("Error switching network:", error);
@@ -71,22 +71,31 @@ export default function Chain() {
     <div className="relative">
       <Dropdown className="bg-gray-800" onOpenChange={handleToggle}>
         <DropdownTrigger>
-          <Button 
-            className="text-white bg-customblack hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-customblack dark:hover:bg-gray-600 dark:focus:ring-blue-800 flex items-center"
+          <Button
+            size={isSmallScreen ? "sm" : "md"}
+            className={`${isSmallScreen
+                ? "bg-transparent mt-2 px-5 z-0"
+                : "text-white z-0 bg-customblack hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-3 py-2.5 text-center md:text-left dark:bg-customblack dark:hover:bg-gray-600 dark:focus:ring-blue-800 flex items-center"
+              }` }
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            {...(isSmallScreen && { isIconOnly: true })}
           >
             <img
               src={initialIcon()}
-              className={`w-5 h-5 -mt-0.5 mr-2 ${initialIcon() === etherumicon ? "rounded-full" : ""}`}
+              className={`w-5 h-5 ${isSmallScreen ? "mr-0" : "-mt-0.5 mr-2"} ${initialIcon() === etherumicon ? "rounded-full" : ""}`}
             />
-            <img
-              src={isOpen ? flechaup : flechadown}
-              className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-35" : "rotate-0"}`}
-            />
+            {!isSmallScreen && (
+              <img
+                src={isOpen ? flechaup : flechadown}
+                className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-35" : "rotate-0"}`}
+              />
+            )}
           </Button>
+
+
         </DropdownTrigger>
-        <DropdownMenu 
+        <DropdownMenu
           className="text-white bg-gray-800 font-thin text-sm px-5 py-2.5 dark rounded-lg"
           aria-label="Action event example"
           css={{ position: "absolute", right: 0 }}
@@ -95,10 +104,10 @@ export default function Chain() {
             className="text-lg hover:bg-gray-600 focus:outline-none rounded-lg mb-4 mt-2 flex items-center"
             key="rsk"
             onClick={() => handleNetworkChange('RSK_TESTNET')}
-            endContent={network === 'RSK_TESTNET' && <img src={check} className={`w-4 h-4  ${network === 'RSK_TESTNET' ? '-mr-2' : ''}` } />}
+            endContent={network === 'RSK_TESTNET' && <img src={check} className={`w-4 h-4  ${network === 'RSK_TESTNET' ? '-mr-2' : ''}`} />}
             startContent={<img src={rskicon} className="w-6 h-6 text-xl text-white pointer-events-none flex-shrink-0 rounded-full -ml-4 -mr-2" />}
           >
-            <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-20 ml-4' : 'mr-8 ml-4'}` }>Rootstock</p> 
+            <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-20 ml-4' : 'mr-8 ml-4'}`}>Rootstock</p>
           </DropdownItem>
           <DropdownItem
             className="text-lg hover:bg-gray-600 focus:outline-none rounded-lg flex items-center"
@@ -107,8 +116,8 @@ export default function Chain() {
             endContent={network === 'SEPOLIA_TESTNET' && <img src={check} className="w-4 h-4 ml-16" />}
             startContent={<img src={etherumicon} className="w-6 h-6 text-xl text-white pointer-events-none flex-shrink-0 rounded-full  -ml-4 mr-2" />}
           >
-            <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-18' : 'mr-16'}` }>Ethereum</p> 
-          </DropdownItem> 
+            <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-18' : 'mr-16'}`}>Ethereum</p>
+          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
       {/* Tooltip */}

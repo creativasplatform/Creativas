@@ -11,14 +11,15 @@ export const options = [
   { key: "Failed", label: "Projects Failed" },
 ];
 
-const CategoriesBar = ({ selectedCategory, setSelectedCategory, setSelectedProjectType }) => {
+const CategoriesBar = ({ selectedCategory, setSelectedCategory, setSelectedProjectType, isSidebarOpen }) => {
 
   const handlerProjecttype = (selectedProjectType) => {
     setSelectedProjectType(selectedProjectType.currentKey)
   }
+
   return (
     <div className="bg-[#0b0c0c] text-[#9398A7] text-lg p-4">
-      <div className="flex space-x-8 ml-4 overflow-x-auto">
+      <div className="flex space-x-8 ml-0 lg:ml-4 xl:ml-4 overflow-x-auto">
         {categories.map((category, index) => (
           <button
             key={index}
@@ -28,47 +29,53 @@ const CategoriesBar = ({ selectedCategory, setSelectedCategory, setSelectedProje
             {category}
           </button>
         ))}
-
-        <Select
-          items={options}
-          size='sm'
-          color='default'
-          label="Sort by"
-          placeholder="Live now"
-          variant="bordered"
-          radius='md'
-          classNames={{
-            listboxWrapper: "max-h-[400px]",
-            base: "font-roboto"
-          }}
-          listboxProps={{
-            itemClasses: {
-              base: [
-                "font-roboto",
-                "rounded-full",
-                "text-[#9398A7]",
-                "transition-opacity",
-                "outline-none",
-                "data-[selectable=true]:focus:bg-secondary-ligth",
-                "data-[pressed=true]:opacity-70",
-                "data-[focus-visible=true]:ring-gray-400",
-              ],
-              selectedIcon: "text-white"
-            },
-          }}
-          popoverProps={{
-            classNames: {
-              base: "before:bg-default-200",
-              content: "p-0 border-small border-divider rounded-lg bg-customblack",
-            },
-          }}
-          className="max-w-xs"
-          onSelectionChange={handlerProjecttype}
-          defaultSelectedKey={["Started"]}
-          >
-          {(options) => <SelectItem>{options.label}</SelectItem>}
-        </Select>
       </div>
+     
+      <div className="mt-4 ml-0 md:ml-2 xl:-mt-12 xl:ml-[700px] xl:sm:flex sm:justify-between sm:items-center z-0">
+     
+          <Select
+            items={options}
+            size='sm'
+            color='secondary'
+            label="Sort by"
+            placeholder="Live now"
+            variant="bordered"
+            radius='md'
+            classNames={{
+              listboxWrapper: "max-h-[400px]",
+              base: "font-roboto",
+              mainWrapper: 'z-1'
+            }}
+            listboxProps={{
+              itemClasses: {
+                base: [
+                  "font-roboto",
+                  "rounded-full",
+                  "text-[#9398A7]",
+                  "transition-opacity",
+                  "outline-none",
+                  "data-[selectable=true]:focus:bg-secondary-ligth",
+                  "data-[pressed=true]:opacity-70",
+                  "data-[focus-visible=true]:ring-gray-400",
+                ],
+                selectedIcon: "text-white"
+              },
+            }}
+            popoverProps={{
+              classNames: {
+                base: "before:bg-default-200",
+                content: "p-0 border-small border-divider rounded-lg bg-customblack",
+              },
+            }}
+            className="mt-4 md:mt-0 sm:max-w-xs md:ml-4 z-0"
+            onSelectionChange={handlerProjecttype}
+            defaultSelectedKey={["Started"]}
+          >
+            {(options) => <SelectItem>{options.label}</SelectItem>}
+          </Select>
+    
+      </div>
+        
     </div>
   );
 };

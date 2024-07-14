@@ -3,12 +3,12 @@ import { ethers } from 'ethers';
 import aceptarpicture from "../assets/aceptar.png";
 
 
-// const truncateAssetName = (name) => {
-//   if (name.length > 14) {
-//     return `${name.substring(0, 14)}...`;
-//   }
-//   return name;
-// };
+const truncateAssetName = (name) => {
+  if (name.length > 14) {
+    return `${name.substring(0, 14)}...`;
+  }
+  return name;
+};
  
 
 const CardNFT = ({ id, assetName, imageSrc, objective, investmentAmount, className, investorCount, style }) => {
@@ -34,7 +34,7 @@ const CardNFT = ({ id, assetName, imageSrc, objective, investmentAmount, classNa
       
         <p className="text-lg font-semibold text-white flex items-start justify-start">
           
-        {assetName} <img src={aceptarpicture} alt="Checkmark" className="w-4 h-4 mt-1 ml-2" />
+        {truncateAssetName(assetName)} <img src={aceptarpicture} alt="Checkmark" className="w-4 h-4 mt-1 ml-2" />
 
         <div className="right-3 text-white -mt-3 px-2 py-1 rounded">
         #{formattedId}

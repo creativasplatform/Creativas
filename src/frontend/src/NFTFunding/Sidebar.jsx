@@ -17,7 +17,7 @@ const truncateAssetName = (name) => {
 };
 
 
-const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal }) => {
+const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal, isSmallScreen }) => {
   const [activeTab, setActiveTab] = useState('NFT');
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -76,7 +76,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal }) => {
   const renderNFTContent = () => {
     if (loadingOwnerAssets) {
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24 justify-items-center">
           {Array.from({ length: 4 }).map((_, index) => (
             <Card key={index} className="w-[150px] h-[200px] space-y-5 p-4" radius="lg">
               <Skeleton className="rounded-lg">
@@ -99,7 +99,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal }) => {
       );
     } else if (ownerAssets && ownerAssets.length > 0) {
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-24 justify-items-center">
           {ownerAssets.slice().reverse().map(asset => (
             <div className={`bg-gradient-to-c-custom text-white rounded-xl shadow-lg w-40 h-46`} key={asset.assetId.toString()}>
               <img src={asset.mainPhoto} alt={asset.title} className="w-[150px] mt-2 h-36 object-cover rounded-xl" />
@@ -169,21 +169,22 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal }) => {
   };
 
   return (
-    <div>
+    <div className='z-50'>
       <div className='mr-96'>
         <button
           onClick={onClose}
-          className="mt-6 flex mr-12 relativehover:bg-gray-600 rounded-lg"
+          className="mt-6 flex mr-12 relative hover:bg-gray-600 rounded-lg"
         >
           <img src={derecha} alt="Cerrar" className="w-6 h-6" />
         </button>
       </div>
       <animated.div
         style={transitions}
-        className="w-[400px] bg-customblack shadow-lg p-4 h-full fixed right-0 top-0 transition-transform overflow-auto overflow-y-auto"
+      
+        className="w-[400px] z-50 bg-customblack shadow-lg p-4 h-full fixed right-0 top-0 transition-transform overflow-auto overflow-y-auto"
       >
 
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2 z-50">
           <div className="flex items-center">
             <div className="bg-green-500 p-2 rounded-full text-white">
               <svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg">

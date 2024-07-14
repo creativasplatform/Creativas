@@ -3,7 +3,7 @@ import { WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { chainConfigWeb3authRsk } from "./ChainsConfig.js"
 
-const clientId = "BNptzOd_VvZveiriJzaHW7ZrZEpnsmHfQmeasmTBy1tIy2rR2bv7BHKnMcWF2lINaCw2JOLLYs3SvKNa_UYB_2w"; // Obtén esto desde https://dashboard.web3auth.io
+const clientId = "BC78RL2CQU0hOaUW_UW1RBz6AF3ATrEOIBRp2sOt3MtusgHIoMgj2Hs_xOxVgzmAsuE84PzmflbK8yuk5K3FdGo"; // Obtén esto desde https://dashboard.web3auth.io
 
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({

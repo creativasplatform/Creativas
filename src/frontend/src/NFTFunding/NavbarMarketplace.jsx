@@ -13,22 +13,33 @@ import Chain from './SetChain.jsx';
 import Sidebar from './Sidebar';
 import { useUserContext } from "../context/userContext.jsx";
 import { useSpring, animated } from '@react-spring/web';
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn} from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn } from "@nextui-org/react";
 import masicon from "../assets/mas2.png";
 import nfts from "../assets/nfts.png";
 import cubo from "../assets/cubo.png";
 import alert from "../assets/alert.png"
+import CreativasShort from "../assets/CreativasShort.png"
+import hamburguesaicon from "../assets/hamburguesa2.png";
+import cerraricon from "../assets/cruz.png";
+import busqueda from "../assets/busqueda.png"
 
-const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
+const Navbar = ({ onSearch, searchTerm, onOpenModal, isSidebarOpen, setIsSidebarOpen }) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openModalConditionals, setOpenModalConditionals] = useState(false);
   const [web3authInitialized, setWeb3authInitialized] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false); 
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
-  const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false); 
-
-
+  const [loadingAcceptTerms, setLoadingAcceptTerms] = useState(false);
+  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 1400);
+  const [showDropdown, setShowDropdown] = useState(window.innerWidth > 1115);
+  const [image, setImage] = useState(window.innerWidth > 1024);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
+  const [isSidebarSmall, setIsSidebarSmall] = useState(window.innerWidth <= 764);
+  
+  
+  
+    
   const {
     isLoggedIn,
     address,
@@ -43,7 +54,18 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
     changeNetworkWeb3auth
   } = useUser();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWideScreen(window.innerWidth > 1400);
+      setShowDropdown(window.innerWidth > 1115);
+      setImage(window.innerWidth > 1024);
+      setIsSmallScreen(window.innerWidth <= 1024);
+      setIsSidebarSmall(window.innerWidth <= 764);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -55,13 +77,12 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
   };
 
   const handleSearchChange = (event) => {
-  
-    onSearch(event.target.value); 
+
+    onSearch(event.target.value);
   };
 
 
   const { Provider } = useUserContext();
-  const [loading, setLoading] = useState(true);
 
   const modalLoginAnimation = useSpring({
     opacity: openLoginModal ? 1 : 0,
@@ -100,7 +121,7 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
 
   const handleAcceptTerms = useCallback(async () => {
     try {
-      setLoadingAcceptTerms(true); 
+      setLoadingAcceptTerms(true);
 
       const result = await signMessage("Accept the terms and conditions");
       if (result && result.signature) {
@@ -115,7 +136,7 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoadingAcceptTerms(false); 
+      setLoadingAcceptTerms(false);
     }
   }, [signMessage, addUserSignature]);
 
@@ -234,129 +255,213 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
     <nav className="bg-customblack pt-8 relative">
 
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-        <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4">
-          <img src={CreativasLogo} className="h-10 w-200" alt="Creativas Logo" />
-          <Dropdown
-      
-      showArrow
-      radius="sm"
-      classNames={{
-        base: "before:bg-default-200", 
-        content: "p-0 border-small border-divider bg-primary",
-    
-      }}
-    >
-      <DropdownTrigger>
-      <Button 
-          variant='solid' 
-          color='success'
-          className='text-white hover:bg-secondary-ligth'
-          radius="full"
-          startContent={
-            <img src={explorerIcon} alt='explorer' className='w-4 h-4'></img>
-          }
-        >
-          Explorer
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Custom item styles"
-        className="p-3"
-        itemClasses={{
-          base: [
-            "rounded-md",
-            "text-white",
-            "transition-opacity",
-            "data-[hover=true]:text-foreground",
-            "data-[hover=true]:bg-default-100",
-            "dark:data-[hover=true]:bg-default-50",
-            "data-[selectable=true]:focus:bg-default-50",
-            "data-[pressed=true]:opacity-70",
-            "data-[focus-visible=true]:ring-default-500",
-          ],
-        }}
-      >
-        <DropdownSection aria-label="Actions" showDivider classNames={{
-          divider: "bg-white"
-        }}>
-          <DropdownItem key="dashboard"
-              startContent={
-                <img src={cubo} className='h-4 w-4' alt='cubo'></img>
-              }
-          >
-           All projects
-          </DropdownItem>
-          <DropdownItem key="settings"
-           startContent={
-            <img src={nfts} className='h-4 w-4' alt='nfts'></img>
-          }
-          >Marketplace</DropdownItem>
-          <DropdownItem
-            key="new_project"
-            onClick={onOpenModal}
-            startContent={
-              <img src={masicon} className='h-4 w-4 ' alt='masicon'></img>
-            }
-          >
-            New Project
-          </DropdownItem>
-        </DropdownSection>
-
-        <DropdownSection aria-label="Preferences" showDivider classNames={{
-          divider: "bg-white"
-        }}>
-          <DropdownItem key="quick_search">
-            Quick search
-          </DropdownItem>
-          
-        </DropdownSection>  
-
-        <DropdownSection aria-label="Help & Feedback">
-          <DropdownItem key="help_and_feedback">
-            Help & Feedback
-          </DropdownItem>
-        </DropdownSection> 
-      </DropdownMenu>
-    </Dropdown>
-        </a>
-
-        <div className="flex-grow flex items-center justify-center ml-12 mt-4">
-      <Input
-        color='default'
-        variant='bordered'
-        radius='md'
-        classNames={{
-          base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
-          mainWrapper: "h-full",
-          input: "text-small outline-none",
-          inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack rounded-lg",
-        }}
-        placeholder="Search by project name"
-        size="sm"
-        startContent={<SearchIcon size={18} />}
-        type="search"
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
+      <a className="flex items-center space-x-20 rtl:space-x-reverse mt-4">
+  {image ? (
+    <img src={CreativasLogo} className="ml-0 sm:ml-8 md:ml-8 lg:ml-2 xl:ml-2 h-10 w-56 md:h-12 md:w-60 lg:h-12 lg:w-64 xl:h-12 xl:w-64" alt="Creativas Short Logo" />
+  ) : (
+    <div className="flex items-center space-x-6">
+      <img src={CreativasShort} className="h-16 w-16 ml-4" alt="Creativas Logo" />
+      <img src={hamburguesaicon} alt="search icon" className="h-5 w-5 cursor-pointer" />
     </div>
-        <div className="hidden w-full md:block md:w-auto mr-12 mt-4" id="navbar-default">
-          <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0">
-            <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Funding</a>
-            </li>
-            <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Marketplace</a>
-            </li>
-            <li>
-              <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Portofolio</a>
-            </li>
-          </ul>
+  )}
+           {showDropdown && (
+            <Dropdown
+              showArrow
+              radius="sm"
+              classNames={{
+                base: "before:bg-default-200 ml-2",
+                content: "p-0 border-small border-divider bg-primary",
+              }}
+            >
+              <DropdownTrigger>
+                <Button
+                  variant='solid'
+                  color='success'
+                  className='text-white hover:bg-secondary-ligth z-0'
+                  radius="full"
+                  startContent={<img src={explorerIcon} alt='explorer' className='w-4 h-4'></img>}
+                >
+                  Explorer
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Custom item styles"
+                className="p-3"
+                itemClasses={{
+                  base: [
+                    "rounded-md",
+                    "text-white",
+                    "transition-opacity",
+                    "data-[hover=true]:text-foreground",
+                    "data-[hover=true]:bg-default-100",
+                    "dark:data-[hover=true]:bg-default-50",
+                    "data-[selectable=true]:focus:bg-default-50",
+                    "data-[pressed=true]:opacity-70",
+                    "data-[focus-visible=true]:ring-default-500",
+                  ],
+                }}
+              >
+                <DropdownSection aria-label="Actions" showDivider classNames={{ divider: "bg-white" }}>
+                  <DropdownItem key="dashboard" startContent={<img src={cubo} className='h-4 w-4' alt='cubo'></img>}>
+                    All projects
+                  </DropdownItem>
+                  <DropdownItem key="settings" startContent={<img src={nfts} className='h-4 w-4' alt='nfts'></img>}>
+                    Marketplace
+                  </DropdownItem>
+                  <DropdownItem key="new_project" onClick={onOpenModal} startContent={<img src={masicon} className='h-4 w-4 ' alt='masicon'></img>}>
+                    New Project
+                  </DropdownItem>
+                </DropdownSection>
+
+                <DropdownSection aria-label="Preferences" showDivider classNames={{ divider: "bg-white" }}>
+                  <DropdownItem key="quick_search">
+                    Quick search
+                  </DropdownItem>
+                </DropdownSection>
+
+                <DropdownSection aria-label="Help & Feedback">
+                  <DropdownItem key="help_and_feedback">
+                    Help & Feedback
+                  </DropdownItem>
+                </DropdownSection>
+              </DropdownMenu>
+            </Dropdown>
+          )}
+        </a>
+        {!isSmallScreen ? (
+        <div className="flex-grow flex items-center justify-center ml-4 mt-4 md:ml-4 lg:ml-4 xl:ml-6">
+          <Input
+            color='default'
+            variant='bordered'
+            radius='md'
+            classNames={{
+              base: "max-w-full sm:max-w-[20rem] h-10 rounded-lg",
+              mainWrapper: "h-full",
+              input: "text-small outline-none",
+              inputWrapper: "h-full font-thin text-white bg-customblack dark:bg-customblack rounded-lg",
+            }}
+            placeholder="Search by project name"
+            size="sm"
+            startContent={<SearchIcon size={18} />}
+            type="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
         </div>
-        <div className="hidden w-full md:block md:w-auto mt-4" id="navbar-default">
-          <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 -mr-4">
-         {!isSidebarOpen && (
-                     <Chain />
+      ) : (
+        <>
+
+
+    <div className="w-full flex justify-end -mt-16">
+ 
+  <ul className="font-thin flex flex-row space-x-2 rtl:space-x-reverse">
+  <li>
+    </li>
+    <li>
+      <div className='mt-3'>
+        <img src={busqueda} alt="search icon" className="h-5 w-5 cursor-pointer" />
+      </div>
+    </li>
+    <li>
+      <div className='-mt-0.5'>
+  
+ 
+              <Chain isSmallScreen={isSmallScreen}/>
+     
+         
+      </div>
+    </li>
+    <li>
+      <div>
+      {isLoggedIn ? (
+                <div className="relative">
+
+                  <button
+                    type="button"
+                    onClick={toggleSidebar}
+                    className="text-white  bg-customblack border border-green/5 hover:bg-gray-800 rounded-te focus:outline-none font-thin rounded-full text-sm flex items-center space-x-1"
+                  >
+
+                    <div className="ml-0 text-white">
+
+                      <svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg">
+                        <g style={{ transformOrigin: "center center" }}>
+                          <circle cx="20" cy="20" fill="#B1E5E329" r="20"></circle>
+                          <g transform="translate(6.666666666666666, 6.666666666666666) scale(0.5555555555555556)">
+                            <path clipRule="evenodd" d="M21 6C21 4.34315 22.3431 3 24 3C25.6569 3 27 4.34315 27 6V15C27 16.6569 25.6569 18 24 18C22.3431 18 21 16.6569 21 15V6Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M21 33C21 31.3431 22.3431 30 24 30C25.6569 30 27 31.3431 27 33V42C27 43.6569 25.6569 45 24 45C22.3431 45 21 43.6569 21 42V33Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M42 21C43.6569 21 45 22.3431 45 24C45 25.6569 43.6569 27 42 27H33C31.3431 27 30 25.6569 30 24C30 22.3431 31.3431 21 33 21H42Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M15 21C16.6569 21 18 22.3431 18 24C18 25.6569 16.6569 27 15 27H6C4.34315 27 3 25.6569 3 24C3 22.3431 4.34315 21 6 21H15Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M34.6066 9.15076C35.7782 7.97918 37.6777 7.97918 38.8492 9.15076C40.0208 10.3223 40.0208 12.2218 38.8492 13.3934L36.7279 15.5147C35.5563 16.6863 33.6569 16.6863 32.4853 15.5147C31.3137 14.3431 31.3137 12.4437 32.4853 11.2721L34.6066 9.15076Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M11.2721 32.4853C12.4437 31.3137 14.3431 31.3137 15.5147 32.4853C16.6863 33.6569 16.6863 35.5563 15.5147 36.7279L13.3934 38.8492C12.2218 40.0208 10.3223 40.0208 9.15076 38.8492C7.97919 37.6777 7.97919 35.7782 9.15076 34.6066L11.2721 32.4853Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M38.8492 34.6066C40.0208 35.7782 40.0208 37.6777 38.8492 38.8492C37.6777 40.0208 35.7782 40.0208 34.6066 38.8492L32.4853 36.7279C31.3137 35.5563 31.3137 33.6569 32.4853 32.4853C33.6569 31.3137 35.5563 31.3137 36.7279 32.4853L38.8492 34.6066Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                            <path clipRule="evenodd" d="M15.5147 11.2721C16.6863 12.4437 16.6863 14.3431 15.5147 15.5147C14.3431 16.6863 12.4437 16.6863 11.2721 15.5147L9.15076 13.3934C7.97918 12.2218 7.97919 10.3223 9.15076 9.15076C10.3223 7.97918 12.2218 7.97918 13.3934 9.15076L15.5147 11.2721Z" fill="#B1E5E3" fillRule="evenodd"></path>
+                          </g>
+                        </g>
+                      </svg>
+
+                    </div>
+              
+                  </button>
+
+                  {isSidebarOpen && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end">
+                      <div className="relative">
+                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} onOpenModal={onOpenModal}   isSmallScreen={isSidebarSmall}/>
+                      </div>
+                    </div>
                   )}
+                </div>
+
+                
+              ) : (
+                <button
+                  type="button"
+                  className="text-white bg-gray-800 hover:bg-gray-600 dark:bg-gray-800  dark:hover:bg-gray-600  focus:outline-none font-thin rounded-full text-sm px-5 py-2.5 text-center md:text-left dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  onClick={handleOpenLoginModal}
+                >
+
+                  <span>Log in</span>
+
+                </button>
+
+              )}
+      </div>
+    </li>
+  </ul>
+</div>
+
+        </>
+
+      )}
+              {!isSmallScreen && (
+        <div className="w-full md:w-auto mr-6 mt-4" id="navbar-default">
+      {isWideScreen ? (
+        <ul className="font-thin flex flex-row md:p-0 md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0">
+          <li>
+            <a href="#" className="block px-2 text-base text-white rounded md:bg-transparent hover:text-white">NFT Venture</a>
+          </li>
+          <li>
+            <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white">Marketplace</a>
+          </li>
+          <li>
+            <a href="#" className="block px-2 text-base text-[#9398A7] rounded md:bg-transparent hover:text-white" aria-current="page">Portfolio</a>
+          </li>
+        </ul>
+      ) : (
+        <button className="px-2  text-base text-white rounded bg-transparent hover:text-white">
+          <img src={hamburguesaicon} className="h-4 w-4" alt="Menu Icon" />
+        </button>
+      )}
+    </div>
+       )}
+
+{!isSmallScreen && (
+        <div className="w-full md:w-auto mt-4" id="navbar-default">
+          <ul className="font-thin flex flex-col md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 -mr-4">
+        
+              <Chain isSmallScreen={isSmallScreen}/>
+      
             <li className="mb-2 md:mb-0">
               {isLoggedIn ? (
                 <div className="relative">
@@ -368,7 +473,7 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
                   >
 
                     <div className="-ml-6 text-white">
-                      
+
                       <svg height="20" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg">
                         <g style={{ transformOrigin: "center center" }}>
                           <circle cx="20" cy="20" fill="#B1E5E329" r="20"></circle>
@@ -384,22 +489,24 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
                           </g>
                         </g>
                       </svg>
-                      
+
                     </div>
                     <span className="truncate text-sm">{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>
 
 
-               
+
                   </button>
 
                   {isSidebarOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end">
                       <div className="relative">
-                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} onOpenModal={onOpenModal}/>
+                        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} onOpenModal={onOpenModal}  isSmallScreen={isSmallScreen}/>
                       </div>
                     </div>
                   )}
                 </div>
+
+                
               ) : (
                 <button
                   type="button"
@@ -413,8 +520,13 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
 
               )}
             </li>
+          
           </ul>
+
+          
         </div>
+        
+          )}
       </div>
 
       {openLoginModal && (
@@ -566,24 +678,24 @@ const Navbar = ({ onSearch, searchTerm, onOpenModal }) => {
                     </div>
 
                     <div className='mt-12 -ml-56'>
-                    <button
-                      onClick={handleAcceptTerms}
-                      type="submit"
-                      className="w-[300px] rounded border border-secondary bg-secondary p-1 text-white text-center text-sm transition hover:bg-secondary-ligth"
-                      disabled={!isTermsChecked || !isPrivacyChecked || loadingAcceptTerms} 
-                    >
-                      {loadingAcceptTerms ? (
-                        <div role="status">
-                          <svg aria-hidden="true" className="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="white" />
-                          </svg>
-                          <span className="sr-only font-montserrat">Enviando...</span>
-                        </div>
-                      ) : (
-                        'Continue'
-                      )}
-                    </button>
+                      <button
+                        onClick={handleAcceptTerms}
+                        type="submit"
+                        className="w-[300px] rounded border border-secondary bg-secondary p-1 text-white text-center text-sm transition hover:bg-secondary-ligth"
+                        disabled={!isTermsChecked || !isPrivacyChecked || loadingAcceptTerms}
+                      >
+                        {loadingAcceptTerms ? (
+                          <div role="status">
+                            <svg aria-hidden="true" className="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="white" />
+                            </svg>
+                            <span className="sr-only font-montserrat">Enviando...</span>
+                          </div>
+                        ) : (
+                          'Continue'
+                        )}
+                      </button>
 
                     </div>
 

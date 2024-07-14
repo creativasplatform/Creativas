@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
 import BodyMain from "./landing/BodyMain.jsx"
@@ -17,10 +16,12 @@ import Patherns from "./landing/Pathners.jsx";
 import NFTs from "./landing/NFTs..jsx";
 import Contact from "./landing/Contact.jsx";
 import Video from "./landing/Video.jsx";
+// import NFTDetail from "./NFTFunding/NFTDetail.jsx"; // Importa el nuevo componente
+import NotFound from "./landing/NotFound.jsx"; // Importa el componente 404
+
 function App() {
   return (
     <div className="App">
-
       <UserProvider>
         <DfinityProvider>
           <Routes>
@@ -30,19 +31,12 @@ function App() {
                 <HeroSection/>
                 <PromoBanner/>
                 <Numbers/>
-      <div className="absolute top-4/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
-
+                <div className="absolute top-4/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rgba-104-207-256 blur-40 opacity-100 w-64 h-64 rounded-lg"></div>
                 <NotableDrops/>
-              
-             
                 <NFTSteps />
                 <Video/>
                 <Patherns />
                 <Card />
-               
-               
-      
-             
                 <Carousel />
                 <NFTs />
                 <Contact/>
@@ -53,13 +47,13 @@ function App() {
               <>
                 <NFTFunding />
                 <Footer />
-
               </>
             } />
+            {/* <Route path="/Nfts/:id" element={<NFTDetail />} /> Nueva ruta con parámetro */}
+            <Route path="*" element={<NotFound />} /> {/* Ruta catch-all para manejar 404 */}
           </Routes>
         </DfinityProvider>
       </UserProvider>
-
     </div>
   );
 }

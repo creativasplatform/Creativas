@@ -12,7 +12,7 @@ import { dcentProviderOptions } from "@rsksmart/rlogin-dcent-provider";
 
 export const rpcUrls = {
   31: 'https://public-node.testnet.rsk.co',
-  11155111 : 'https://sepolia.infura.io/v3/c9cff4159b23445abffec6c3273932ae', // Sepoli
+  11155111 : 'https://sepolia.infura.io/v3/c9cff4159b23445abffec6c3273932ae', 
 }
 
 const requiredChainsId = [31]

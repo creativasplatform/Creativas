@@ -4,9 +4,9 @@ const Body = ({ isMobile, showButton, handleButtonClick }) => {
   return (
     <div>
       <div className="relative bg-gradient-to-r from-customblack to-primary flex flex-col md:flex-row justify-center items-center overflow-hidden py-20">
-        <div className="w-full md:w-1/2 pr-8 mt-2 md:-mt-16 lg:-mt-20 xl:-mt-24 mb-8 md:mb-0 sm:text-start ml-16 xs:ml-32 sm:ml-32 md:ml-4 lg:ml-8 xl:ml-12 xs:text-left  md:text-left">
+        <div className="w-full md:w-1/2 pr-8 mt-2 md:-mt-16 lg:-mt-20 xl:-mt-24 mb-8 md:mb-0 sm:text-start ml-12 xs:ml-32 sm:ml-32 md:ml-4 lg:ml-8 xl:ml-12 xs:text-left  md:text-left">
           <h1 className="z-50 text-6xl  mb-4 md:mt-20 sm:text-8xl md:text-6xl lg:text-7xl xl:text-7xl font-raleway font-black text-white ">
-            Let's build a freer <br/> and more creative world
+            Let's build a freer <br/> and more creative <br/> world
           </h1>
           <p className="text-xl md:text-xl mb-6 text-gray-100 z-50 font-roboto">
             Bring a brilliant idea to life with the community <br/> and build it together with everyone's help
