@@ -7,15 +7,15 @@ export default function useAssets() {
     const [startedAssets, setStartedAssets] = useState([]);
     const [startedInvestmentAmounts, setStartedInvestmentAmounts] = useState([]);
     const [startedInvestorCounts, setStartedInvestorCounts] = useState([]);
-    
+
     const [fundedAssets, setFundedAssets] = useState([]);
     const [fundedInvestmentAmounts, setFundedInvestmentAmounts] = useState([]);
     const [fundedInvestorCounts, setFundedInvestorCounts] = useState([]);
-    
+
     const [failedAssets, setFailedAssets] = useState([]);
     const [failedInvestmentAmounts, setFailedInvestmentAmounts] = useState([]);
     const [failedInvestorCounts, setFailedInvestorCounts] = useState([]);
-    
+
     const [completedAssets, setCompletedAssets] = useState([]);
     const [completedInvestmentAmounts, setCompletedInvestmentAmounts] = useState([]);
     const [completedInvestorCounts, setCompletedInvestorCounts] = useState([]);
@@ -53,13 +53,13 @@ export default function useAssets() {
             setError(prevError => ({ ...prevError, [errorKey]: null }));
             try {
                 const { assets, investmentAmounts, investorCounts } = await getAssets(status);
-            
+
                 setAssets(assets);
                 setInvestmentAmounts(investmentAmounts);
                 setInvestorCounts(investorCounts);
 
             } catch (err) {
-               
+
                 setError(prevError => ({ ...prevError, [errorKey]: err }));
             } finally {
                 setLoading(prevLoading => ({ ...prevLoading, [loadingKey]: false }));
@@ -99,7 +99,7 @@ export default function useAssets() {
                 secondaryPhotos,
                 category
             );
-    
+
             return result;
         } catch (err) {
             setError(prevError => ({ ...prevError, adding: err }));
@@ -108,7 +108,7 @@ export default function useAssets() {
             setLoading(prevLoading => ({ ...prevLoading, adding: false }));
         }
     };
-    
+
 
     const updateAssetDetails = async (assetId, mainPhoto, secondaryPhotos, description) => {
         setLoading(prevLoading => ({ ...prevLoading, updating: true }));
@@ -187,7 +187,7 @@ export default function useAssets() {
         }
     }, [address, fetchAssetsOfOwner]);
 
-    return { 
+    return {
         startedAssets, startedInvestmentAmounts, startedInvestorCounts, loadingStarted: loading.started, errorStarted: error.started,
         fundedAssets, fundedInvestmentAmounts, fundedInvestorCounts, loadingFunded: loading.funded, errorFunded: error.funded,
         failedAssets, failedInvestmentAmounts, failedInvestorCounts, loadingFailed: loading.failed, errorFailed: error.failed,
@@ -199,3 +199,18 @@ export default function useAssets() {
         fetchAssetsOfOwner
     };
 }
+
+// src/hooks/Nftventure/useAssets.js
+export const getNFTById = async (id) => {
+    try {
+        const response = await fetch(`https://api.tuendpoint.com/nft/${id}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching NFT:', error);
+        return null;
+    }
+};

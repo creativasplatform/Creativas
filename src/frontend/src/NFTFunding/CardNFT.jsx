@@ -1,4 +1,6 @@
+// src/components/CardNFT.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import aceptarpicture from "../assets/aceptar.png";
 
@@ -12,6 +14,8 @@ const truncateAssetName = (name) => {
  
 
 const CardNFT = ({ id, assetName, imageSrc, objective, investmentAmount, className, investorCount, style }) => {
+  const navigate = useNavigate();
+
   const formattedInvestmentAmount = ethers.BigNumber.isBigNumber(investmentAmount)
     ? investmentAmount.toString()
     : investmentAmount;
@@ -20,41 +24,37 @@ const CardNFT = ({ id, assetName, imageSrc, objective, investmentAmount, classNa
     ? investorCount.toString()
     : investorCount;
 
-
-    const formattedId = ethers.BigNumber.isBigNumber(id)
+  const formattedId = ethers.BigNumber.isBigNumber(id)
     ? id.toString()
     : id;
 
+  const handleClick = () => {
+    navigate(`/nft/${formattedId}`);
+  };
 
-  
   return (
-    <div className={`bg-gradient-to-c-custom text-white rounded-xl shadow-lg w-80 h-72 mb-4 ${className}`} style={style}>
+    <div onClick={handleClick} className={`bg-gradient-to-c-custom text-white rounded-xl shadow-lg w-80 h-72 mb-4 cursor-pointer ${className}`} style={style}>
       <img src={imageSrc} alt={assetName} className="w-[300px] mt-2 h-48 object-cover rounded-xl" />
       <div className="p-4">
-      
-        <p className="text-lg font-semibold text-white flex items-start justify-start">
-          
-        {truncateAssetName(assetName)} <img src={aceptarpicture} alt="Checkmark" className="w-4 h-4 mt-1 ml-2" />
-
-        <div className="right-3 text-white -mt-3 px-2 py-1 rounded">
-        #{formattedId}
-      </div>
+        <p className="text-lg font-semibold text-white flex items-start justify-start"> 
+          {truncateAssetName(assetName)} <img src={aceptarpicture} alt="Checkmark" className="w-4 h-4 mt-1 ml-2" />
+          <div className="right-3 text-white -mt-3 px-2 py-1 rounded">
+            #{formattedId}
+          </div>
         </p>
         <div className="text-sm text-gray-400">
           <p className="flex items-center">
-         {formattedInvestmentAmount} backers
+            {formattedInvestmentAmount} backers
           </p>
         </div>
         <div className="text-sm justify-end ml-44 -mt-8">
           <p className="flex items-center text-white -mt-10">
-         {objective}
+            {objective}
           </p>
-
           <p className="flex items-center text-gray-400">
-        Goal
+            Goal
           </p>
         </div>
-    
       </div>
     </div>
   );
