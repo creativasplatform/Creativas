@@ -18,10 +18,12 @@ import Numbers from "./landing/Numbers.jsx";
 import Pathners from "./landing/Pathners.jsx";
 import NFTs from "./landing/NFTs..jsx";
 import Contact from "./landing/Contact.jsx";
+import BodyMain from "./landing/BodyMain.jsx"
 import Video from "./landing/Video.jsx";
 // import NFTDetail from "./NFTFunding/NFTDetail.jsx"; // Importa el nuevo componente
 import NotFound from "./landing/NotFound.jsx"; // Importa el componente 404
-import NFTDetail from "./NFTFunding/NFTDetails/Details.jsx"; // Importa el nuevo componente
+import NFTDetail from "./NFTFunding/NFTDetails/Details.jsx";
+import CardDetails from "./NFTFunding/NFTDetails/CardDetails.jsx";
 
 function App() {
   return (
@@ -64,6 +66,7 @@ function App() {
               <>
                 <Navbar />
                 <NFTDetail />
+                <CardDetails/>
                 <Footer />
               </>
             } />
