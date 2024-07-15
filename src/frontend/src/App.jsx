@@ -1,6 +1,5 @@
 import React from "react";
-import { Routes, Route } from 'react-router-dom';
-import BodyMain from "./landing/BodyMain.jsx";
+import { Routes, Route } from 'react-router-dom';;
 import Card from "./landing/Card.jsx";
 import NFTFunding from "./NFTFunding/NFTFunding.jsx";
 import { UserProvider } from './context/userContext';
@@ -55,7 +54,7 @@ function App() {
             <Route path="/nft/:id" element={
               <>
                 <NFTFundingDetails />
-                <NFTDetail />
+                <NFTDetail/>
                 <CardDetails/>
                 <Footer />
               </>

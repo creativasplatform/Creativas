@@ -2,8 +2,9 @@ import React from 'react';
 
 const CardDetails = () => {
   return (
-    <div className="flex justify-center space-x-4 p-4 bg-gradient-to-b from-primary to-customblack">
-      <div className="bg-gray-900 text-white rounded-lg p-14 space-y-4">
+    <div className="flex justify-center space-x-4 p-4 bg-customblack">
+      <div className=" text-white rounded-lg p-14 space-y-4">
+        <div className="bg-primary  p-4 rounded-lg space-y-4">
         <div>
           <h2 className="text-2xl font-bold">PROJECT OVERVIEW</h2>
           <p>
@@ -18,7 +19,10 @@ const CardDetails = () => {
             <li>UNIQUE EXPERIENCE: OFFER AN IMMERSIVE EXPERIENCE THROUGH HIGH-QUALITY PRODUCTION, WHICH INCLUDES IMPRESSIVE SETTINGS, CUTTING-EDGE TECHNOLOGY AND A WIDE RANGE OF SERVICES AND ACTIVITIES.</li>
           </ul>
         </div>
-        <div className="bg-black p-4 rounded-lg space-y-4">
+        </div>
+
+
+        <div className="bg-primary p-4 rounded-lg space-y-4">
           <h2 className="text-2xl font-bold">Rewards</h2>
           <p>ERC-1155 Tokens: Fungible and non-fungible tokens are split for rewards.</p>
           <div className="space-y-2">
