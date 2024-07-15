@@ -55,6 +55,7 @@ function App() {
             <Route path="/nft/:id" element={
               <>
                 <NFTFundingDetails />
+                <NFTDetail/>
                 <CardDetails/>
                 <Footer />
               </>
