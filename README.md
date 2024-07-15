@@ -58,14 +58,14 @@ dfx deploy
 You can find much more about how to use this project in our [Wiki](https://app.gitbook.com/o/ipfdN1ppy3Q6FZ385v35/s/wdxrMlQW8Wb7HGQXIWxw/)
 
 
-##Authors ✒️
+## Authors ✒️
 
 * **Daniela Castellano** - *Frontend Developer* - [danielaestefania19](https://github.com/danielaestefania19)
 * **Alfredo Eulises Castellano** - *Backend Developer* - [alcamo93](https://github.com/alcamo93)
 * **Alfredo Castellano** - *Blockchain Developer* - [ALCAMOjr](https://github.com/ALCAMOjr)
 
 
-##License 📄
+## License 📄
 
 This project is licensed under the MIT License - see the file [LICENSE.md](LICENSE.md) for more details.
 
