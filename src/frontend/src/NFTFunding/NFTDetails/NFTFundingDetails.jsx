@@ -1,35 +1,36 @@
-// src/NFTFunding/BodyMarketplace.jsx
+
 import React, { useState, useEffect, useRef } from 'react';
-import StepProgress from './StepProgress';
-import Categories from './Categories';
-import categoriaone from "../assets/categories/categoria1.png"
-import categoriatwo from "../assets/categories/categoria2.png"
-import categoriathree from "../assets/categories/categoria3.png"
-import { SearchIcon } from "./SearchIcon.jsx";
+import StepProgress from './../StepProgress';
+import NavbarDeatilsNFT from '../NFTDetails/NavbarDetails.jsx';
+import categoriaone from "../../assets/categories/categoria1.png";
+import categoriatwo from "../../assets/categories/categoria2.png";
+import categoriathree from "../../assets/categories/categoria3.png";
+import { SearchIcon } from "./../SearchIcon.jsx";
 import { Input } from "@nextui-org/react";
-import writeicon from "../assets/write.png"
-import "../index.scss"
+import writeicon from "../../assets/write.png";
+import "../../index.scss";
 import { DatePicker } from "@nextui-org/react";
 import { getLocalTimeZone, today } from "@internationalized/date";
-import useUser from '../hooks/user/useuser.jsx';
-import circulo from "../assets/circulo.png"
-import masicon from "../assets/mas.png"
+import useUser from '../../hooks/user/useuser.jsx';
+import circulo from "../../assets/circulo.png";
+import masicon from "../../assets/mas.png";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-import usePinata from '../hooks/pinata/usepinata.jsx';
+import usePinata from '../../hooks/pinata/usepinata.jsx';
 import { Spinner } from '@nextui-org/react';
 import { useSpring, useTransition, animated } from '@react-spring/web';
-import walleticon from "../assets/wallet.png";
-import googleicon from "../assets/google.png";
-import useAssets from '../hooks/Nftventure/useAssets';
-import useRewards from '../hooks/Nftventure/useRewards';
-import errorpicture from "../assets/error.png"
-import aceptarpicture from "../assets/aceptar.png"
-import { Category } from '../helpers/AssetsHelpers.js';
-import { NFTVenture, rpcURL } from "../utils/constans.js"
-import { NETWORKS } from "../helpers/ChainsConfig.js"
-import { useUserContext } from "../context/userContext.jsx";
+import walleticon from "../../assets/wallet.png";
+import googleicon from "../../assets/google.png";
+import useAssets from '../../hooks/Nftventure/useAssets';
+import useRewards from '../../hooks/Nftventure/useRewards';
+import errorpicture from "../../assets/error.png";
+import aceptarpicture from "../../assets/aceptar.png";
+import { Category } from '../../helpers/AssetsHelpers.js';
+import { NFTVenture, rpcURL } from "../../utils/constans.js";
+import { NETWORKS } from "../../helpers/ChainsConfig.js";
+import { useUserContext } from "../../context/userContext.jsx";
 
-const NFTFunding = () => {
+
+const NFTFundingDetails = () => {
     const [openModal, setOpenModal] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({ title: '', description: '' });
@@ -73,35 +74,35 @@ const NFTFunding = () => {
 
     const handleChangeNetwork = async () => {
         try {
-            if (authType === 'wallet') {
-                await changeNetworkWallet(network);
-            } else if (authType === 'web3auth') {
-                await changeNetworkWeb3auth(network);
-            }
-            setNetwork(network);
-            localStorage.setItem('selectedNetwork',);
+          if (authType === 'wallet') {
+            await changeNetworkWallet(network);
+          } else if (authType === 'web3auth') {
+            await changeNetworkWeb3auth(network);
+          }
+          setNetwork(network); 
+          localStorage.setItem('selectedNetwork', ); 
         } catch (error) {
-            console.error("Error switching network:", error);
+          console.error("Error switching network:", error);
         }
-    };
+      };
 
-    const parseNetworkName = (network) => {
+      const parseNetworkName = (network) => {
         switch (network) {
-            case 'RSK_TESTNET':
-                return 'RSK';
-            case 'SEPOLIA_TESTNET':
-                return 'Ethereum';
-            default:
-                return 'Unknown Network';
+          case 'RSK_TESTNET':
+            return 'RSK';
+          case 'SEPOLIA_TESTNET':
+            return 'Ethereum';
+          default:
+            return 'Unknown Network';
         }
-    };
-
+      };
+    
 
     const modalAnimation = useSpring({
         opacity: openModal ? 1 : 0,
         transform: openModal ? 'scale(1)' : 'scale(0.9)',
         config: { duration: 300 },
-    });
+      });
 
     const modalLoginAnimation = useSpring({
         opacity: openLoginModal ? 1 : 0,
@@ -453,18 +454,18 @@ const NFTFunding = () => {
     const handleAddNFT = async () => {
         setLoadingAddNFT(true);
         try {
-            const wasAdded = await Provider.provider
-                .request({
-                    method: "wallet_watchAsset",
-                    params: {
-                        type: "ERC721",
-                        options: {
-                            address: NFTVenture,
-                            tokenId: assetId,
-                        },
-                    },
-                });
-
+           const wasAdded = await Provider.provider 
+              .request({
+                method: "wallet_watchAsset",
+                params: {
+                  type: "ERC721", 
+                  options: {
+                    address: NFTVenture,
+                    tokenId: assetId,
+                  },
+                },
+              });
+          
             if (wasAdded) {
                 setOpenModal('');
                 setLoadingMessage('');
@@ -472,16 +473,16 @@ const NFTFunding = () => {
                 setAssetId(null)
                 setLoadingAddNFT(false);
             } else {
-                console.error("User did not add the token.")
-                setLoadingAddNFT(false);
+              console.error("User did not add the token.")
+              setLoadingAddNFT(false);
             }
-        } catch (error) {
+          } catch (error) {
 
             console.error(error);
             setLoadingAddNFT(false);
-        }
+          }
 
-
+          
     }
 
 
@@ -625,17 +626,16 @@ const NFTFunding = () => {
                                         <div className="flex items-center">
                                             <label className="sr-only" htmlFor="currency">Currency</label>
                                             <select
-                                                className="outline-none border-0 text-black text-sm p-2 rounded-lg bg-gray-800"
+                                                className="outline-none border-0 bg-transparent text-white text-small"
                                                 id="currency"
                                                 name="currency"
                                                 value={currency}
                                                 onChange={handleCurrencyChange}
                                             >
-                                                <option className="bg-gray-800 text-black">USD</option>
-                                                <option className="bg-gray-800 text-white">ARS</option>
-                                                <option className="bg-gray-800 text-white">EUR</option>
+                                                <option>USD</option>
+                                                <option>ARS</option>
+                                                <option>EUR</option>
                                             </select>
-
                                         </div>
                                     }
                                     type="number"
@@ -1016,27 +1016,28 @@ const NFTFunding = () => {
             <div className="flex justify-end mt-4">
                 <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                 <button
-                    disabled={loading}
-                    onClick={
-                        isLoggedIn && address
-                            ? IsValidChain
-                                ? handleCreateAsset
-                                : handleChangeNetwork
-                            : handleOpenLoginModal
-                    }
-                    className={`font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left focus:outline-none ${isLoggedIn && address
-                            ? IsValidChain
-                                ? 'text-white bg-secondary hover:bg-secondary-ligth'
-                                : 'bg-white hover:border-gray-200 text-secondary'
-                            : 'bg-white hover:border-gray-200 text-secondary'
-                        }`}
-                >
-                    {isLoggedIn && address
-                        ? IsValidChain
-                            ? 'Complete'
-                            : `Connect to ${parseNetworkName(network)}`
-                        : 'Login'}
-                </button>
+        disabled={loading}
+        onClick={
+          isLoggedIn && address
+            ? IsValidChain
+              ? handleCreateAsset
+              : handleChangeNetwork
+            : handleOpenLoginModal
+        }
+        className={`font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left focus:outline-none ${
+          isLoggedIn && address
+            ? IsValidChain
+              ? 'text-white bg-secondary hover:bg-secondary-ligth'
+              : 'bg-white hover:border-gray-200 text-secondary'
+            : 'bg-white hover:border-gray-200 text-secondary'
+        }`}
+      >
+        {isLoggedIn && address
+          ? IsValidChain
+            ? 'Complete'
+            : `Connect to ${parseNetworkName(network)}`
+          : 'Login'}
+      </button>
             </div>
         </>
     );
@@ -1044,14 +1045,14 @@ const NFTFunding = () => {
     return (
         <>
 
-            <Categories onOpenModal={() => handleOpenModal('extralarge-modal')} />
+            <NavbarDeatilsNFT onOpenModal={() => handleOpenModal('extralarge-modal')} />
             {openModal === 'extralarge-modal' && (
-                <animated.div style={modalAnimation}
+             <animated.div style={modalAnimation}
                     id="extralarge-modal"
                     tabIndex="-1"
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto h-full"
                 >
-
+                 
                     <div className="relative w-full max-w-4xl max-h-[100vh] min-w-[40vw]">
                         <div className="relative bg-black rounded-lg shadow dark:bg-gray-800 h-full" >
                             <div className="flex flex-col h-full">
@@ -1092,8 +1093,8 @@ const NFTFunding = () => {
                             </div>
                         </div>
                     </div>
-                </animated.div>
-
+                    </animated.div>
+           
             )}
 
             {openModal === 'verification-modal' && (
@@ -1166,22 +1167,22 @@ const NFTFunding = () => {
                                                 <p className="text-center text-xl text-white font-roboto" dangerouslySetInnerHTML={{ __html: loadingMessage }}></p>
                                                 <div className="flex justify-end mt-4 space-x-4">
                                                     {authType === 'wallet' && Provider.provider.isMetaMask && (
-                                                        <button
-                                                            className="mt-4 bg-white text-secondary font-roboto text-lg px-4 py-2 rounded-lg flex items-center justify-center w-28"
-                                                            onClick={handleAddNFT}
-                                                            disabled={loadingAddNFT} // Deshabilitar el botón mientras está cargando
-                                                        >
-                                                            {loadingAddNFT ? (
-                                                                <Spinner
-                                                                    size='md'
-
-                                                                    color='success'
-                                                                    labelColor='foreground'
-                                                                />
-                                                            ) : (
-                                                                "Add NFT"
-                                                            )}
-                                                        </button>
+                                                             <button
+                                                             className="mt-4 bg-white text-secondary font-roboto text-lg px-4 py-2 rounded-lg flex items-center justify-center w-28"
+                                                             onClick={handleAddNFT}
+                                                             disabled={loadingAddNFT} // Deshabilitar el botón mientras está cargando
+                                                           >
+                                                             {loadingAddNFT ? (
+                                                               <Spinner
+                                                                 size='md'
+                                                            
+                                                                 color='success'
+                                                                 labelColor='foreground'
+                                                               />
+                                                             ) : (
+                                                               "Add NFT"
+                                                             )}
+                                                           </button>
                                                     )}
 
                                                     <button
@@ -1271,4 +1272,4 @@ const NFTFunding = () => {
     );
 };
 
-export default NFTFunding;
+export default NFTFundingDetails;

@@ -18,7 +18,7 @@ import Contact from "./landing/Contact.jsx";
 import Video from "./landing/Video.jsx";
 import NotFound from "./landing/NotFound.jsx"; // Importa el componente 404
 import NFTDetail from "./NFTFunding/NFTDetails/Details.jsx"; // Importa el nuevo componente
-import Navbar from "./NFTFunding/NavbarMarketplace.jsx";
+import NFTFundingDetails from "./NFTFunding/NFTDetails/NFTFundingDetails.jsx";
 function App() {
   return (
     <div className="App">
@@ -52,7 +52,7 @@ function App() {
             } />
             <Route path="/nft/:id" element={
               <>
-                <Navbar />
+                <NFTFundingDetails />
                 <NFTDetail />
                 <Footer />
               </>
