@@ -1,7 +1,6 @@
 import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-
-// networkConfig.js
+const API_KEY = 'CG-Fp12f1rhwzh4QrGK8vCkRpKc';
+import axios from "axios";
 
 export const NETWORKS = {
     RSK_TESTNET: {
@@ -50,5 +49,6 @@ export const chainConfigWeb3authSepolia = {
     tickerName: "SepoliaETH",
     logo: "https://path-to-rsk-logo.svg", // Cambia esto a la URL del logo de RSK
 };
+
 
 
