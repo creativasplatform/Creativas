@@ -2,7 +2,7 @@ Creativas Platform
 
 Creativas is a new NFT model. It uses a decentralized network of blockchain-guaranteed smart contracts. to create a safer, cheaper and more global crowdfunding service.
 
-##Getting started 🚀
+## Getting started 🚀
 
 _These instructions will allow you to get a copy of the project up and running on your local machine for development and testing purposes._
 
@@ -11,9 +11,9 @@ _These instructions will allow you to get a copy of the project up and running o
 
 * **Dfinity Canister SDK**
   * Install with the following command:
-  ```
+
 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
-```
+
 
 ### Installation 🔧
 
@@ -36,7 +36,7 @@ npm install
 ```
 dfx start
 ```
-##Deployment📦
+## Deployment📦
 _Deploy the canisters locally:_
 ```
 dfx deploy
