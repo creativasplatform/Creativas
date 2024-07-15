@@ -60,9 +60,9 @@ You can find much more about how to use this project in our [Wiki](https://app.g
 
 ##Authors ✒️
 
-* **Daniela Castellano** - *Initial Work* - [villanuevand](https://github.com/villanuevand)
-* **Alfredo Eulises Castellano** - *Documentation* - [alcamo93](https://github.com/alcamo93)
-* **Alfredo Castellano** - *Documentation* - [ALCAMOjr](https://github.com/ALCAMOjr)
+* **Daniela Castellano** - *Frontend Developer* - [danielaestefania19](https://github.com/danielaestefania19)
+* **Alfredo Eulises Castellano** - *Backend Developer* - [alcamo93](https://github.com/alcamo93)
+* **Alfredo Castellano** - *Blockchain Developer* - [ALCAMOjr](https://github.com/ALCAMOjr)
 
 
 ##License 📄
