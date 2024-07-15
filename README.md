@@ -71,7 +71,7 @@ This project is licensed under the MIT License - see the file [LICENSE.md](LICEN
 
 ## Thank you for coming this far 🎁
 
-*Tell others about this project 📢
+* Tell others about this project 📢
 * Give thanks publicly 🤓.
 * Donate with RBTC to this address: `0x8Eb4F9446E14529adaBf111aea8D75Ea93549bFB`
 
