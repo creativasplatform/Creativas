@@ -74,9 +74,9 @@ export default function Chain({ isSmallScreen }) {
           <Button
             size={isSmallScreen ? "sm" : "md"}
             className={`${isSmallScreen
-                ? "bg-transparent mt-2 px-5 z-0"
-                : "text-white z-0 bg-customblack hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-3 py-2.5 text-center md:text-left dark:bg-customblack dark:hover:bg-gray-600 dark:focus:ring-blue-800 flex items-center"
-              }` }
+              ? "bg-transparent mt-2 px-5 z-0"
+              : "text-white z-0 bg-customblack hover:bg-gray-600 focus:outline-none font-thin rounded-full text-sm px-3 py-2.5 text-center md:text-left dark:bg-customblack dark:hover:bg-gray-600 dark:focus:ring-blue-800 flex items-center"
+              }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             {...(isSmallScreen && { isIconOnly: true })}
@@ -110,14 +110,16 @@ export default function Chain({ isSmallScreen }) {
             <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-20 ml-4' : 'mr-8 ml-4'}`}>Rootstock</p>
           </DropdownItem>
           <DropdownItem
-            className="text-lg hover:bg-gray-600 focus:outline-none rounded-lg flex items-center"
+            isReadOnly
+            className={`text-lg hover:bg-gray-600 focus:outline-none rounded-lg flex items-center ${network !== 'SEPOLIA_TESTNET' ? 'opacity-50 cursor-not-allowed' : ''}`}
             key="ethereum"
             onClick={() => handleNetworkChange('SEPOLIA_TESTNET')}
             endContent={network === 'SEPOLIA_TESTNET' && <img src={check} className="w-4 h-4 ml-16" />}
-            startContent={<img src={etherumicon} className="w-6 h-6 text-xl text-white pointer-events-none flex-shrink-0 rounded-full  -ml-4 mr-2" />}
+            startContent={<img src={etherumicon} className="w-6 h-6 text-xl text-white pointer-events-none flex-shrink-0 rounded-full -ml-4 mr-2" />}
           >
             <p className={`${network === 'SEPOLIA_TESTNET' ? 'mr-18' : 'mr-16'}`}>Ethereum</p>
           </DropdownItem>
+
         </DropdownMenu>
       </Dropdown>
       {/* Tooltip */}

@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Collectibles from '../../assets/Collectibles.png';
 import { useSpring, animated } from '@react-spring/web';
-
+import useAssets from '../../hooks/Nftventure/useAssets';
 const NFTDetail = () => {
   const { id } = useParams();
-  const [timeLeft, setTimeLeft] = useState(86400); // 24 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(86400); 
+  const { fetchAssetById, asset, loadingFetchingAsset, errorFetchingAsset } = useAssets();
 
-  // Update the time left every second
+
+  console.log(asset)
+
+
+  useEffect(() => {
+    fetchAssetById(id);
+  }, [id, fetchAssetById]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));

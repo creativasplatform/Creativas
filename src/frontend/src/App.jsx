@@ -15,7 +15,6 @@ import Numbers from "./landing/Numbers.jsx";
 import Pathners from "./landing/Pathners.jsx";
 import NFTs from "./landing/NFTs..jsx";
 import Contact from "./landing/Contact.jsx";
-import BodyMain from "./landing/BodyMain.jsx"
 import Video from "./landing/Video.jsx";
 import NotFound from "./landing/NotFound.jsx"; // Importa el componente 404
 import NFTFundingDetails from "./NFTFunding/NFTDetails/NFTFundingDetails.jsx";
@@ -56,6 +55,7 @@ function App() {
             <Route path="/nft/:id" element={
               <>
                 <NFTFundingDetails />
+                <NFTDetail />
                 <CardDetails/>
                 <Footer />
               </>

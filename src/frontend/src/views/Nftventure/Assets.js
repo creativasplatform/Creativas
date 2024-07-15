@@ -11,7 +11,6 @@ const getAssetsContract = (signerOrProvider) => {
 };
 
 export async function getAssets(status) {
-  console.log(status)
   const contract = getAssetsContract(provider);
 
   try {

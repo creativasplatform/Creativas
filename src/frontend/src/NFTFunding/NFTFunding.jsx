@@ -26,7 +26,6 @@ import errorpicture from "../assets/error.png"
 import aceptarpicture from "../assets/aceptar.png"
 import { Category } from '../helpers/AssetsHelpers.js';
 import { NFTVenture, rpcURL } from "../utils/constans.js"
-import { NETWORKS } from "../helpers/ChainsConfig.js"
 import { useUserContext } from "../context/userContext.jsx";
 
 const NFTFunding = () => {
@@ -383,63 +382,65 @@ const NFTFunding = () => {
             return;
         }
         handleCloseModal();
-
+    
         setOpenModal('loading-modal');
         setLoading(true);
         setLoadingMessage('Creating Project...');
-
+    
         const endDateUnix = new Date(
             endDate.year,
             endDate.month - 1,
             endDate.day
         ).getTime() / 1000;
-
+    
         try {
             const mainImage = images[0].url;
             const ipfsHash = await uploadJsonToPinata(formData.title, mainImage, formData.description);
             const tokenURI = `https://green-capable-vole-518.mypinata.cloud/ipfs/${ipfsHash}`;
-
+    
             const category = categories.find(cat => cat.id === selectedCategory).name;
-
-            const { transactionHash, assetId } = await createAsset(
-                fundingObjective,
-                address,
-                formData.title,
-                formData.description,
-                endDateUnix,
-                address,
-                tokenURI,
-                mainImage,
-                images.slice(1),
-                Category[category]
-            );
-
-            setAssetId(assetId)
-
-            setLoadingMessage(`Project hash: ${transactionHash}`);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            let rewardsMessage = '';
-            if (hasRewards) {
-                setLoadingMessage('Creating Rewards...');
-                const processedRewards = await processRewards(cards, mainImage);
-                const rewardsTx = await createRewards(assetId, processedRewards);
-                rewardsMessage = ` Rewards created at <br/>${rewardsTx.rewardTokenAddress}`;
-                setLoadingMessage(`Rewards hash: ${rewardsTx.transactionHash}`);
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            setLoadingMessage(`Project created at <br/>${NFTVenture} with ID: ${assetId}<br/>${rewardsMessage}`);
-
-
-            setLoading(false);
-
+    
+         
+         
+    
+                const { transactionHash, assetId } = await createAsset(
+                    fundingObjective, 
+                    address,
+                    formData.title,
+                    formData.description,
+                    endDateUnix,
+                    address,
+                    tokenURI,
+                    mainImage,
+                    images.slice(1),
+                    Category[category]
+                );
+    
+                setAssetId(assetId);
+    
+                setLoadingMessage(`Project hash: ${transactionHash}`);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+    
+                let rewardsMessage = '';
+                if (hasRewards) {
+                    setLoadingMessage('Creating Rewards...');
+                    const processedRewards = await processRewards(cards, mainImage);
+                    const rewardsTx = await createRewards(assetId, processedRewards);
+                    rewardsMessage = ` Rewards created at <br/>${rewardsTx.rewardTokenAddress}`;
+                    setLoadingMessage(`Rewards hash: ${rewardsTx.transactionHash}`);
+                }
+    
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                setLoadingMessage(`Project created at <br/>${NFTVenture} with ID: ${assetId}<br/>${rewardsMessage}`);
+    
+                setLoading(false);
         } catch (error) {
             console.error("Error creating project or rewards:", error);
             setLoadingMessage('Failed to create project or rewards. Try again.');
             setLoading(false);
         }
     };
+    
 
 
     const handleCloseLoadingModal = () => {
@@ -625,14 +626,13 @@ const NFTFunding = () => {
                                         <div className="flex items-center">
                                             <label className="sr-only" htmlFor="currency">Currency</label>
                                             <select
-                                                className="outline-none border-0 text-black text-sm p-2 rounded-lg bg-gray-800"
+                                                className="outline-none border-0 text-[#D5D6E1] text-sm p-2 rounded-lg bg-[#202129]"
                                                 id="currency"
                                                 name="currency"
                                                 value={currency}
                                                 onChange={handleCurrencyChange}
                                             >
-                                                <option className="bg-gray-800 text-black">USD</option>
-                                                <option className="bg-gray-800 text-white">ARS</option>
+                                                <option className="bg-gray-800 text-white">USD</option>
                                                 <option className="bg-gray-800 text-white">EUR</option>
                                             </select>
 
@@ -819,18 +819,16 @@ const NFTFunding = () => {
                                                                         }
                                                                         endContent={
                                                                             <div className="flex items-center">
-                                                                                <label className="sr-only" htmlFor="currency">
-                                                                                    Currency
-                                                                                </label>
+                                                                                <label className="sr-only" htmlFor="currency">Currency</label>
                                                                                 <select
-                                                                                    className="outline-none border-0 bg-transparent text-white text-small"
+                                                                                    className="outline-none border-0 text-[#D5D6E1] text-sm p-2 rounded-lg bg-[#202129]"
                                                                                     id="currency"
                                                                                     name="currency"
                                                                                 >
-                                                                                    <option>USD</option>
-                                                                                    <option>ARS</option>
-                                                                                    <option>EUR</option>
+                                                                                    <option className="bg-gray-800 text-white">USD</option>
+                                                                                      <option className="bg-gray-800 text-white">EUR</option>
                                                                                 </select>
+
                                                                             </div>
                                                                         }
                                                                         id={`rewardPrice-${card.id}`}
@@ -1016,6 +1014,12 @@ const NFTFunding = () => {
             <div className="flex justify-end mt-4">
                 <div className="absolute top-50 mt-2 left-1/2 transform -translate-x-1/2 w-5/6 h-[0.5px] bg-gray-700 "></div>
                 <button
+                                onClick={() => handleOpenModal('extralarge-modal')}
+                                className="mr-4 text-secondary bg-white dark:bg-white hover:bg-gray-200 dark:hover:bg-gray-200 focus:outline-none font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left dark:focus:ring-blue-800"
+                            >
+                                Edit
+                            </button>
+                <button
                     disabled={loading}
                     onClick={
                         isLoggedIn && address
@@ -1025,10 +1029,10 @@ const NFTFunding = () => {
                             : handleOpenLoginModal
                     }
                     className={`font-thin rounded-lg text-lg px-5 mt-6 py-1.5 h-10 text-center md:text-left focus:outline-none ${isLoggedIn && address
-                            ? IsValidChain
-                                ? 'text-white bg-secondary hover:bg-secondary-ligth'
-                                : 'bg-white hover:border-gray-200 text-secondary'
+                        ? IsValidChain
+                            ? 'text-white bg-secondary hover:bg-secondary-ligth'
                             : 'bg-white hover:border-gray-200 text-secondary'
+                        : 'bg-white hover:border-gray-200 text-secondary'
                         }`}
                 >
                     {isLoggedIn && address

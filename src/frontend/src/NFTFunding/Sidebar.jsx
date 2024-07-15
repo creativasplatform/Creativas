@@ -10,8 +10,8 @@ import useAssets from '../hooks/Nftventure/useAssets';
 import derecha from '../assets/derecha.png'
 
 const truncateAssetName = (name) => {
-  if (name.length > 14) {
-    return `${name.substring(0, 14)}...`;
+  if (name.length > 6) {
+    return `${name.substring(0, 6)}...`;
   }
   return name;
 };
@@ -106,7 +106,7 @@ const Sidebar = ({ onClose, isSidebarOpen, setIsSidebarOpen, onOpenModal, isSmal
               <div className="p-4">
                 <p className="text-lg font-semibold text-white -mt-3 flex items-start justify-start">
                   {truncateAssetName(asset.title)}
-                  <div className="right-3 text-white -mt-1 px-2 py-1 rounded justify-end items-end ml-16">
+                  <div className="text-white -mt-1 px-2 py-1 rounded justify-end items-end ml-8">
                     #{asset.assetId.toString()}
                   </div>
                 </p>
