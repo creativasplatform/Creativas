@@ -2,6 +2,8 @@
 
 Creativas is a new NFT model. It uses a decentralized network of blockchain-guaranteed smart contracts. to create a safer, cheaper and more global crowdfunding service.
 
+[Read our White Paper](https://gateway.pinata.cloud/ipfs/Qmf9VdypvDfKLa9bhJWveBENAJpr7PYZe7JrN85z5dV2g6)
+
 ## Getting started 🚀
 
 _These instructions will allow you to get a copy of the project up and running on your local machine for development and testing purposes._

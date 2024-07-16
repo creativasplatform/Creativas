@@ -15,11 +15,10 @@ import Pathners from "./landing/Pathners.jsx";
 import NFTs from "./landing/NFTs..jsx";
 import Contact from "./landing/Contact.jsx";
 import Video from "./landing/Video.jsx";
-import NotFound from "./landing/NotFound.jsx"; // Importa el componente 404
+import NotFound from "./landing/NotFound.jsx"; 
 import NFTFundingDetails from "./NFTFunding/NFTDetails/NFTFundingDetails.jsx";
 import NFTDetail from "./NFTFunding/NFTDetails/Details.jsx";
-import CardDetails from "./NFTFunding/NFTDetails/CardDetails.jsx"; // Importa el nuevo componente
-
+import BodyMain from "./landing/BodyMain.jsx";
 function App() {
   return (
     <div className="App">
@@ -55,7 +54,7 @@ function App() {
               <>
                 <NFTFundingDetails />
                 <NFTDetail/>
-                <CardDetails/>
+            
                 <Footer />
               </>
             } />
